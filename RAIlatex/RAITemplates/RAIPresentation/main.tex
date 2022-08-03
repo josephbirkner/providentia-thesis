@@ -1,0 +1,138 @@
+% !TeX spellcheck = de_DE
+\documentclass[RAIbeamer%              style
+              %,optEnglish%            language
+              %,handout%               deactivate animation
+              ,optBiber%               bibliography tool
+              ,optBibstyleAlphabetic%  bibliography style
+              ,optBeamerClassicFormat% 4:3 format
+              %,optBeamerWideFormat%   16:9 format
+              ]{RAIlatex}%
+\setbeameroption{show notes}% Show all notes
+%
+% Set paths
+\graphicspath{{figures/}}%
+\addbibresource{source/literature.bib}%
+%
+% set meta data
+\title{Title of the Presentation}%
+\subtitle{Subtitle}% (optional)
+\author{Your Name}% (optional)
+\date{\RAIutilsDate{1}{1}{2017}}% (optional)
+%\institute{Institute}% (optional)
+%
+% Setup of header and footer
+%\RAIbeamerSetupHeader{\RAIlayoutHeaderCDTUMLogoOnly}%
+%\RAIbeamerSetupHeader{\RAIlayoutHeaderCDTUM}%
+%\RAIbeamerSetupHeader{\RAIlayoutHeaderCDDepartment}%
+\RAIbeamerSetupHeader{\RAIlayoutHeaderCDChair}%
+\RAIbeamerSetupFooterCD%
+%\RAIbeamerSetupFooterSlideNumberOnly%
+%
+\begin{document}%
+%
+% Start with titlepage
+\RAIbeamerTitlePageDefault%
+%
+\begin{frame}{Title of Slide}{Subtitle of Slide}%
+    \blindtext%
+\end{frame}%
+%
+\begin{frame}{Lists}{Itemize and Enumerate}%
+    % Itemize
+    \begin{itemize}
+        \item Item A
+        \item Item B
+        \begin{itemize}
+            \item Subitem A
+            \item Subitem B
+            \begin{itemize}
+                \item Subsubitem A
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    % enumerate
+    \begin{enumerate}
+        \item Item A
+        \item Item B
+        \begin{enumerate}
+            \item Subitem A
+            \item Subitem B
+            \begin{enumerate}
+                \item Subsubitem A
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+\end{frame}%
+%
+\begin{frame}{Columns}%
+    \begin{columns}[t,onlytextwidth]%
+        \begin{column}[t]{0.48\textwidth}%
+            Column 1%
+        \end{column}%
+        \begin{column}[t]{0.48\textwidth}%
+            Column 2%
+        \end{column}%
+    \end{columns}%
+\end{frame}%
+%
+\RAIbeamerSetFooterText{Additional Footer Text}%
+\begin{frame}{Citations, Maths, Images}%
+    Citations: \cite{choset2005principles, thrun2005probabilistic}\par%
+    %
+    Maths:
+    \begin{equation}
+        \vA\,\vx=\vb\quad \mbox{and} \quad b_i=1\quad\forall\,i \in\MN\quad \int_a^b f(t) \dif t
+    \end{equation}
+    %
+    Images:\par%
+    \begin{figure}[htb]%
+        \centering%
+        %
+        % Including .png
+        \includegraphics[width=40mm]{figures/ImagePNG.png}%
+        %
+        \hspace*{5mm}%
+        %
+        % Including .pdf
+        \includegraphics[width=40mm]{figures/ImagePDF.pdf}\par%
+        %
+        % Including .tikz
+        \begingroup%
+            %\RAItikzExternalizeSkipNext%
+            \resizebox{40mm}{!}{\input{figures/ImageTIKZ.tikz}}%
+        \endgroup%
+        %
+        \hspace*{5mm}%
+        %
+        % Including .pdf_tex
+        \begingroup%
+            \def\svgwidth{40mm}%
+            \fontsize{25}{25}\selectfont%
+            \input{figures/ImagePDFTEX.pdf_tex}%
+        \endgroup%
+        %
+        \caption{\RAIlangGerEng{Beschreibung des Bilds}{Image description}.}%
+        \label{fig:MyImage}%
+    \end{figure}%
+\end{frame}%
+%
+\begin{frame}{Animations}%
+    \begin{itemize}
+        \item<1-> a
+        \item<2-> b
+        \item<3-> c
+    \end{itemize}
+\end{frame}
+%
+\RAIbeamerSetFooterText{References}%
+\begin{frame}[allowframebreaks]{References}%
+    \printbibliography[heading=none]%
+    %\sloppy% "Word"-like typesetting in order to improve breaking lines with long URLs/DOIs
+\end{frame}%
+%
+% End with titlepage
+\RAIbeamerTitlePageDefault%
+%
+\end{document}%
+%
+%

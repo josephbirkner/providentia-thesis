@@ -1,0 +1,177 @@
+% !TeX spellcheck = en_US
+\documentclass[RAIphdexpose%          style
+              ,optCharter%            font
+              ,optBiber%              bibliography tool
+              ,optBibstyleAlphabetic% bibliography style
+              ,optEnglish%            language
+              %,optTikzExternalize%   compiles faster for large tikz images
+              %,optExzellenz%
+              ]{RAIlatex}%
+%
+% Set paths
+\graphicspath{{figures/}}%
+\addbibresource{source/literature.bib}%
+%
+\begin{document}%
+% Titlepage
+% ---------
+\RAIphdexposeTitlePage%
+{Your Name}%                                                 your name
+{your.email@tum.de}%                                         your e-mail address
+{your-phone-number}%                                         your phone number (office)
+{Provisional Title}%                                         provisional title of your doctoral project
+{\RAInamesProfKnoll}%                                        your supervisor
+{\RAIlangGerEng{noch nicht festgelegt}{not specified yet}}%  your mentor
+{\RAIutilsDate{1}{1}{2020}}%                                 date of this document
+%
+% Contents
+% --------
+% HINTS FROM TUM GRADUATE SCHOOL
+% A concept paper is a document in which you define the scholarly framework for your dissertation at an early stage
+% and develop a realistic working plan. Since it is very hard to predict the framework conditions as well as your
+% own research in the context of scientific work, the concept paper will need to be modified on a regular basis. Ideally,
+% the concept paper provides the basis for the dissertation. Depending on the topic, style and preliminary work, a concept
+% paper can be approximately 6 to 10 pages long after six months of work.
+% If you are completing your doctorate as part of a third-party-funded project, many of the building blocks for your concept
+% paper will already be included in the project application / project contract. Especially when it comes to the state of
+% science and technology, however, you should always make sure that you have a clear understanding of the overall situation.
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Ein Exposé („Konzeptpapier“) ist ein Dokument, in dem Sie zu einem frühen Zeitpunkt den wissenschaftlichen
+% Rahmen Ihrer Dissertation eingrenzen und einen realistischen Arbeitsplan entwickeln. Da im wissenschaftlichen
+% Betrieb sowohl die Rahmenbedingungen als auch die eigene Forschung nur sehr begrenzt planbar sind, wird das
+% Exposé im weiteren Verlauf regelmäßig modifiziert werden müssen. Im Idealfall liefert das Exposé bereits den
+% Grundstock für die Dissertation. Je nach Thema, Stil und Vorarbeiten kann ein Exposé nach einem halben Jahr
+% etwa 6 bis 10 Seiten umfassen.
+% Wenn Sie im Rahmen eines Drittmittelprojekts promovieren werden Sie viele Bausteine für Ihr Exposé bereits
+% im Projektantrag / -vertrag finden. Insbesondere beim Stand der Wissenschaft und Technik sollten Sie sich aber
+% auf jeden Fall selbst die Sicherheit erarbeiten, dass der Überblick vollständig und Ihnen bekannt ist.
+%
+%
+\section{\RAIlangGerEng{Thema}{Topic}}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% Concisely describe (no more than half a page) the issue that you want to work on. The relevance of the topic should be apparent.
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Beschreiben Sie prägnant (nicht mehr als eine halbe Seite) die Fragestellung, die Sie bearbeiten möchten. Erkennbar sollte die Relevanz des Themas sein.
+%
+\blindtext%
+%
+%
+\section{\RAIlangGerEng{Stand der Wissenschaft und Technik}{State of Science and Technology}}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% Try to gain as comprehensive an overview of the state of science and technology for your topic as possible,
+% and provide sources as evidence. After six months, you should be familiar with the preliminary work at your
+% own institute, the work of competing scientific groups and the published state of technology. Make sure you will
+% be able to follow the developments in these areas as your work progresses.
+% For the literature research, use your colleagues’ citation lists (and read the texts!) as well as performing
+% your own free database searches. Correctly and fully understanding how your own work is positioned within the
+% international state of science and technology as well as the institute’s research traditions is an important
+% element of high-quality academic work. Scholarship that is not innovative is not scholarship..
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Versuchen Sie, ein möglichst umfassendes Bild über den Stand der Wissenschaft und Technik zu Ihrem Thema zu
+% erhalten und belegen Sie dies mit Quellen. Sie sollten nach einem halben Jahr sowohl die Vorarbeiten am eigenen
+% Institut, die der konkurrierenden wissenschaftlichen Gruppen als auch den publizierten Stand der Technik kennen.
+% Sorgen Sie dafür, dass Sie im weiteren Verlauf Ihrer Arbeit die Entwicklung in diesen Bereichen laufend verfolgen
+% können.
+% Nutzen Sie für die Literaturrecherche sowohl die Zitierlisten Ihrer Kollegen (und lesen Sie diese Arbeiten!) als
+% auch eine eigene freie Suche in Datenbanken. Die korrekte und vollständige Einordnung der eigenen Arbeit in den
+% internationalen Stand der Wissenschaft und Technik und die Forschungstraditionen des Lehrstuhls ist ein entscheidendes
+% Qualitätsmerkmal für wissenschaftliche Arbeiten. Wissenschaft ohne Neuigkeitscharakter ist keine.
+%
+Citation: \cite{choset2005principles, thrun2005probabilistic}\par%
+Reference: \cref{fig:MyImage}\par%
+Figures:\par%
+\begin{figure}[htb]%
+    \centering%
+    %
+    % Including .png
+    \includegraphics[width=40mm]{figures/ImagePNG.png}%
+    %
+    \hspace*{5mm}%
+    %
+    % Including .pdf
+    \includegraphics[width=40mm]{figures/ImagePDF.pdf}\par%
+    %
+    % Including .tikz
+    \begingroup%
+        %\RAItikzExternalizeSkipNext%
+        \resizebox{40mm}{!}{\input{figures/ImageTIKZ.tikz}}%
+    \endgroup%
+    %
+    \hspace*{5mm}%
+    %
+    % Including .pdf_tex
+    \begingroup%
+        \def\svgwidth{40mm}%
+        \fontsize{25}{25}\selectfont%
+        \input{figures/ImagePDFTEX.pdf_tex}%
+    \endgroup%
+    %
+    \caption{\RAIlangGerEng{Beschreibung des Bilds}{Image description}.}%
+    \label{fig:MyImage}%
+\end{figure}%
+%
+\Blindtext%
+%
+%
+\section{\RAIlangGerEng{Ziel der eigenen Arbeit}{Objective of your own Project}}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% Describe the aspects/areas in which your contribution will go beyond the state of technology described above.
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Beschreiben Sie, in welchen Aspekten/Bereichen Ihr Beitrag über den oben beschriebenen Stand der Technik hinausgehen soll.
+%
+\blindtext%
+%
+%
+\section{\RAIlangGerEng{Arbeitsplan und benötigte Ressourcen}{Work Plan and necessary Resources}}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% Try to create a timeframe for the various sub-projects in your dissertation now. Think about
+% where there are intersections with and dependencies on your colleagues’ work, and what topic
+% areas could also be addressed by students in the context of final projects. It can be helpful
+% to create a “Gantt chart.”
+% Describe which methods you will use to test which statements, and why these methods are especially
+% suitable. Describe which resources, especially experimental resources, you will need for your task.
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Versuchen Sie, bereits jetzt einen Zeitplan für die verschiedenen Teilprojekte Ihrer Dissertation zu erstellen.
+% Überlegen Sie, wo es Schnittstellen zu und Abhängigkeiten von Kollegen gibt und welche Themenbereiche u.U. auch
+% von Studenten im Rahmen von Abschlussarbeiten bearbeitet werden können. Hilfreich kann dabei sein, ein sog.
+% „Gantt-Chart“ zu erstellen.
+% Beschreiben Sie, mit welchen Methoden Sie welche Aussagen prüfen wollen und warum diese Methoden besonders gut
+% geeignet sind. Beschreiben Sie, welche Ressourcen, insbesondere auch experimentelle, Sie für Ihre Aufgabe benötigen.
+%
+\cref{fig:time_schedule}\par%
+%
+\blindtext%
+%
+\begin{figure}[htb]%
+    \centering%
+    \RAIlangGerEng{\input{figures/zeitplan.tikz}}{\input{figures/timeschedule.tikz}}%
+    \caption{\RAIlangGerEng{Zeitplan}{Time schedule}.}%
+    \label{fig:time_schedule}%
+\end{figure}%
+%
+%
+\section{\RAIlangGerEng{Literatur}{Literature}}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% List of literature used
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Auflistung der verwendeten Literatur
+%
+{%
+    %\sloppy% "Word"-like typesetting in order to improve breaking lines with long URLs/DOIs
+    \printbibliography[heading=none]%
+}%
+%
+\end{document}%
+% HINTS FROM TUM GRADUATE SCHOOL
+% A formal review will take place with confirmation from the Faculty Graduate Center using DocGS.
+%
+% HINWEISE DER TUM GRADUATE SCHOOL
+% Die formelle Prüfung durch das Fakultäts-Graduiertenzentrum Maschinenwesen erfolgt durch die Freigabe auf DocGS.
+%
+%

@@ -1,0 +1,35 @@
+\begin{ganttchart}[%
+	y unit chart=.7cm,%
+	canvas/.append style={fill=none, draw=black!5, line width=.75pt},%
+	hgrid style/.style={draw=black!5, line width=.75pt},%
+	vgrid={*1{draw=black!5, line width=.75pt}},%
+	title/.style={draw=none, fill=none},%
+	title label font=\bfseries\footnotesize,%
+	%title label node/.append style={below=5pt},%
+	include title in canvas=false,%
+	bar height=0.3,%
+	bar label font=\mdseries\footnotesize\color{black!70},%
+	bar label node/.append style={left=0.2cm},%
+	bar/.append style={draw=none, fill=TUMBlue4},%
+	group height=0.3,%
+	group label node/.append style={left=0.2cm},%
+	group label font=\bfseries\small\color{black},%
+	group/.append style={draw=none, fill=TUMBlue},%
+	]{1}{24}%
+	\gantttitle[title label node/.append style={below left=7pt and 10pt}]{Month}{1}%
+	\gantttitlelist[title label node/.append style={below left=7pt and 10pt}]{1,...,6}{4} \\%
+	\ganttgroup{\textbf{WP1:} Activity A}{1}{5} \\%
+	\ganttbar{Activity A11}{1}{3} \\%
+	\ganttbar{Activity A12}{2}{5} \\%
+	\ganttgroup{\textbf{WP2:} Activity B}{4}{8} \\%
+	\ganttbar{Activity A21}{4}{8} \\%
+	\ganttgroup{\textbf{WP3:} Activity C}{6}{20} \\%
+	\ganttbar{Activity A31}{6}{17} \\%
+	\ganttbar{Activity A32}{6}{12} \\%
+	\ganttbar{Activity A32}{10}{20} \\%
+	\ganttgroup{\textbf{WP4:} Activity D}{18}{22} \\%
+	\ganttbar{Activity A41}{18}{20} \\%
+	\ganttbar{Activity A42}{18}{22} \\%
+	\ganttgroup{\textbf{WP5:} Activity E}{16}{24} \\%
+	\ganttbar{Activity A51}{16}{24}%
+\end{ganttchart}%

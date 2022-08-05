@@ -1,0 +1,89 @@
+% !TeX spellcheck = en_US
+\chapter{I6 Submission Guidelines}%
+
+\section{Structure}
+
+In the past it has proven to be quite helpful to structure the dissertation text as follows:
+\begin{enumerate}[I]
+    \item \textbf{Motivation and Introduction:} Why and what is the goal? What can my contribution be to the current state of research and beyond?
+    \item \textbf{State of Current Research:} What exists already, what have others contributed, why did they get as far as they did?
+    \item \textbf{Methodology Used:} How will I/we do it differently, what are our expectations, what do we expect to achieve?
+    \item \textbf{Experimental Results:} Proof of work performed/achievement and sustainability of the methodology via experiments such as test set ups.
+    \item \textbf{Discussion:} Critical evaluation of one’s own work and comparison of achieved results with currently existing results.
+    \item \textbf{Outlook:} What can be achieved in the future in this area? what are the next steps if we were to continue this research?
+    \item \textbf{Reference List:} A complete, detailed list of the literature used including own publications.
+\end{enumerate}
+
+\section{Citations}
+
+We recommend that you use \href{https://ctan.org/texarchive/bibliography/bibtex/contrib/german/din1505}{\code{alphadin}} citation style when working with bibtex, or \code{alpha} when using biblatex/biber.
+Your bibliography should look like this:
+
+\begin{table}[ht]
+    \begin{tabular}{lp{13.5cm}}
+        $[$BM92$]$ & Besl, P. J. and McKay, N. D. “Method for registration of 3-D shapes”. In: Sensor
+        fusion IV: control paradigms and data structures. Vol. 1611. International Society
+        for Optics and Photonics. 1992, pp. 586–606.\\
+        $[$CM92$]$ & Chen, Y. and Medioni, G. “Object modelling by registration of multiple range
+        images”. In: Image and vision computing 10.3 (1992), pp. 145–155.\\
+    \end{tabular}
+\end{table}
+
+When quoting an author word-by-word please include a page number in the reference.
+
+\section{Figures}
+
+Please use vector graphics when including figures or diagrams in your thesis.
+If you create them with \href{https://en.wikipedia.org/wiki/PGF/TikZ}{PGF/TIKZ} or \href{https://inkscape.org/}{Inkscape} it also possible to add texts directly from Latex to ensure a consistent typesetting.
+There is an unwritten rule, saying figures not referenced in your text are unnecessary.
+
+When citing a figure include the reference in the figure's label (including the page number).
+
+\section{Math Notation}
+
+When using formulas or pseudocode use the following notation style:
+
+\begin{table}[ht]
+    \begin{tabular}{p{2.9cm}lp{5.1cm}p{3.8cm}}
+        \toprule
+        \textbf{Type} & \textbf{Example} & \textbf{Code (Math Mode)} & \textbf{Comment} \\
+        \midrule
+
+        \multicolumn{4}{l}{\textbf{General items}} \\
+        \midrule
+        Scalars	& $a$ & \code{a} & lower case, italic \\
+        Functions & $\textrm{sin}(x)$ & \code{\textbackslash textrm{sin}(x)} & regular text \\
+        Units & 42\,Hz & \code{42\textbackslash,\textbackslash textrm{Hz}} & half-space between number and unit; unit in regular text \\
+        Angles & $\alpha$ & \code{\textbackslash alpha} & Greek letters \\
+        Absolute value & $\mid a \mid$ & \code{\textbackslash mid a \textbackslash mid} \\
+        Modulo & mod & \code{\textbackslash textrm\{mod\}} \\
+        \midrule
+        \multicolumn{4}{l}{\textbf{Vectors and matrices}}\\
+        \midrule
+        Vectors	& $\boldsymbol{v}$ & \code{\textbackslash boldsymbol\{v\}} & lower case, italic, bold \\
+        Matrices & $\boldsymbol{M}$ & \code{\textbackslash boldsymbol\{M\}} & upper case, italic, bold \\
+        Variable indices & $\boldsymbol{x}_i$ & \code{\textbackslash boldsymbol\{x\}\_i} \\
+        Static indices & $\boldsymbol{x}_\textrm{min}$ & \code{\textbackslash boldsymbol\{x\}\_\textbackslash textrm\{min\}} \\
+        Unit vectors & $\textbf{e}_x$ & \code{\textbackslash textbf\{e\}\_x} \\
+        Identity matrices & $\textbf{Id}_n$ & \code{\textbackslash textbf\{Id\}\_n}	\\
+        Transpose & $\boldsymbol{x}^\textrm{T}$ & \code{\textbackslash boldsymbol\{x\}\^{}\textbackslash textrm\{T\} } & T in superscript and regular font \\
+        Vector product (cross product) & $\times$ & \code{\textbackslash times} \\
+        Dot product	& $\cdot$ & \code{\textbackslash cdot} \\
+        \midrule
+        \multicolumn{4}{l}{\textbf{Sets and sequences}}\\
+        \midrule
+        Sets & $A = \{ 1, 2, 3 \}$ & \code{A = \textbackslash \{ 1, 2, 3 \textbackslash \}} & upper case, italic \\
+        Sequence & $\mathcal{A} = \langle 1,2,3 \rangle$ & \code{\textbackslash mathcal\{A\} = \textbackslash langle 1,2,3 \textbackslash rangle} \\
+        Set without	& $A \backslash \{ e \}$ & \code{A \textbackslash backslash \textbackslash \{ e \textbackslash \}} \\
+        Unification	& $A \cup \{ e \}$ & \code{A \textbackslash cup \textbackslash \{ e \textbackslash \}} & \\
+
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Always use single letters for variable names.
+
+\section{Length}
+
+The length of the monograph should be as short as possible, between 100 and maximum 150 pages (not counting chapter VII) in the standard format.
+Chapter I and II usually make up about 20 while chapter VI, regardless of the topic of the monograph is usually not more than 10.

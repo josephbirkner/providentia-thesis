@@ -1,0 +1,47 @@
+% !TeX spellcheck = de_DE
+\documentclass[RAIdocument%  style
+              %,optEnglish% langauge
+              ,optBiber%    bibliography tool
+              %,optExzellenz%
+              ]{RAIlatex}%
+%
+% Set paths
+\graphicspath{{figures/}}%
+\addbibresource{source/literature.bib}%
+%
+\begin{document}%
+%
+\RAIlayoutTitlePageDefault{Titel der Arbeit}{HiWi-/Bachelor-/Semester-/Masterarbeit}{Betreuung: Max Mustermann \textit{\small (MW31xx, max.mustermann@tum.de, +49 (89) 289-15xxx)}}%
+%\RAIlayoutTitlePageDefault{Title of the Thesis}{HiWi-/Bachelor's-/Semester-/Master's Thesis}{Supervision: \textit{\small (MW31xx, max.mustermann@tum.de, +49 (89) 289-15xxx)}}%
+%
+\section*{Einleitung und Problembeschreibung}%
+%\section*{Introduction and Problem Description}%
+\blindtext%
+%
+%
+\section*{Aufgabenbeschreibung}%
+%\section*{Task Description}%
+\blindtext%
+%
+%
+\section*{Voraussetzungen}%
+%\section*{Requirements}%
+\blindtext%
+%
+%
+\section*{Empfohlene Literatur}%
+%\section*{Recommended Literature}%
+\begin{tabular}{ll}%
+    \cite{Pfeiffer2014} & Grundlagen der technischen Mechanik (Seiten 1 und 2)%
+    %\cite{Pfeiffer2014} & Basics of engineering mechanics (pages 1 and 2)%
+\end{tabular}%
+%
+% References
+{%
+    %\sloppy% "Word"-like typesetting in order to improve breaking lines with long URLs/DOIs
+    \printbibliography%
+}%
+%
+\end{document}%
+%
+%

@@ -1,0 +1,54 @@
+% !TeX spellcheck = en_US
+\section{The TUMlatex Project}%
+\label{sec:frontmatter_TUMlatex_project}%
+The TUMlatex project represents a cooperation of several chairs of the Technical University of Munich to provide a compact and easy-to-use LaTeX package for both, employees and students. The whole project is hosted on the GitLab server of the LRZ and can be accessed via \texttt{\url{\RAIcoreProjectWebsite}}.\par%
+%
+If you are an advanced LaTeX user and want to contribute to this project, please read the contribution guide available on the GitLab project page. If you are responsible for the LaTeX templates of your chair and you are interested in joining this collaboration, please contact the current maintainer Michael Kreutz (\href{mailto:m.kreutz@tum.de}{\texttt{m.kreutz@tum.de}}).\par%
+%
+This documentation is intended to assist users during the creation of documents. It does \textbf{not} contain information on how to set up your LaTeX environment. For detailed instructions on how to prepare your environment for usage with this class, be referred to the GitLab project page.\par%
+%
+%
+\section{Modules, Styles and Templates}%
+\label{sec:frontmatter_modules_styles_templates}%
+In order to maintain a clear and modular structure, the concept of modules, styles and templates has been chosen. While modules and styles are fused into one single class or package file (\RAIdocumentationCode{.cls} or \RAIdocumentationCode{.sty}), templates do not interfere with each other.\par%
+%
+\subsection{Modules}%
+\label{sec:frontmatter_modules}%
+Each module bundles several LaTeX packages, definitions and commands which can be used if the corresponding module has been activated. Modules implement the core functionality of this project. Modules can be activated by passing the option \RAIdocumentationCode{RAI<module name>} to the main class, e.\,g. by writing \RAIdocumentationCode{\textbackslash documentclass[\RAIdocumentationModule{RAIcore},\RAIdocumentationModule{RAIlang}]\{RAIlatex\}}. If you pass no options related to modules, e.\,g. by writing \RAIdocumentationCode{\textbackslash documentclass\{RAIlatex\}}, the class will automatically load all modules. This should be the usual case. However you are free to deactivate modules, for example because the journal you want to publish your paper in does not allow certain packages to be loaded.\par%
+%
+Also there are specific dependencies between modules, see \cref{sec:modules} for individual details. Note that if you select a specific module, its dependencies will be activated automatically. Selecting the module \RAIdocumentationModule{RAIfont} will thus also activate the module \RAIdocumentationModule{RAIcore}. Use \RAIdocumentationCode{\textbackslash RAIdebug} to print a list of all enabled modules.\par%
+%
+\subsection{Styles}%
+\label{sec:frontmatter_styles}%
+Styles extend the core functionality of modules by defining styling options for different document types. For example there is a different style for a student thesis than for a lecture script. In contrast both will use the same modules. Styles can be selected in the same way as modules, i.\,e. by passing the option \RAIdocumentationCode{RAI<style name>} to the main class, e.\,g. by writing \RAIdocumentationCode{\textbackslash documentclass[\RAIdocumentationStyle{RAIempty}]\{RAIlatex\}}. It is important to note that
+%
+\begin{itemize}%
+    \item exactly one style per document has to be selected,%
+    \item the style \RAIdocumentationStyle{RAIempty} is automatically selected, if the user passes no options related to styles, e.\,g. by writing  \RAIdocumentationCode{\textbackslash documentclass\{RAIlatex\}} and%
+    \item if a style is explicitly selected, all modules will be loaded automatically (independent of your module choice).%
+\end{itemize}%
+%
+As a consequence you must not specify any style in order to be able to select modules.\par%
+%
+%
+\subsection{Templates}%
+\label{sec:frontmatter_templates}%
+In order to simplify the usage of the class, a variety of templates is given. Those can be copied (complete folder) to create a new document without any knowledge how to use the main class. Thus a template demonstrates the main functionality which is usually needed for this type of document. You just have to edit the template and insert your content.\par%
+%
+%
+\section{Folder Structure}%
+The (compiled) package folder is structured as follows:\par%
+%
+\begin{itemize}\itemsep0pt%
+    \item \textit{RAIDocumentation} (source and compiled files of \textbf{this} document)
+    \item \textit{RAITemplates} (source and precompiled template files)
+    \item \textit{RAITools} (useful scripts and tools)
+    \item \textit{RAIlatex.cls} (main class file)
+    \item \textit{RAIlatex.cwl} (syntax file used for auto-completion in TeXstudio)
+    \item \textit{RAIlatex.sty} (main package file)
+    \item \textit{RAIlatex\_LICENSE.txt} (license information of the package)
+\end{itemize}%
+%
+In order to create a new document just copy the appropriate template (complete folder) from \textit{RAITemplates} to anywhere you want. Then edit the file \textit{main.tex}.\par%
+%
+%

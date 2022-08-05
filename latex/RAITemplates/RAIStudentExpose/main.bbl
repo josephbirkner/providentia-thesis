@@ -1,0 +1,881 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nyt/global//global/global}
+  \entry{thesisleon}{thesis}{}
+    \name{author}{1}{}{%
+      {{hash=BL}{%
+         family={Blumenthal},
+         familyi={B\bibinitperiod},
+         given={Leon},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BL1}
+    \strng{fullhash}{BL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Blu}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{title}{Real-Time Monocular 3D Object Detection to Support Autonomous
+  Driving}
+  \endentry
+
+  \entry{nuscenes2020}{inproceedings}{}
+    \name{author}{10}{}{%
+      {{hash=CH}{%
+         family={Caesar},
+         familyi={C\bibinitperiod},
+         given={Holger},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=BV}{%
+         family={Bankiti},
+         familyi={B\bibinitperiod},
+         given={Varun},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=LAH}{%
+         family={Lang},
+         familyi={L\bibinitperiod},
+         given={Alex\bibnamedelima H},
+         giveni={A\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+      {{hash=VS}{%
+         family={Vora},
+         familyi={V\bibinitperiod},
+         given={Sourabh},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=LVE}{%
+         family={Liong},
+         familyi={L\bibinitperiod},
+         given={Venice\bibnamedelima Erin},
+         giveni={V\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+      {{hash=XQ}{%
+         family={Xu},
+         familyi={X\bibinitperiod},
+         given={Qiang},
+         giveni={Q\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Krishnan},
+         familyi={K\bibinitperiod},
+         given={Anush},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=PY}{%
+         family={Pan},
+         familyi={P\bibinitperiod},
+         given={Yu},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=BG}{%
+         family={Baldan},
+         familyi={B\bibinitperiod},
+         given={Giancarlo},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=BO}{%
+         family={Beijbom},
+         familyi={B\bibinitperiod},
+         given={Oscar},
+         giveni={O\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CHBVLAHVSLVEXQKAPYBGBO1}
+    \strng{fullhash}{CHBVLAHVSLVEXQKAPYBGBO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Cae+20}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{booktitle}{Proceedings of the IEEE/CVF conference on computer vision
+  and pattern recognition}
+    \field{pages}{11621\bibrangedash 11631}
+    \field{title}{nuscenes: A multimodal dataset for autonomous driving}
+    \field{year}{2020}
+  \endentry
+
+  \entry{urbannet2021}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=CJ}{%
+         family={Carrillo},
+         familyi={C\bibinitperiod},
+         given={Juan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WS}{%
+         family={Waslander},
+         familyi={W\bibinitperiod},
+         given={Steven},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{CJWS1}
+    \strng{fullhash}{CJWS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{CW21}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{booktitle}{2021 IEEE International Intelligent Transportation
+  Systems Conference (ITSC)}
+    \field{pages}{3799\bibrangedash 3806}
+    \field{title}{Urbannet: Leveraging urban maps for long range 3d object
+  detection}
+    \field{year}{2021}
+  \endentry
+
+  \entry{chen2021monorun}{inproceedings}{}
+    \name{author}{5}{}{%
+      {{hash=CH}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Hansheng},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=HY}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Yuyao},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=TW}{%
+         family={Tian},
+         familyi={T\bibinitperiod},
+         given={Wei},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=GZ}{%
+         family={Gao},
+         familyi={G\bibinitperiod},
+         given={Zhong},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=XL}{%
+         family={Xiong},
+         familyi={X\bibinitperiod},
+         given={Lu},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CHHYTWGZXL1}
+    \strng{fullhash}{CHHYTWGZXL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Che+21}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{10379\bibrangedash 10388}
+    \field{title}{Monorun: Monocular 3d object detection by reconstruction and
+  uncertainty propagation}
+    \field{year}{2021}
+  \endentry
+
+  \entry{a92022}{inproceedings}{}
+    \name{author}{7}{}{%
+      {{hash=CC}{%
+         family={Cre{\ss}},
+         familyi={C\bibinitperiod},
+         given={Christian},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=ZW}{%
+         family={Zimmer},
+         familyi={Z\bibinitperiod},
+         given={Walter},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=SL}{%
+         family={Strand},
+         familyi={S\bibinitperiod},
+         given={Leah},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=FM}{%
+         family={Fortkord},
+         familyi={F\bibinitperiod},
+         given={Maximilian},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dai},
+         familyi={D\bibinitperiod},
+         given={Siyi},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=LV}{%
+         family={Lakshminarasimhan},
+         familyi={L\bibinitperiod},
+         given={Venkatnarayanan},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Knoll},
+         familyi={K\bibinitperiod},
+         given={Alois},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{CCZWSLFMDSLVKA1}
+    \strng{fullhash}{CCZWSLFMDSLVKA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Cre+22}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{booktitle}{2022 IEEE Intelligent Vehicles Symposium (IV)}
+    \field{pages}{965\bibrangedash 970}
+    \field{title}{A9-dataset: Multi-sensor infrastructure-based dataset for
+  mobility research}
+    \field{year}{2022}
+  \endentry
+
+  \entry{kitti2012}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=GA}{%
+         family={Geiger},
+         familyi={G\bibinitperiod},
+         given={Andreas},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LP}{%
+         family={Lenz},
+         familyi={L\bibinitperiod},
+         given={Philip},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=UR}{%
+         family={Urtasun},
+         familyi={U\bibinitperiod},
+         given={Raquel},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{GALPUR1}
+    \strng{fullhash}{GALPUR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{GLU12}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{booktitle}{2012 IEEE conference on computer vision and pattern
+  recognition}
+    \field{pages}{3354\bibrangedash 3361}
+    \field{title}{Are we ready for autonomous driving? the kitti vision
+  benchmark suite}
+    \field{year}{2012}
+  \endentry
+
+  \entry{gkioxari2019mesh}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=GG}{%
+         family={Gkioxari},
+         familyi={G\bibinitperiod},
+         given={Georgia},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=MJ}{%
+         family={Malik},
+         familyi={M\bibinitperiod},
+         given={Jitendra},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=JJ}{%
+         family={Johnson},
+         familyi={J\bibinitperiod},
+         given={Justin},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{GGMJJJ1}
+    \strng{fullhash}{GGMJJJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{GMJ19}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{booktitle}{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}
+    \field{pages}{9785\bibrangedash 9795}
+    \field{title}{Mesh r-cnn}
+    \field{year}{2019}
+  \endentry
+
+  \entry{guo20213d}{article}{}
+    \name{author}{4}{}{%
+      {{hash=GE}{%
+         family={Guo},
+         familyi={G\bibinitperiod},
+         given={Ente},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=CZ}{%
+         family={Chen},
+         familyi={C\bibinitperiod},
+         given={Zhifeng},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=RS}{%
+         family={Rahardja},
+         familyi={R\bibinitperiod},
+         given={Susanto},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=YJ}{%
+         family={Yang},
+         familyi={Y\bibinitperiod},
+         given={Jingjing},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{GECZRSYJ1}
+    \strng{fullhash}{GECZRSYJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Guo+21}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{number}{19}
+    \field{pages}{21759\bibrangedash 21771}
+    \field{title}{3D Detection and Pose Estimation of Vehicle in Cooperative
+  Vehicle Infrastructure System}
+    \field{volume}{21}
+    \field{journaltitle}{IEEE Sensors Journal}
+    \field{year}{2021}
+  \endentry
+
+  \entry{heylen2021monocinis}{inproceedings}{}
+    \name{author}{8}{}{%
+      {{hash=HJ}{%
+         family={Heylen},
+         familyi={H\bibinitperiod},
+         given={Jonas},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=DWM}{%
+         family={De\bibnamedelima Wolf},
+         familyi={D\bibinitperiod\bibinitdelim W\bibinitperiod},
+         given={Mark},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=DB}{%
+         family={Dawagne},
+         familyi={D\bibinitperiod},
+         given={Bruno},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=PM}{%
+         family={Proesmans},
+         familyi={P\bibinitperiod},
+         given={Marc},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=VGL}{%
+         family={Van\bibnamedelima Gool},
+         familyi={V\bibinitperiod\bibinitdelim G\bibinitperiod},
+         given={Luc},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=AW}{%
+         family={Abbeloos},
+         familyi={A\bibinitperiod},
+         given={Wim},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=AH}{%
+         family={Abdelkawy},
+         familyi={A\bibinitperiod},
+         given={Hazem},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=RDO}{%
+         family={Reino},
+         familyi={R\bibinitperiod},
+         given={Daniel\bibnamedelima Olmeda},
+         giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HJDWMDBPMVGLAWAHRDO1}
+    \strng{fullhash}{HJDWMDBPMVGLAWAHRDO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Hey+21}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{booktitle}{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}
+    \field{pages}{923\bibrangedash 934}
+    \field{title}{MonoCInIS: Camera Independent Monocular 3D Object Detection
+  using Instance Segmentation}
+    \field{year}{2021}
+  \endentry
+
+  \entry{kundu20183d}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=KA}{%
+         family={Kundu},
+         familyi={K\bibinitperiod},
+         given={Abhijit},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=LY}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Yin},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=RJM}{%
+         family={Rehg},
+         familyi={R\bibinitperiod},
+         given={James\bibnamedelima M},
+         giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KALYRJM1}
+    \strng{fullhash}{KALYRJM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{KLR18}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{booktitle}{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}
+    \field{pages}{3559\bibrangedash 3568}
+    \field{title}{3d-rcnn: Instance-level 3d object reconstruction via
+  render-and-compare}
+    \field{year}{2018}
+  \endentry
+
+  \entry{time3d2022}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=LP}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Peixuan},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=JJ}{%
+         family={Jin},
+         familyi={J\bibinitperiod},
+         given={Jieyu},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LPJJ1}
+    \strng{fullhash}{LPJJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{LJ22}
+    \field{sortinit}{L}
+    \field{sortinithash}{L}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{3885\bibrangedash 3894}
+    \field{title}{Time3D: End-to-End Joint Monocular 3D Object Detection and
+  Tracking for Autonomous Driving}
+    \field{year}{2022}
+  \endentry
+
+  \entry{survey2022}{article}{}
+    \name{author}{4}{}{%
+      {{hash=MX}{%
+         family={Ma},
+         familyi={M\bibinitperiod},
+         given={Xinzhu},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=OW}{%
+         family={Ouyang},
+         familyi={O\bibinitperiod},
+         given={Wanli},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Simonelli},
+         familyi={S\bibinitperiod},
+         given={Andrea},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=RE}{%
+         family={Ricci},
+         familyi={R\bibinitperiod},
+         given={Elisa},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MXOWSARE1}
+    \strng{fullhash}{MXOWSARE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Ma+22}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{3d object detection from images for autonomous driving: a
+  survey}
+    \field{journaltitle}{arXiv preprint arXiv:2202.02980}
+    \field{year}{2022}
+  \endentry
+
+  \entry{lstmtrack2022}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=MN}{%
+         family={Marinello},
+         familyi={M\bibinitperiod},
+         given={Nicola},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=PM}{%
+         family={Proesmans},
+         familyi={P\bibinitperiod},
+         given={Marc},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=VGL}{%
+         family={Van\bibnamedelima Gool},
+         familyi={V\bibinitperiod\bibinitdelim G\bibinitperiod},
+         given={Luc},
+         giveni={L\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MNPMVGL1}
+    \strng{fullhash}{MNPMVGL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{MPVG22}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{4500\bibrangedash 4510}
+    \field{title}{TripletTrack: 3D Object Tracking Using Triplet Embeddings and
+  LSTM}
+    \field{year}{2022}
+  \endentry
+
+  \entry{timetolabel2022}{article}{}
+    \name{author}{5}{}{%
+      {{hash=MI}{%
+         family={Mouawad},
+         familyi={M\bibinitperiod},
+         given={Issa},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=BN}{%
+         family={Brasch},
+         familyi={B\bibinitperiod},
+         given={Nikolas},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=MF}{%
+         family={Manhardt},
+         familyi={M\bibinitperiod},
+         given={Fabian},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=TF}{%
+         family={Tombari},
+         familyi={T\bibinitperiod},
+         given={Federico},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=OF}{%
+         family={Odone},
+         familyi={O\bibinitperiod},
+         given={Francesca},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MIBNMFTFOF1}
+    \strng{fullhash}{MIBNMFTFOF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Mou+22}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Time-to-Label: Temporal Consistency for Self-Supervised
+  Monocular 3D Object Detection}
+    \field{journaltitle}{arXiv preprint arXiv:2203.02193}
+    \field{year}{2022}
+  \endentry
+
+  \entry{lanelet22018}{inproceedings}{}
+    \name{author}{7}{}{%
+      {{hash=PF}{%
+         family={Poggenhans},
+         familyi={P\bibinitperiod},
+         given={Fabian},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=PJH}{%
+         family={Pauls},
+         familyi={P\bibinitperiod},
+         given={Jan-Hendrik},
+         giveni={J\bibinithyphendelim H\bibinitperiod},
+      }}%
+      {{hash=JJ}{%
+         family={Janosovits},
+         familyi={J\bibinitperiod},
+         given={Johannes},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=OS}{%
+         family={Orf},
+         familyi={O\bibinitperiod},
+         given={Stefan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=NM}{%
+         family={Naumann},
+         familyi={N\bibinitperiod},
+         given={Maximilian},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=KF}{%
+         family={Kuhnt},
+         familyi={K\bibinitperiod},
+         given={Florian},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Mayr},
+         familyi={M\bibinitperiod},
+         given={Matthias},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {IEEE}%
+    }
+    \strng{namehash}{PFPJHJJOSNMKFMM1}
+    \strng{fullhash}{PFPJHJJOSNMKFMM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Pog+18}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{booktitle}{2018 21st international conference on intelligent
+  transportation systems (ITSC)}
+    \field{pages}{1672\bibrangedash 1679}
+    \field{title}{Lanelet2: A high-definition map framework for the future of
+  automated driving}
+    \field{year}{2018}
+  \endentry
+
+  \entry{trafficnet2021}{article}{}
+    \name{author}{3}{}{%
+      {{hash=RM}{%
+         family={Rezaei},
+         familyi={R\bibinitperiod},
+         given={Mahdi},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=AM}{%
+         family={Azarmi},
+         familyi={A\bibinitperiod},
+         given={Mohsen},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=MFMP}{%
+         family={Mir},
+         familyi={M\bibinitperiod},
+         given={Farzam Mohammad\bibnamedelima Pour},
+         giveni={F\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim
+  P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RMAMMFMP1}
+    \strng{fullhash}{RMAMMFMP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{RAM21}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{Traffic-Net: 3D Traffic Monitoring Using a Single Camera}
+    \field{journaltitle}{arXiv preprint arXiv:2109.09165}
+    \field{year}{2021}
+  \endentry
+
+  \entry{ruegg2022barc}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=RN}{%
+         family={R{\"u}egg},
+         familyi={R\bibinitperiod},
+         given={Nadine},
+         giveni={N\bibinitperiod},
+      }}%
+      {{hash=ZS}{%
+         family={Zuffi},
+         familyi={Z\bibinitperiod},
+         given={Silvia},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SK}{%
+         family={Schindler},
+         familyi={S\bibinitperiod},
+         given={Konrad},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=BMJ}{%
+         family={Black},
+         familyi={B\bibinitperiod},
+         given={Michael\bibnamedelima J},
+         giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RNZSSKBMJ1}
+    \strng{fullhash}{RNZSSKBMJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{R{\"u}e+22}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{3876\bibrangedash 3884}
+    \field{title}{BARC: Learning to Regress 3D Dog Shape from Images by
+  Exploiting Breed Information}
+    \field{year}{2022}
+  \endentry
+
+  \entry{rope3d2022}{inproceedings}{}
+    \name{author}{8}{}{%
+      {{hash=YX}{%
+         family={Ye},
+         familyi={Y\bibinitperiod},
+         given={Xiaoqing},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=SM}{%
+         family={Shu},
+         familyi={S\bibinitperiod},
+         given={Mao},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=LH}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Hanyu},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=SY}{%
+         family={Shi},
+         familyi={S\bibinitperiod},
+         given={Yifeng},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=LY}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Yingying},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WG}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Guangjie},
+         giveni={G\bibinitperiod},
+      }}%
+      {{hash=TX}{%
+         family={Tan},
+         familyi={T\bibinitperiod},
+         given={Xiao},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=DE}{%
+         family={Ding},
+         familyi={D\bibinitperiod},
+         given={Errui},
+         giveni={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{YXSMLHSYLYWGTXDE1}
+    \strng{fullhash}{YXSMLHSYLYWGTXDE1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Ye+22}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{21341\bibrangedash 21350}
+    \field{title}{Rope3D: The Roadside Perception Dataset for Autonomous
+  Driving and Monocular 3D Object Detection Task}
+    \field{year}{2022}
+  \endentry
+
+  \entry{yuan2021star}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=YW}{%
+         family={Yuan},
+         familyi={Y\bibinitperiod},
+         given={Wentao},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=LZ}{%
+         family={Lv},
+         familyi={L\bibinitperiod},
+         given={Zhaoyang},
+         giveni={Z\bibinitperiod},
+      }}%
+      {{hash=ST}{%
+         family={Schmidt},
+         familyi={S\bibinitperiod},
+         given={Tanner},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=LS}{%
+         family={Lovegrove},
+         familyi={L\bibinitperiod},
+         given={Steven},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{YWLZSTLS1}
+    \strng{fullhash}{YWLZSTLS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelalpha}{Yua+21}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{booktitle}{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}
+    \field{pages}{13144\bibrangedash 13152}
+    \field{title}{Star: Self-supervised tracking and reconstruction of rigid
+  objects in motion with neural rendering}
+    \field{year}{2021}
+  \endentry
+\enddatalist
+\endinput

@@ -1,0 +1,35 @@
+\begin{ganttchart}[%
+	y unit chart=.7cm,%
+	canvas/.append style={fill=none, draw=black!5, line width=.75pt},%
+	hgrid style/.style={draw=black!5, line width=.75pt},%
+	vgrid={*1{draw=black!5, line width=.75pt}},%
+	title/.style={draw=none, fill=none},%
+	title label font=\bfseries\footnotesize,%
+	%title label node/.append style={below=5pt},%
+	include title in canvas=false,%
+	bar height=0.3,%
+	bar label font=\mdseries\footnotesize\color{black!70},%
+	bar label node/.append style={left=0.2cm},%
+	bar/.append style={draw=none, fill=TUMBlue4},%
+	group height=0.3,%
+	group label node/.append style={left=0.2cm},%
+	group label font=\bfseries\small\color{black},%
+	group/.append style={draw=none, fill=TUMBlue},%
+	]{1}{24}%
+	\gantttitle[title label node/.append style={below left=7pt and 10pt}]{Month}{1}%
+	\gantttitlelist[title label node/.append style={below left=7pt and 10pt}]{1,...,6}{4} \\%
+	\ganttgroup{Research}{1}{6} \\%
+	\ganttbar{Literature Review}{1}{4} \\%
+	\ganttbar{System Design}{3}{6} \\%
+	\ganttgroup{Development and Evaluation}{6}{20} \\%
+	\ganttbar{Iteration 1}{6}{8} \\%
+	\ganttbar{Iteration 2}{8}{10} \\%
+	\ganttbar{Iteration 3}{10}{12} \\%
+	\ganttbar{Iteration 4}{12}{14} \\%
+	\ganttbar{Iteration 5}{14}{16} \\%
+	\ganttbar{Iteration 6}{16}{18} \\%
+	\ganttbar{Iteration 7}{18}{20} \\%
+	\ganttgroup{Analysis and Writeup}{20}{24} \\%
+	\ganttbar{Analysis}{20}{22} \\%
+	\ganttbar{Writeup}{21}{24} \\%
+\end{ganttchart}%

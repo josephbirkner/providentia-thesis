@@ -1,0 +1,69 @@
+% !TeX spellcheck = en_US
+\documentclass[RAIphdthesis%          style
+              ,optCharter%            font
+              %,optCMYK%              color model
+              ,optBiber% 			  bibliography tool
+              ,optBibstyleAlphabetic% bibliography style
+              ,optCenterEquations%    alignment of equations
+              ,optEnglish% 		      language
+              %,optTikzExternalize%   compiles faster for large tikz images
+              %,optExzellenz%
+              ]{RAIlatex}%
+%
+% Load additional LaTeX packages
+\usepackage{booktabs}%
+\usepackage{enumerate}%
+%
+% Set paths
+\graphicspath{{figures/}}%
+\addbibresource{source/literature.bib}%
+%
+% Define additional commands
+\newcommand{\code}[1]{\texttt{#1}}%
+\newcommand{\degree}[0]{^\circ}%
+%
+\begin{document}%
+% Titlepage
+% ---------
+\frontmatter%
+\RAIphdthesisTitlePage%
+{Title}%
+{Subtitle}%
+{Your Name}%
+{\RAIlangPhdDegreeDrRerNat}%
+{Chairman}%
+{\RAInamesProfKnoll}%	          First examiner
+{...}% 			                  Second examiner
+{\RAIutilsDate{1}{1}{1970}}% 	  Submission date
+{\RAIutilsDate{1}{1}{1970}}%      Acceptance date
+%
+% Abstract
+% --------
+\include{source/abstract}%
+%
+% Content
+% -------
+\RAIphdthesisPrintTableOfContents%
+\mainmatter%
+\include{source/chapter01}%
+\include{source/chapter02}%
+\include{source/chapter03}%
+\include{source/chapter04}%
+\include{source/chapter05}%
+%
+% Appendix
+% --------
+\appendix%
+\include{source/appendix}%
+%
+% References
+% ----------
+{%
+    %\sloppy% "Word"-like typesetting in order to improve breaking lines with long URLs/DOIs
+    \printbibliography[heading=bibintoc]%
+}%
+%
+%
+\end{document}%
+%
+%

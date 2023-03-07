@@ -1,0 +1,14 @@
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.log
+*.out
+*.run.xml
+*.toc
+*.upa
+*.upb
+*.cwl
+*.synctex.gz
+out/
+.idea/

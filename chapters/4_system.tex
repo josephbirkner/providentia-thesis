@@ -1,4 +1,100 @@
 % !TeX spellcheck = en_US
 
 \chapter{System Design}
+\label{ch:system}
 
+\section{Distributed Architecture}
+\label{sec:arch}
+
+Pub-Sub Nodes
+
+% ----------------------------------------------------
+
+\section{The 2D Object Detector}
+\label{sec:segmentation}
+
+2D Detector \par
+Downscaling \par
+Connection to Cameras \par
+Communication - Bit Packing
+
+\section{The 3D Object Detector}
+\label{sec:mono3doverview}
+
+Mono3D Overview Diagram
+
+\section{Pedestrian and Cyclist Detection}
+\label{sec:pedcyc}
+
+Worth improving
+
+% ----------------------------------------------------
+
+\section{Bottom Contour Extraction and Filtering}
+\label{sec:botcont}
+
+Bottom Contour Extraction \par
+Projection \par
+Filtering
+
+\section{Bottom Contour L-Shape Fitting}
+\label{sec:botcontlsf}
+
+Bottom Contour L-Shape Fitting
+
+% ----------------------------------------------------
+
+\section{HD Map Lookup Grids}
+\label{sec:hdmapgrids}
+
+HD Map Grids \par
+Rendering \par
+Resolution
+
+% ----------------------------------------------------
+
+\section{HD-Map-Augmented L-Shape Fitting}
+\label{sec:hdmaplsf}
+
+HD Map Grid Lookup - Early \par
+Yaw Lookup Histogram \par
+Confidence
+
+% ----------------------------------------------------
+
+\section{Tracking-Augmented L-Shape Fitting}
+\label{sec:trackinglsf}
+
+Historical Plausibility \par
+2D Tracking SORT Lookup
+
+% ----------------------------------------------------
+
+\section{Vehicle Size Estimation}
+\label{sec:size}
+
+L/W/H Dimension Filtering \par
+Height Estimation
+
+% ----------------------------------------------------
+
+\section{Vehicle Position Estimation}
+\label{sec:pos}
+
+Position Estimation
+
+% ----------------------------------------------------
+
+\section{Late HD Map Lookup}
+\label{sec:hdmaplate}
+
+HD Map Grid Lookup - Late \par
+Tempting, Simple, Bad
+
+% ----------------------------------------------------
+
+\section{3D Tracking}
+\label{sec:trackthreed}
+
+3D Tracking \par
+LIDAR Label Shifting

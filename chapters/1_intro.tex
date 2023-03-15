@@ -172,7 +172,7 @@ The steps are illustrated in figure~\ref{fig:mono3d-two-stage}
     \label{fig:mono3d-two-stage}
 \end{figure}
 
-The primary advantage of this idea is that the 3D detector can benefit from highly polished, interchangeable, off-the-shelf instance segmentation models.
+Within the taxonomy provided by \cite{survey2022}, these are also called \textit{Result-based Lifting Methods}. The primary advantage of this idea is that the 3D detector can benefit from highly polished, interchangeable, off-the-shelf instance segmentation models.
 For example, the~\cite{leonthesis} detector exchanged \textit{Mask-RCNN}~\cite{he2017mask} in favor of \textit{Yolact-Edge}~\cite{liu2021yolactedge} in the first stage for performance reasons.
 In this work we switch again, from \textit{Yolact-Edge} to \textit{YOLOv7}~\cite{wang2022yolov7} to improve the detection quality.
 Another benefit is that stage two, the $2D \rightarrow 3D$ lifting stage, can be independently optimized, as the problem shifts from identifying the image areas occupied by relevant objects to estimating the three-dimensional properties of these objects.
@@ -241,7 +241,7 @@ Consider a scene such as the one shown in Figure~\ref{fig:tracking}.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/tracking}
-    \caption{Visualisation of a \textit{Mono3D} detection scenario where tracking resolves a heading ambioguity.}
+    \caption{Visualisation of a \textit{Mono3D} detection scenario where tracking resolves a heading ambiguity.}
     \label{fig:tracking}
 \end{figure}
 
@@ -252,7 +252,7 @@ The detector then performs a lookup for $\theta$ (heading) options at location $
 As the detector must now pick one of these heading options, it may use the given knowledge of previous historical positions ($P_0$ and $P_1$) for $M$ to bias towards $\theta_1$ as the more likely orientation.
 This is, because the detector assumes that vehicles move in a continuous direction more often than not, and erratic turns are less likely than forward motion.
 
-To express this intuition formally, given a detection $M$ which is associated with a set of historical positions $P=\{p_{t},\mathellipsis,p_{t-T}\}$, we wish to pick $\theta(M)$ such that \[\sum_{\delta=1}^{\delta=T} |\theta(M) - \text{atan2}(p_t - p_{t-\delta})|\] is minimal.
+To express this intuition formally, given a detection $M$ at time $t$ which is associated with a set of historical positions $P=\{p_{t},\mathellipsis,p_{t-T}\}$, we wish to pick $\theta(M)$ such that \[\sum_{\delta=1}^{\delta=T} |\theta(M) - \text{atan2}(p_t - p_{t-\delta})|\] is minimal.
 In this work, the storage and retrieval of historical positions for the screen-space bounding box of a detection is accomplished using the \textit{SORT}~\cite{bewley2016simple} object tracking algorithm.
 
 \subsection{Birds-Eye-View Tracking}
@@ -268,15 +268,15 @@ However, in this work, we will only use them to stabilize position and speed est
 \section{Inherent Functional Limitations}
 \label{sec:limits}
 
-As the origins, goals and methods of this work are now introduced, we can identify some inherent functional limitations of our approach.
+As the origins, goals and methods of this work are now introduced, we can already identify functional limitations which are going to be inherent to our approach.
 These limitations must be tackled by future work (see chapter~\ref{ch:future}).
 
 \begin{enumerate}
     \item \textbf{Bad detection quality for road users with highly cropped or obstructed instance masks}: Both the bottom-contour based L-Shape-Fitting algorithm, and the estimation of the vehicle position from the instance mask require an unobstructed full view of the road user to function optimally.\ Any obstruction of the view will degrade the estimation quality.\ Such an obstruction may be a stationary object in front of the road user, another road user, a weather condition like snow/rain/fog, or simply the field-of-view \textit{(FOV)} limit of the sensor.
-    \item \textbf{Bad detection quality for road users in legal or physical peril:} Our \textit{Mono3D} detection approach assumes that vehicles or other road users do not fly, do not lie on their side, do not move sideways, and are always aligned with a legal traffic flow direction as parsed from the HD-map.\ Therefore, the 3D pose estimation for any road user which violates one of these assumptions will be as bad as the the day this road user is probably experiencing.
+    \item \textbf{Bad detection quality for road users in legal or physical peril:} Our \textit{Mono3D} detection approach assumes that road users do not fly, do not lie on their side, do not move sideways, and are always aligned with a legal traffic flow direction as parsed from the HD-map.\ Therefore, the 3D pose estimation for any road user which violates one of these assumptions will be as bad as the the day this road user is probably experiencing.
 \end{enumerate}
 
 \section{Research Objective}
 \label{sec:objective}
 
-In summary, the research objective for this work is to address the truthfulness of the following hypothesis: A two-stage \textit{Mono3D} detector with an instance-mask bottom-contour based estimator in the second stage can only function well within an urban intersection setting, if and only if the estimator is assisted by additional information from an HD map.
+In summary, the research objective for this work is to address the truthfulness of the following hypothesis: \textit{A two-stage \textit{Mono3D} detector with an instance-mask bottom-contour based estimator in the second stage can only function well within an urban intersection setting, if and only if the estimator is assisted by additional information from an HD map}.

@@ -82,7 +82,7 @@ This is illustrated in figure~\ref{fig:related-tranet}.
     \label{fig:related-tranet}
 \end{figure}
 
-As can be seen from the right side of figure~\ref{fig:related-tranet}, they make use of road curb geometry which is extracted from HD maps to make estimates of vehicle headings, substituting the role of the HD map in this work.
+As can be seen from the right side of figure~\ref{fig:related-tranet}, they make use of road curb geometry which is extracted from a satellite image to make estimates of vehicle headings, substituting the role of the HD map in this work.
 Note, that heading estimation via the most proximate curb would not be applicable in this work, as curbs within a complex intersection with many overlapping lanes are not a good indicator of orientation.
 However, their approach alleviates the need for rather hard-to-source high-definition maps, which is a point of weakness in this work.
 Another strong point of \textit{TrafficNet} is their extensive use of Kalman Filters~\cite{welch1995kalman} to de-noise the vehicle pose and category estimations.
@@ -94,7 +94,7 @@ Also, unfortunately, no code is publicly available for \textit{TrafficNet}.
 \section{UrbanNet: Urban Maps for Long Range 3D Object Detection}
 \label{sec:related-urbnet}
 
-Another case of a two-stage object detector which using Urban maps to augment the performance of the $2D \rightarrow 3D$ lifting-stage is \textit{UrbanNet}~\cite{carrillo2021urbannet}.
+Another case of a two-stage object detector which uses Urban maps to augment the performance of the $2D \rightarrow 3D$ lifting-stage is \textit{UrbanNet}~\cite{carrillo2021urbannet}.
 This solution is unique, because it applies the HD map as an auxiliary feature to a small Feed-Forward Neural Network.
 The architecture is illustrated in figure~\ref{fig:related-urbnet}.
 
@@ -106,9 +106,9 @@ The architecture is illustrated in figure~\ref{fig:related-urbnet}.
 \end{figure}
 
 This approach provides an interesting way to remediate some of the shortcomings of L-Shape-Fitting in the second detector stage.
-The neural network can learn to recognize obstructed road user poses, or even highly uncommon poses, such as a car laying on its side in a crash scenario
+The neural network can learn to recognize obstructed road user poses, or even highly uncommon poses, such as a car laying on its side in a crash scenario.
 This is not possible with a bottom-contour based detector.
-Furthermore, the performance might actually increase, as there is no requirement for the first detector stage to compute expensive instance masks.
+Furthermore, the runtime performance of this approach might actually be overall better than ours, as there is no requirement for the first detector stage to output and compute expensive per-instance image masks.
 Notably, they also incorporate slope estimation into their prediction, which is especially useful for long-range vision in mountainous terrain.
 The bottleneck in this case is the availability of training data, something which is solved in UrbanNet by training and testing exclusively on artificial computer-generated road scenes.
 

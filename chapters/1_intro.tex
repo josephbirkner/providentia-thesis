@@ -39,7 +39,7 @@ The update rate for the digital twin depends on the fusion-setup and the type of
 At the heart of the Providentia Project is an expansive test area with multiple sensor stations.
 The sensor stations are each equipped with RGB Camera, LIDAR and RADAR sensors.
 These are used to test the sensor calibration-, road user detection-, sensor-fusion-, tracking-, and communication-solutions that are developed as part of the project.
-An overview of the test area along the A9 highway near Garching Hochbrück, Germany is provided in figure~\ref{fig:providentia-test-area}.
+An overview of the test area along the A9 highway near Garching Hochbrück, Germany is provided in Figure~\ref{fig:providentia-test-area}.
 
 This work focuses on the RGB Camera sensors, which are installed at the designated stations.
 The goal of this work is to develop a perception algorithm which can calculate a three-dimensional digital twin of any visible road user from the two-dimensional RGB camera input frames.
@@ -49,7 +49,7 @@ This urban intersection setting is more challenging, because it does not allow f
 Instead, the detector must induce a contextual bias for each road user to determine their orientation angle.
 
 Crucially, a high-definition (HD) map of the test area was also developed as part of the Providentia project using the OpenDRIVE format~\cite{dupuis2010opendrive}.
-An overview of the map with a more detailed view of the S110 intersection is provided in figure~\ref{fig:providentia-opendrive-map}.
+An overview of the map with a more detailed view of the S110 intersection is provided in Figure~\ref{fig:providentia-opendrive-map}.
 Within this project, we aim to explore how the HD map of the test area can serve as  auxiliary sensory input to monocular detector.
 We hypothesize, that the highly detailed map might provide the monocular detector with information about viable road user orientations.
 
@@ -98,7 +98,7 @@ The four scenes in the dataset which do provide this required annotation mode ar
 \end{table}
 
 The dataset frame-rate is 10 Hz. The combination of 3D LIDAR Labels and RGB camera frames introduces an additional challenge in the form of synchronization delay \textemdash there may be up to 200 ms of difference between the 2D RGB frame and the 3D LIDAR annotation timestamps.
-We will discuss this problem in more detail in chapter~\ref{ch:evaluation}.
+We will discuss this problem in more detail in Chapter~\ref{ch:evaluation}.
 Each road user is also annotated with a category; one of \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{VAN}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}, \texttt{EMERGENCY\_VEHICLE}, or \texttt{OTHER}.
 
 % ----------------------------------------------------
@@ -152,7 +152,7 @@ We observe, that a minimal 3D Object Detector should actually estimate six dimen
 Earlier work on the \textit{Mono3D} task for the Providentia project~\cite{leonthesis} focused on solving this task for the highway scenario.
 On top of the minimum six variables, this early detector also calculated the object height.
 However, as the early detector focused on the highway scenario, it was able to assume a fixed value for the $\theta$ variable.
-This is illustrated on the right side of figure~\ref{fig:mono3d-task-overview}.
+This is illustrated on the right side of Figure~\ref{fig:mono3d-task-overview}.
 As this work strives to generalize the \textit{Mono3D} solution beyond the highway, it must treat the $\theta$ value as non-fixed.
 Interestingly, we facilitate this task by also estimating the identity $I$ variable, which then also allows us to estimate the planar speed $\delta X$/$\delta Y$ variables.
 So we will end up with a 10-D detector in this work.
@@ -164,7 +164,7 @@ While many approaches are viable, the earlier Providentia \textit{Mono3D} detect
 As this work builds on top of~\cite{leonthesis}, we use the same approach.
 Generally, the two-stage detector splits the detection task into two separate steps: a $2D$ instance segmentation step, and a $3D$ lifting step.
 There are again many implementation options for these individual steps.
-The steps are illustrated in figure~\ref{fig:mono3d-two-stage}
+The steps are illustrated in Figure~\ref{fig:mono3d-two-stage}
 
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{figures/two-stage-detection}
@@ -206,9 +206,9 @@ High-definition (HD) maps model the road network down to the detail of individua
 In this work, we hypothesize that the HD-map can serve as a useful additional sensor to the \textit{Mono3D} detector.
 In particular, we explore whether the HD map can serve as a viable source of vehicle orientation (heading) values.
 In the first step, we developed a method to derive the likely heading value at a particular position on the road surface from the geometry of the enclosing lane boundaries.
-This method is described with more detail in chapter~\ref{sec:hdmapgrids}.
+This method is described with more detail in Chapter~\ref{sec:hdmapgrids}.
 By converting the calculated $\overrightarrow{xyz}$ heading vectors at each position to $\text{RGB}$ colors, we are able to proof the general idea.
-This is visualized in figure~\ref{fig:headings-color-coded}.
+This is visualized in Figure~\ref{fig:headings-color-coded}.
 
 \begin{figure}[htb]
     %\begin{tabular}{lll}
@@ -222,7 +222,7 @@ This is visualized in figure~\ref{fig:headings-color-coded}.
 
 From this proof-of-concept visualization of the heading vectors, it becomes apparent that the map-derived headings may serve well as an additional per-pixel feature for the \textit{Mono3D} detector.
 But it also becomes apparent, that there may always be many possible overlapping heading options provided by the HD map, as there may always be many overlapping lanes \textemdash especially in the context of urban intersection scenarios.
-The left-most image of figure~\ref{fig:headings-color-coded} illustrates this problem quite well.
+The left-most image of Figure~\ref{fig:headings-color-coded} illustrates this problem quite well.
 Here we see color-coded headings overlaid on top of a frame from the \texttt{S110-S2} camera.
 Towards the bottom-right corner of the image, there are locations with up to four overlapping lanes, which provide four distinct heading options!
 Therefore, an additional information source is needed to resolve ambiguities among multiple heading options.
@@ -269,7 +269,7 @@ However, in this work, we will only use them to stabilize position and speed est
 \label{sec:limits}
 
 As the origins, goals and methods of this work are now introduced, we can already identify functional limitations which are going to be inherent to our approach.
-These limitations must be tackled by future work (see chapter~\ref{ch:future}).
+These limitations must be tackled by future work (see Chapter~\ref{ch:future}).
 
 \begin{enumerate}
     \item \textbf{Bad detection quality for road users with highly cropped or obstructed instance masks}: Both the bottom-contour based L-Shape-Fitting algorithm, and the estimation of the vehicle position from the instance mask require an unobstructed full view of the road user to function optimally.\ Any obstruction of the view will degrade the estimation quality.\ Such an obstruction may be a stationary object in front of the road user, another road user, a weather condition like snow/rain/fog, or simply the field-of-view \textit{(FOV)} limit of the sensor.

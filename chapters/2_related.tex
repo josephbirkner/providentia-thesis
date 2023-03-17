@@ -8,7 +8,7 @@
 
 This work is deeply rooted in the earlier groundwork which was laid out for the \textit{Mono3D} task in highway scenarios~\cite{leonthesis} in the scope of the Providentia project.
 Our earlier work took inspiration from the \textit{Cooperative Vehicle Infrastructure System}~\cite{guo2021detection} in the design and implementation of the two-stage detector based on the bottom contour of the vehicle instance mask, but also differs in key aspects.
-The detection flow of our early \textit{Mono3D} highway detector is illustrated in figure~\ref{fig:related-leon}.
+The detection flow of our early \textit{Mono3D} highway detector is illustrated in Figure~\ref{fig:related-leon}.
 
 \begin{figure}[htb]
     \centering
@@ -27,7 +27,7 @@ The height estimation algorithm is revised accordingly.
 \label{sec:related-coopvis}
 
 The earlier Providentia highway detector was inspired by the \textit{Cooperative Vehicle Infrastructure System (CVIS)}~\cite{guo2021detection}, which also uses a two-stage detector with a $2D \rightarrow 3D$ lifting stage based on the vehicle bottom contour.
-Their approach is illustrated in figure~\ref{fig:related-cvis}.
+Their approach is illustrated in Figure~\ref{fig:related-cvis}.
 
 \begin{figure}[htb]
     \centering
@@ -55,12 +55,13 @@ This inherently necessitates research to reproduce their results.
 Branching off \textit{CVIS}, this work (like~\cite{leonthesis}) makes use of \textit{L-Shape-Fitting (LSF)} to estimate vehicle size and orientation from the instance mask bottom contour.
 This approach can also be interpreted as a \textit{pseudo-lidar}~\cite{survey2022} approach, because the projection of the instance mask bottom contour yields a (very flat) point-cloud.
 Underlining the \enquote{LIDAR-esque} origins of the LSF algorithm is the fact that it was introduced in the scope of an object detection method for LIDAR measurements, in the work \textit{The L-Shape Fitting Method for Vehicle Pose Detection from LIDAR}~\cite{zhang2017efficient}.
-Their method is illustrated in figure~\ref{fig:related-lsf}.
+Their method is illustrated in Figure~\ref{fig:related-lsf}.
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/l_shape_fitting_fig}
-    \caption{Figure 6 from~\cite{zhang2017efficient}. The key points and optimal L-Shape fitting results for two typical segmentations points clusters from a laser scanner. The blue stars and red diamonds represent key vertices which are identified by the LSF algorithm. Fig. (c) and Fig. (d) are the best L-Shape fitting results from the given point clusters (a) and (b), respectively, identifying both BEV size and orientation.}
+    \includegraphics[width=0.49\linewidth]{figures/l_shape_fitting_fig_2_1-cropped}
+    \includegraphics[width=0.49\linewidth]{figures/l_shape_fitting_fig_2_2-cropped}
+    \caption{Figure 2 from~\cite{zhang2017efficient}. The key points and optimal L-Shape fitting results for two typical segmentations points clusters from a laser scanner. The blue stars and red diamonds represent key vertices which are identified by the LSF algorithm. Fig. (c) and Fig. (d) are the best L-Shape fitting results from the given point clusters (a) and (b), respectively, identifying both BEV size and orientation.}
     \label{fig:related-lsf}
 \end{figure}
 
@@ -71,7 +72,7 @@ In this work, we further adapt and develop this approach to stabilize size and h
 \label{sec:related-trafficnet}
 
 The \textit{TrafficNet} detector~\cite{rezaei2021traffic} is a very thorough two-stage monocular traffic monitoring solution, encompassing both vehicle and VRU detection, tracking, speed estimation, and even road geometry prediction from satellite images.
-This is illustrated in figure~\ref{fig:related-tranet}.
+This is illustrated in Figure~\ref{fig:related-tranet}.
 
 \begin{figure}[htb]
     \centering
@@ -82,7 +83,7 @@ This is illustrated in figure~\ref{fig:related-tranet}.
     \label{fig:related-tranet}
 \end{figure}
 
-As can be seen from the right side of figure~\ref{fig:related-tranet}, they make use of road curb geometry which is extracted from a satellite image to make estimates of vehicle headings, substituting the role of the HD map in this work.
+As can be seen from the right side of Figure~\ref{fig:related-tranet}, they make use of road curb geometry which is extracted from a satellite image to make estimates of vehicle headings, substituting the role of the HD map in this work.
 Note, that heading estimation via the most proximate curb would not be applicable in this work, as curbs within a complex intersection with many overlapping lanes are not a good indicator of orientation.
 However, their approach alleviates the need for rather hard-to-source high-definition maps, which is a point of weakness in this work.
 Another strong point of \textit{TrafficNet} is their extensive use of Kalman Filters~\cite{welch1995kalman} to de-noise the vehicle pose and category estimations.
@@ -96,7 +97,7 @@ Also, unfortunately, no code is publicly available for \textit{TrafficNet}.
 
 Another case of a two-stage object detector which uses Urban maps to augment the performance of the $2D \rightarrow 3D$ lifting-stage is \textit{UrbanNet}~\cite{carrillo2021urbannet}.
 This solution is unique, because it applies the HD map as an auxiliary feature to a small Feed-Forward Neural Network.
-The architecture is illustrated in figure~\ref{fig:related-urbnet}.
+The architecture is illustrated in Figure~\ref{fig:related-urbnet}.
 
 \begin{figure}[htb]
     \centering
@@ -124,7 +125,7 @@ Finally, the \textit{Complex Scenario Cooperative Roadside Vision System}~\cite{
     \label{fig:related-crvis}
 \end{figure}
 
-Their system uses the HD map for calibration (as illustrated in figure~\ref{fig:related-crvis}), heading calculation, and tracking.
+Their system uses the HD map for calibration (as illustrated in Figure~\ref{fig:related-crvis}), heading calculation, and tracking.
 On the other hand, their paper is not clear on when and how exactly they make use of the HD-map for heading estimation.
 In some or most cases, they fall back to a projection of the 2D screen-space bounding box onto the 3D ground plane, from which a vehicle's BEV width/length and heading may be calculated.
 They do not make any attempts at calculating vehicle heights or detecting VRUs.
@@ -133,11 +134,7 @@ They do not make any attempts at calculating vehicle heights or detecting VRUs.
 \label{sec:related-surveys}
 
 In the conclusion of this related work study, several survey papers were consulted, some of which shall be highlighted here for reference.
-
 First of all, the survey \textit{3D Object Detection from Images for Autonomous Driving}~\cite{survey2022} was a great resource to learn a taxonomy for the multitude of architectural approaches towards the \textit{Mono3d} task.
-
-Furthermore, the survey on \textit{Object Detection in Traffic Videos} provides an in-depth overview on the spectrum techniques which are used in 2D object detection neural networks, such as YOLO~\cite{wang2022yolov7}.
-
+Furthermore, the survey on \textit{Object Detection in Traffic Videos} provides an in-depth overview on the spectrum of techniques which are used in 2D object detection neural networks, such as YOLO~\cite{wang2022yolov7}.
 Research on \textit{Infrastructure-Based Object Detection and Tracking for Cooperative Driving Automation}~\cite{bai2022infrastructure} is very connected to this work, and the cited survey includes many of the previously mentioned related works.
-
 Finally, the \textit{Review on Cooperative Perception and Control Supported Infrastructure-Vehicle Systems}~\cite{yu2022review} is the only survey which mentions HD maps as an auxiliary data source and shared spatial reference frame for cooperating autonomous vehicles.

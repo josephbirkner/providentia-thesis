@@ -10,7 +10,7 @@ The Providentia Project~\cite{krammer2022providentia} aims to create a large-sca
 By observing and detecting all road users from multiple perspectives, an IIS can greatly extend a vehicle's perception range, enabling it to plan its maneuvers more safely and proactively.
 The primary goal of Providentia is to improve the safety and comfort of autonomous vehicles by reducing their reliance on on-board sensors and providing them with a better and spatially extended understanding of their surrounding scene.
 
-There are several related projects in the field of IIS, including the Test Area Autonomous Driving Baden-Württemberg, the MEC-View project, and the local highway operator in Austria's road operator system.
+There are several related projects in the field of IIS, including the Test Area Autonomous Driving Baden-Württemberg, the MEC-View project, and the local highway operator in Austria's road operator system~\cite{DBLP:journals/corr/abs-2112-05615}.
 While these projects have similar goals, they are smaller in scale than Providentia and use different sensor types.
 Additionally, many research contributions propose methods of making algorithmic use of the information provided by an IIS, or optimizing their function.
 
@@ -280,3 +280,17 @@ These limitations must be tackled by future work (see Chapter~\ref{ch:future}).
 \label{sec:objective}
 
 In summary, the research objective for this work is to address the truthfulness of the following hypothesis: \textit{A two-stage \textit{Mono3D} detector with an instance-mask bottom-contour based estimator in the second stage can only function well within an urban intersection setting, if and only if the estimator is assisted by additional information from an HD map}.
+
+\section{Contributions}
+\label{sec:contributions}
+
+This work presents the following research contributions:
+
+\begin{enumerate}
+    \item An Augmented L-Shape-Fitting Algorithm which supports tracking and HD-Map confidence inputs.
+    \item A lookup strategy for vehicle bottom contours within the HD Map to derive Yaw Options with associated confidence values.
+    \item An HD-Map Rasterization Algorithm to support fast bulk lookup of heading options for a vehicle bottom contour.
+    \item A formula to derive the plausibility of a yaw hypothesis for a detected vehicle from a series of historical positions for the same vehicle.
+    \item An algorithm to calculate the physical position and height of a vehicle, given its instance mask height and physical width/length.
+    \item An algorithm to calculate 3D bounding boxes for Vulnerable Road Users (Pedestrians and Bicycles) from their Instance Mask Bottom Contour.
+\end{enumerate}

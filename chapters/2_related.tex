@@ -61,11 +61,13 @@ Their method is illustrated in Figure~\ref{fig:related-lsf}.
     \centering
     \includegraphics[width=0.49\linewidth]{figures/l_shape_fitting_fig_2_1-cropped}
     \includegraphics[width=0.49\linewidth]{figures/l_shape_fitting_fig_2_2-cropped}
-    \caption{Figure 2 from~\cite{zhang2017efficient}. The key points and optimal L-Shape fitting results for two typical segmentations points clusters from a laser scanner. The blue stars and red diamonds represent key vertices which are identified by the LSF algorithm. Fig. (c) and Fig. (d) are the best L-Shape fitting results from the given point clusters (a) and (b), respectively, identifying both BEV size and orientation.}
+    \caption{Figure 2 from~\cite{zhang2017efficient}. In (a) and (c), the grey dots represent the laser range scan points and the rectangles in green, red, and blue are the fitted rectangles by using criteria area minimization, closeness maximization, and variance minimization. The normalized scores for the three criteria over the searched directions are plotted in (b) and (d), respectively. In example (a), the fitting results from the three criteria are very similar, and the maxima of the three curves in (b) are very close (marked by arrows and achieved at 88◦, 89◦, and 0◦, respectively). In example (b), the fitting result from the area criteria is different from the other two, and its maximum in (d) is away from the other two (achieved at 69◦, 1◦, and 86◦, respectively).}
     \label{fig:related-lsf}
 \end{figure}
 
 By regressing a rectangular shape to the bottom contour, the LSF algorithm is able to estimate orientation, BEV position and BEV size simultaneously.
+The regression is performed by maximizing one of three error criteria: \texttt{Area}, \texttt{Closeness} or \texttt{Variance}.
+The algorithm and the criteria are explained in section~\ref{sec:lshapefitting}.
 In this work, we further adapt and develop this approach to stabilize size and heading estimates in complex traffic observation scenarios using tracking and the HD map.
 
 \section{TrafficNet}

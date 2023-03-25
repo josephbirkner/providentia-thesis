@@ -197,8 +197,8 @@ The goal is to find the optimal disjunction of the $m$ points into two sets ($P$
 
 The algorithm uses a search-based approach (see Algorithm~2 of Figure~\ref{fig:lsf-algs}) to find the best-fit rectangle approximately.
 It iterates through all possible directions of the rectangle and for each direction, it calculates the distances of all the points to the rectangle's four edges.
-Based on these distances, the points are split into $P$ and $Q$, and the corresponding square errors are calculated as the objective function.
-After iterating through all directions, the algorithm selects the optimal direction which achieves the least squared error, and fits the rectangle based on that direction.
+Based on these distances, the points are split into $P$ and $Q$, and the corresponding errors are calculated as the objective function.
+After iterating through all directions, the algorithm selects the optimal direction which achieves the smallest error, and fits the rectangle based on that direction.
 
 The algorithm offers three different criteria for selecting the best-fitting rectangle: rectangle area minimization, points-to-edges closeness maximization, and points-to-edges squared error minimization.
 Each criterion can be chosen to play the role of the \texttt{CalculateCriterionX} function in the algorithm provided in Figure~\ref{fig:lsf-algs}.
@@ -209,6 +209,7 @@ Albeit computationally the most expensive, the variance criterion achieves the h
 
 However, the algorithm may not always achieve perfect results.
 For instance, the algorithm may fail to estimate the correct heading if the scan points are too sparse, or if there are points outside or inside of the L-Shape model.
+This is where the previously mentioned (see Section~\ref{sec:dbscan}) \textit{DBSCAN}~\cite{schubert2017dbscan} algorithm comes in to denoise the bottom contour points.
 Nevertheless, the impact of such imperfect cases on vehicle tracking can be minimized by biasing the algorithm's search space towards correct solutions using tracking and the HD map, as is done in this work.
 
 % ----------------------------------------------------

@@ -156,63 +156,298 @@ Points on the $3D$ bottom contour which are close to the camera BEV position and
 The process of estimating $\theta$, width and length for motorized road vehicles is realized using the \textit{L-Shape-Fitting (LSF)} algorithm~\cite{zhang2017efficient} with an augmented score calculation function.
 From the standard LSF implementation, we use the \textit{Variance} criterion, as it was demonstrated to perform the best in the original paper.
 The value of the LSF variance score $\mathtt{Variance}_{\text{LSF}}(\theta_k)$ is in the range of $[-\infty, 0]$.
-We convert this value to the range of $[0, 1]$ as $\text{Score}_\text{lsf}(\theta_k)=1 / (1 - \mathtt{Variance}_{\text{LSF}}(\theta_k))$.
-Then we combine it using multiplication with the map confidence score (see Section~{\ref{sec:hdmaplsf}}) and the historical plausibility score (see Section~{\ref{sec:trackinglsf}}), to arrive at the final  $\text{Score}(\theta_k)$.
+We normalize this value to the range of $[0, 1]$ as $\text{Score}_\text{lsf}(\theta_k)=1 / (1 - \mathtt{Variance}_{\text{LSF}}(\theta_k))$.
+Now, we combine it using multiplication with the map confidence score (see Section~{\ref{sec:hdmaplsf}}) and the historical plausibility score (see Section~{\ref{sec:trackinglsf}}), to arrive at the final  $\text{Score}(\theta_k)$.
+Unlike in the original \textit{LSF} algorithm, we constrain the choice of $\theta_k$ to values which are derived from the HD map.
 
 % ----------------------------------------------------
 
 \section{HD Map Lookup Grids}
 \label{sec:hdmapgrids}
 
-HD Map Grids \par
-Rendering \par
-Resolution
+In this work, we propose to select the $\theta$ heading value for each $3D$ vehicle detection from a traffic flow direction that is derived from the HD map.
+However, so far it has been left up to the reader to imagine how the HD map is exactly queried to produce heading options.
+The following two sections serve to explain this step in more detail.
+First and foremost, we propose a spatial grid lookup structure for heading options at fixed planar increments, covering the \textit{field-of-view (FOV)} of each sensor.
+This approach allows us to pre-compute the heading options for a discrete subset of representative map locations, and the subsequent real-time lookup becomes computationally trivial.
 
-\newpage
+\subsection{Lane Tesselation}
+\label{subsec:tesselation}
 
-\newpage
+The precise mechanic of rendering the previously outlined heading lookup buffers begins by converting the \textit{OpenDRIVE}~\cite{dupuis2010opendrive} map lane surfaces into triangles.
+This process is called \textit{tesselation}.
+An \textit{OpenDRIVE} \textit{Road} is defined as a sequence of \textit{Lane Sections} along a reference (center-)line.
+A \textit{Lane Section} is a bundle of adjacent lanes.
+In the \textit{OpenDRIVE} format, a \textit{Lane} is enclosed between an inner and an outer boundary line.
+A \textit{Lane Section} is therefore a sequence of $M+1$ lane boundary lines which enclose $M$ parallel lanes.
+We make use of the \textit{OpenDRIVE Converter Tool}~\footnote{\hyperlink{https://github.com/Brucknem-TUMProjects/OpenDRIVE}{https://github.com/Brucknem-TUMProjects/OpenDRIVE}} to sample the \textit{OpenDRIVE} lane boundaries from \textit{Bezier Curves} into polylines.
+The tool discretizes the lane boundaries as an array of $\overrightarrow{\text{xyz}}$ coordinates at an interval of one meter.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/tesselation}
+    \caption{Illustration of our lane tesselation algorithm for a single lane section. The OpenDRIVE lane boundary lines are sampled at constant intervals to convert them to polylines. Orientations are calculated for each derived poly-line vertex. For each lane, the enclosing polylines are then \enquote{zipped} together with a triangle-strip.}
+    \label{fig:tesselation}
+\end{figure}
+
+As illustrated in Figure~\ref{fig:tesselation}, the result of the lane section point sampling is a matrix $V \in \mathbb{R}^{(M+1) \times N \times 4}$, with $N$ being the number of points sampled along each boundary line.
+Each vertex $v_{(m,n)} \in V$ has four scalar components: Three spatial dimensions for its location, and one extra dimension $\theta$ to indicate the heading at its location.
+In Figure~\ref{fig:tesselation}, the heading at the vertex position is indicated with a red arrow.
+It is calculated as $\theta(v_{(m,n)}) = \mathtt{arctan2}(v_{(m,n+1)} - v_{(m,n)})$.
+The last vertex assumes the theta value of the second-to-last.
+Each lane $l_m \in \{l_1,\mathellipsis,l_M\}$ is then tessellated as a triangle strip via a sliding window of three vertices over the sequence $\{v_{(m,1)}, v_{(m+1,1)}, \mathellipsis, v_{(m,N)}, v_{(m+1,N)}\} \subseteq V$.
+This results in $2(N-1)$ triangles covering the surface of each lane.
+
+\subsection{Lane Rasterization}
+\label{subsec:rasterization}
+
+As lanes are converted into batches of triangles, it is possible to use fast rasterization algorithms to \enquote{paint} them into grid buffers.
+Rasterization is the process of converting a vector representation of a shape into a pixel or voxel representation.
+Both representations have distinct advantages.
+A vector representation is usually the most efficient for storage.
+But it is comparatively slow to determine whether it contains a specific point, and how that point is situated in relation to the vertices of the geometry.
+This is where a pixel or grid-based representation has a lot of potential.
+The grid can store which locations are covered by the geometry, and can also serve as a cache for vertex attributes of the geometry at each grid cell location.
+In case of the lane surfaces, each grid cell stores the heading value of the lane at the grid cell location.
+To account for overlapping lanes, we instantiate one grid per \textit{OpenDRIVE} road.
+Only lane sections which belong to the same road are rendered into the same grid.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/rasterization}
+    \caption{Illustration of lane heading rasterization using barycentric coordinates. Lane $L$ is rasterized into grid $G$, and the barycentric coordinates $w_1$, $w_2$ and $w_3$ are shown for one specific gric-cell center point $C$.}
+    \label{fig:rasterization}
+\end{figure}
+
+The spatial coverage of each heading lookup grid for a camera is determined by iterating through the available lane sections, and selecting those which are both in view of the camera and not further than 200 meters away.
+Each cell in each grid then covers a $10*10cm$ square.
+This yields a grid resolution of $898*1140$ cells for the \textit{South-1} camera, and $1436*1224$ cells for the \textit{South-2} camera.
+
+In detail, the process of rasterization means to loop over every \enquote{pixel} (grid cell) and determine if it lies inside one of the triangles of the tessellated lane sections for the road of the tested grid.
+If it does, we use the barycentric coordinates of the grid cell with respect to the triangle to interpolate the corresponding heading value for the point inside the triangle.
+This process is also illustrated in Figure~\ref{fig:rasterization}.
+
+The algorithm involves the following steps:
+
+\begin{enumerate}
+    \item Given a triangle with vertices $v_1$, $v_2$, and $v_3$, and a grid with width $w$ and height $h$, loop over every cell which is within the bounding box of the triangle.
+    \item For each candidate cell $C=(x,y)$, compute the barycentric coordinates $(w_1, w_2, w_3)$ of the cell with respect to the triangle using the following formulas:
+
+    \[
+    \begin{aligned}
+    \vec{v_1v_2} &= \vec{v_2} - \vec{v_1} \\
+    \vec{v_1v_3} &= \vec{v_3} - \vec{v_1} \\
+    \vec{v_1c} &= C - \vec{v_1} \\
+    w_1 &= \frac{\vec{v_1v_3} \times \vec{v_1c}}{\vec{v_1v_3} \times \vec{v_1v_2}} \\
+    w_2 &= \frac{\vec{v_1c} \times \vec{v_1v_2}}{\vec{v_1v_3} \times \vec{v_1v_2}} \\
+    w_3 &= 1 - w_1 - w_2
+    \end{aligned}
+    \]
+
+    Note that the order of the vertices in the cross product determines the winding order of the triangle.\ If the winding order of the triangle is reversed, the signs of the cross products will also be reversed.
+
+    \item If all three barycentric coordinates are non-negative, the pixel lies inside the triangle.\ We can then use the barycentric coordinates to interpolate the corresponding heading value $\theta_C$ of the grid cell $C$ inside the triangle using the following formula:
+
+    \[
+    \begin{aligned}
+    \theta_C &= w_1 \theta(\vec{v_1}) + w_2 \theta{v_2} + w_3 \theta(\vec{v_3}) \\
+    \end{aligned}
+    \]
+
+    where $\theta(\vec{v})$ is the heading for a boundary vertex as described in Section~\ref{subsec:tesselation}.
+
+    \item Repeat steps 1--3 for every grid cell of every road grid.
+
+\end{enumerate}
+
+In practice, we have implemented this algorithm in \textit{numpy}, which allows the parallel execution of all grid cell tests for one triangle.
+A triangle covers $99.85$ cells on average.
+This makes the process of rendering the heading lookup grids quite fast, with an average wall-time of $1.48s$ to render $6812$ triangles on a Ryzen 5600 processor.
+This process can be comfortably executed during the startup of the $3D$ detector process.
+At an average of 25 \textit{OpenDRIVE} roads per camera view on the S110 intersection, and five bytes stored per cell, the final grid-set for one camera occupies $165.78 MiB$ of RAM on average.
+The resulting heading fields are visualised in Figure~\ref{fig:headings-rendered}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.49\linewidth]{figures/headings-s2}
+    \includegraphics[width=0.49\linewidth]{figures/headings-s1}
+    \caption{Derived heading values rendered on top of the S110-S2 camera perspective (left) and the S110-S1 camera perspective (right).}
+    \label{fig:headings-rendered}
+\end{figure}
 
 % ----------------------------------------------------
 
 \section{HD-Map-Augmented L-Shape Fitting}
 \label{sec:hdmaplsf}
 
-HD Map Grid Lookup - Early \par
-Yaw Lookup Histogram \par
-Confidence
+The previously outlined heading lookup grids, which are rendered from the HD map, can serve to improve the basic LSF algorithm in two ways:
 
-\newpage
+\begin{enumerate}
+    \item The grid may be used to calculate possible heading values which are to be evaluated by LSF, rather than using the basic approach of iterating over $[0, \pi]$ at fixed increments.
+    \item The grid can also yield a confidence value $\text{Score}_\text{map}(\theta_k)$ for each heading option $\theta_k$, given how many bottom contour points support the respective option.
+\end{enumerate}
+
+In general, the heading lookup grids $G_1,\mathellipsis,G_{|R|}$ for each road $r \in R$ are queried using the bottom contour $B^n_{3D}$ of vehicle detection $n$, which is a series of $3D$ points $\overrightarrow{\text{xyz}^n_1},\mathellipsis,\overrightarrow{\text{xyz}^n_k}$.
+We define the grid lookup operator $G_r(\overrightarrow{xy})$ as a function $\mathbb{R}^2 \rightarrow \mathbb{B} \times \mathbb{R}$ which delivers a boolean flag and a heading value given an arbitrary planar bottom contour position.
+The boolean flag indicates whether the road $r$ covers the position $\overrightarrow{xy}$ at all.
+The two return values of the operator are referenced as $G_r(\overrightarrow{xy})_\mathbb{B}$ and $G_r(\overrightarrow{xy})_\theta$, respectively.
+
+Now, the confidence of the map that a particular road grid $G_r$ provides the correct heading for detection $n$ may be expressed through the absolute count of bottom contour points $\overrightarrow{\text{xy}^n_i} \in B^n_{3D}$ for which $G_r(\overrightarrow{xy}^n_i)_\mathbb{B}$ is true.
+We call this count the \textit{lookup histogram value} $h(G_r,B^n_{3D})$ for the road grid $G_r$ and the bottom contour $B^n_{3D}$.
+The heading option $\theta_r$ provided by $G_r$ will then be the $\mathtt{average}(\{G_r(\overrightarrow{xy}^n_i)_\theta|G_r(\overrightarrow{xy}^n_i)_\mathbb{B}\}_{i=1}^{i \leq k})$.
+Finally, the lookup histogram value must be converted to a range of $[0,1]$ to become a score which can be used as a factor.
+To this end, we normalize $h(G_r,B^n_{3D})$ as $\text{Score}_\text{map}(\theta_r, B^n_{3D})$:
+
+\[
+    \text{Score}_\text{map}(\theta_r, B^n_{3D})=\frac{h(G_r,B^n_{3D})}{\max_{s \in R} h(G_s,B^n_{3D})}
+\]
+
+This process is illustrated in Figure~\ref{fig:mapscore}.
+There are three grids $G_1$, $G_2$ $G_3$ for three overlapping roads.
+The bottom contour of of vehicle $V$ as observed by camera $C$ is shown with 11 points.
+Now, the lookup histogram values for each grid are shown in the bar chart the right side of the figure.
+For grid $G_1$, all 11 points match to a nonempty cell.
+For grid $G_2$, six points match.
+For grid $G_3$, only five points match.
+These absolute histogram values are then converted to relative confidence score values, by dividing each over the maximum histogram value, which is 11.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figures/mapscore}
+    \caption{Illustration of a map heading histogram lookup for the bottom contour of vehicle $V$. The map lookup grid-set provides grids for three roads $G_1$, $G_2$ and $G_3$. The histogram values $h(G,V)$ per road, as well as the respective normalized scores which are calculated from the histogram, are shown on the right.}
+    \label{fig:mapscore}
+\end{figure}
+
 
 % ----------------------------------------------------
 
 \section{Tracking-Augmented L-Shape Fitting}
 \label{sec:trackinglsf}
 
-Historical Plausibility \par
-2D Tracking SORT Lookup
+In the example from Figure~\ref{fig:mapscore}, the vehicle is conveniently positioned such that the correct heading option clearly wins the highest confidence score.
+However, it is easily possible to imagine $V$ in a position slightly further upwards, where the map confidence scores would not be so unambiguous.
+For such cases, the raw LSF variance criterion score may help.
+However, we hypothesize that the vehicle's positional history, as described all the way back in the Introduction Section~\ref{subsec:sstracking} may provide an additional historical plausibility score $\text{Score}_\text{track}(\theta_k, V)$ for vehicle $V$ and heading candidate $\theta_k$.
 
-\newpage
+This is calculated as follows: Using a screen-space SORT tracker~\cite{bewley2016simple}, we match a detected object's bounding box to detections from previous frames.
+For a successfully matched detection, historical 3D position values $L=\{\vec{l}_{t-1},\dots,\vec{l}_{t-T}\}$ are retrieved.
+Given the historical positions $L$ and a position hypothesis $\vec{l}_t(\theta_t)$, the historical plausibility score $\text{Score}_\text{track}(\theta_k, V)$ for a yaw hypothesis $\theta_k$ is calculated as in the following equation:
+
+\[
+    \text{Score}_\text{track}(\theta_k, V)=\prod_{\delta_t=1}^{\delta_t \leq T}\pi/2 - \Delta_\angle(|\theta_{t} - \text{atan2}(\vec{l}_t(\theta_t)-\vec{l}_{t-\delta_t})| \mathtt{~mod~}\pi)
+\]
+
+The Delta-Angle function $\Delta_\angle: [0, \pi) \rightarrow [0, \pi/2)$ converts the passed raw angular difference, which is already less than $\pi$, into a value less than $\pi/2$ by returning angular deltas $\delta_{>\pi/2}$ larger than $\pi/2$ as $\pi-\delta_{>\pi/2}$.
+This ensures that a yaw hypothesis, which is parallel, yet opposed to a historical orientation, is not erroneously punished.
+In practice, we have implemented a threshold of six historical positions that are evaluated to determine the plausibility of a yaw hypothesis.
 
 % ----------------------------------------------------
 
 \section{Joint Height and Position Estimation}
 \label{sec:sizeandpos}
 
-L/W/H Dimension Filtering \par
-Height Estimation
+As an estimate for a detected vehicle's width and length is made using our augmented L-Shape-Fitting algorithm, two critical values remain to be established for a fully defined 3D bounding box: The vehicle position and the vehicle height.
+Also, our tests showed, that the LSF-based BEV dimension hypothesis must often be corrected due to errors in the bottom contour (see Sections~\ref{sec:impactcontourfiltering} and~\ref{sec:impactsizefiltering}).
+Because of this, we need to clamp the BEV with/length dimensions to category-based minimum and maximum values.
+In this case, the vehicle's bounding box needs to grow or shrink in some direction, and the position hypothesis of the LSF algorithm becomes uncertain.
 
-\newpage
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figures/calc-height-pos}
+    \caption{Illustration of a joint 3D height and location for vehicle V. Initially, camera $C$ observes only the screen-space bounding box $\mathtt{AABB}(\texttt{InstanceMask}_V)$.\ We now search for the vehicle height $h$ based on a value along the ray $R$, which is cast from $C$ through the 2D AABB center.\ Only for the correct $h_\text{gt}$ will the 2D AABB of the predicted 3D box $\mathtt{AABB}(C,\mathtt{Box}(R,w,l,\theta,h_\text{gt}))$ be equal to $\mathtt{AABB}(\texttt{InstanceMask}_V)$.}
+    \label{fig:calcheightpos}
+\end{figure}
+
+There is however a strong criterion towards the position of the 3D bounding box, which we can use to estimate it: It is desirable to position a vehicle's 3D bounding box such that it covers the 2D instance mask of the same vehicle when projected to screen-space.
+This also means, that the screen-space-projected center of the 3D bounding box should coincide with the center of the 2D bounding box.
+So we know, that the center of the 3D bounding box must be somewhere along a 3D ray which is cast from the camera through the center of the instance mask.
+Because a camera mounted from the infrastructure perspective also generally looks down, the position along the ray also dictates the height (more specifically half of the height) of the vehicle.
+Now, as the bounding box height changes, so does the height of its 2D screen-space projection.
+Therefore, we can simultaneously optimize both the height of the 3D box and its position, with the goal to match the screen-space bounding box of the estimated 3D bounding box to the instance mask bounding box.
+
+\begin{algorithm}
+\caption{RegressHeightAndLocation}\label{alg:posheightregression}
+\begin{algorithmic}[1]
+\Require $\texttt{width}, \texttt{length}, \texttt{theta}, \texttt{bbox\_2d}, \texttt{cam}, \texttt{min\_height}, \texttt{mean\_height}, \texttt{max\_height}$
+\Ensure $\texttt{height}, \texttt{location}$
+\State $\texttt{x0, y0, x1, y1} \gets \texttt{bbox\_2d}$
+\State $\texttt{detection\_img\_height} \gets \texttt{y1} - \texttt{y0}$
+\State $\texttt{height} \gets \texttt{mean\_height}$
+\Comment{Initially estimate height by mean for category}
+\State $\texttt{jump\_size} \gets \texttt{max\_height} - \texttt{mean\_height}$
+\State $\texttt{mask\_center} \gets \begin{bmatrix}
+\texttt{x0} + (\texttt{x1} - \texttt{x0})//2 \
+\texttt{y0} + (\texttt{y1} - \texttt{y0})//2
+\end{bmatrix}$
+\State $\texttt{location} \gets \begin{bmatrix}
+0 \
+0 \
+0
+\end{bmatrix}$
+\For{$\texttt{i} \gets 0$ to $9$}
+\Comment{Binary search for correct height/position, 10 iterations max.}
+\State $\texttt{location} \gets \texttt{cam.project\_to\_ground}(\texttt{mask\_center}, \texttt{height} \times 0.5)$
+\State $\texttt{location[2]} \gets 0$
+\State $\texttt{box} \gets \texttt{get\_box}(\texttt{theta, width, length, location})$
+\State $\texttt{box} \gets \texttt{box} \oplus (\texttt{box}+\begin{bmatrix}
+0 & 0 & \texttt{height}
+\end{bmatrix})$
+\State $\texttt{all\_corners\_projected} \gets \texttt{cam.project\_to\_image}(\texttt{box}^\top)$
+\State $\texttt{min\_img\_y} \gets \min(\texttt{all\_corners\_projected[1]})$
+\State $\texttt{max\_img\_y} \gets \max(\texttt{all\_corners\_projected[1]})$
+\State $\texttt{estimated\_img\_height} \gets \texttt{max\_img\_y} - \texttt{min\_img\_y}$
+\State $\texttt{img\_height\_delta} \gets \texttt{detection\_img\_height} - \texttt{estimated\_img\_height}$
+\If{$|\texttt{img\_height\_delta}| < 1.0$}
+\Comment{Less than one px difference. We are done.}
+\State \textbf{break}
+\EndIf
+\If{$\texttt{i} > 0$ \textbf{and} $\texttt{sign(img\_height\_delta)} \neq \texttt{sign(jump\_size)}$}
+\State $\texttt{jump\_size} \gets \texttt{jump\_size} \times 0.5$ \Comment{Halve the step size on direction change.}
+\EndIf
+\State $\texttt{jump\_size} \gets \texttt{sign(img\_height\_delta)} \times |\texttt{jump\_size}|$
+\State $\texttt{prev\_height} \gets \texttt{height}$
+\State $\texttt{height} \gets \texttt{height} + \texttt{jump\_size}$
+\State $\texttt{height} \gets \max(\min(\texttt{height}, \texttt{max\_height}), \texttt{min\_height})$ \Comment{Respect limits.}
+\If{$\texttt{height} = \texttt{prev\_height}$} \Comment{We've hit a limit, no need to continue iterating.}
+\State \textbf{break}
+\EndIf
+\EndFor
+\State \Return $\texttt{height}, \texttt{location}$
+\end{algorithmic}
+\end{algorithm}
+
+In practice, we have implemented this joint height and position regression using binary search over the 3D height value, as described in Algorithm~\ref{alg:posheightregression}.
+As the optimization goal, it is sufficient to match the image space box height.
+We limit the number of optimization steps to 10.
+In practice, we observe that the algorithm converges on average after five steps.
+We add a sanity check to abort iteration, if the optimization cannot progress because the estimated height is growing below or beyond sanity limits.
+This can occur, when the pixel mask for the detected instance is highly erroneous or obscured.
+The approach is also illustrated in Figure~\ref{fig:calcheightpos}. Initially, camera $C$ observes only the screen-space bounding box $\mathtt{AABB}(\texttt{InstanceMask}_V)$.\ We now search for the vehicle height $h$ based on a value along the ray $R$, which is cast from $C$ through the 2D AABB center.\ Only for the correct $h_\text{gt}$ will the 2D AABB of the predicted 3D box $\mathtt{AABB}(C,\mathtt{Box}(R,w,l,\theta,h_\text{gt}))$ be equal to $\mathtt{AABB}(\texttt{InstanceMask}_V)$.
 
 % ----------------------------------------------------
 
 \section{Late HD Map Lookup}
 \label{sec:hdmaplate}
 
-HD Map Grid Lookup - Late \par
-Tempting, Simple, Bad
+In the rest of this chapter, two optional design elements are explained which do not necessarily improve our system, but serve to answer some questions in our evaluation study.
+Feel free to skip ahead to the next chapter if you are only interested in the best version of the system.
 
-\section{3D Tracking}
+First, as an alternative to the rather complex \enquote{early} HD map lookup for all bottom contour points (with a derived confidence histogram which feeds into L-Shape-Fitting), we initially also implemented much a simpler \enquote{late lookup} approach.
+
+Here, we only query the HD map for heading options at the current vehicle position.
+Then we pick the heading option which is most in line with the vehicle's historic positions, or merely the option closest to the LSF-based proposal, if tracking is turned off.
+
+The drawbacks of this approach are manifold: L-Shape-Fitting has already settled on a heading value prior to the map lookup, so the width and length will not be corrected.
+Furthermore, the vehicle position at this point is already very disconnected from the ground-truth sensor input.
+So a lot of positional information is discarded before the HD map lookup is made.
+Finally, the position and height regression relies on established values for width, length and $\theta$, so correcting $\theta$ afterwards is logically not optimal.
+
+\section{3D SORT Tracking}
 \label{sec:trackthreed}
 
-3D Tracking \par
-LIDAR Label Shifting
+Another \enquote{questionable idea} (in hindsight) which we tested was to use \textit{SORT} in 3D.
+In conjunction with 2D screen-space tracking which is required to calculate the historical plausibility score for L-Shape-Fitting, we have also applied the \textit{SORT} algorithm to track detections in 3D birds-eye-view space.
+This is supposed to stabilize 3D position estimates through the \textit{Kalman Filters} which are used by \textit{SORT}.
+Because \textit{SORT} does not support a heading value in the bounding box state, we feed BEV detections as squares of size $((l+w)/2)^2$ into the algorithm.
+This is immediately obvious as a drawback of using \textit{SORT} for 3D tracking, and we do not expect this application of \textit{SORT} to improve our results.
+Instead, a more capable Kalman Filter detection is needed which also takes vehicle heading into account.

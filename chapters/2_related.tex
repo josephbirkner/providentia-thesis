@@ -41,12 +41,12 @@ While their approach has provided the basis for our research on \textit{Mono3d} 
 
 \begin{enumerate}
     \item Previous frames are not considered when a vehicle pose is estimated, potentially leading to bad yaw angle choices in ambiguous situations.
-    \item They do not mention the effects shadows or noise due to obstructions or weather on their bottom contour line regression algorithm.\ The L-Shape-Fitting algorithm which is used in this work might be more robust in such situations, especially since we also apply \textit{DBSCAN}-based outlier filtering on the bottom contour.
-    \item Their height estimation solution assumes that the closest vehicle top corner and bottom corner have the same depth from the camera, which leads to \textit{leaning} boxes in traffic monitoring situations where the camera is stationed highly above the vehicles.
+    \item They do not mention the effects of shadows or noise due to obstructions or weather on their bottom contour line regression algorithm.\ The L-Shape-Fitting algorithm which is used in this work might be more robust in such situations, especially since we also apply \textit{DBSCAN}-based outlier filtering on the bottom contour.
+    \item Their height estimation solution assumes that the closest vehicle top corner and bottom corner share the same distance from the camera, which leads to \textit{leaning} boxes in traffic monitoring situations where the camera is stationed highly above the vehicles.
     \item They do not consider non-vehicle \textit{Vulnerable Road Users (VRUs)} in their detector, such as bicyclists or pedestrians.\ This work is also detecting VRUs.
 \end{enumerate}
 
-Last but not least, no code is available for their approach.
+Last but not least, no code was published alongside their approach.
 This inherently necessitates research to reproduce their results.
 
 \section{The L-Shape Fitting Method for Vehicle Pose Detection}
@@ -54,7 +54,7 @@ This inherently necessitates research to reproduce their results.
 
 Branching off \textit{CVIS}, this work (like~\cite{leonthesis}) makes use of \textit{L-Shape-Fitting (LSF)} to estimate vehicle size and orientation from the instance mask bottom contour.
 This approach can also be interpreted as a \textit{pseudo-lidar}~\cite{survey2022} approach, because the projection of the instance mask bottom contour yields a (very flat) point-cloud.
-Underlining the \enquote{LIDAR-esque} origins of the LSF algorithm is the fact that it was introduced in the scope of an object detection method for LIDAR measurements, in the work \textit{The L-Shape Fitting Method for Vehicle Pose Detection from LIDAR}~\cite{zhang2017efficient}.
+Underlining the \enquote{LIDAR-esque} origins of the LSF algorithm is the fact that it was introduced in the scope of an object detection method from LIDAR measurements, in the work \textit{The L-Shape Fitting Method for Vehicle Pose Detection from LIDAR}~\cite{zhang2017efficient}.
 Their method is illustrated in Figure~\ref{fig:related-lsf}.
 
 \begin{figure}[htb]

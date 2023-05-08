@@ -172,7 +172,8 @@ The steps are illustrated in Figure~\ref{fig:mono3d-two-stage}
     \label{fig:mono3d-two-stage}
 \end{figure}
 
-Within the taxonomy provided by \cite{survey2022}, these are also called \textit{Result-based Lifting Methods}. The primary advantage of this idea is that the 3D detector can benefit from highly polished, interchangeable, off-the-shelf instance segmentation models.
+Within the taxonomy provided by~\cite{survey2022}, these are also called \textit{Result-based Lifting Methods}.
+The primary advantage of this idea is that the 3D detector can benefit from highly polished, interchangeable, off-the-shelf instance segmentation models.
 For example, the~\cite{leonthesis} detector exchanged \textit{Mask-RCNN}~\cite{he2017mask} in favor of \textit{Yolact-Edge}~\cite{liu2021yolactedge} in the first stage for performance reasons.
 In this work we switch again, from \textit{Yolact-Edge} to \textit{YOLOv7}~\cite{wang2022yolov7} to improve the detection quality.
 Another benefit is that stage two, the $2D \rightarrow 3D$ lifting stage, can be independently optimized, as the problem shifts from identifying the image areas occupied by relevant objects to estimating the three-dimensional properties of these objects.

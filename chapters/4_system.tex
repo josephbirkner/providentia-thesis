@@ -445,8 +445,8 @@ Finally, the position and height regression relies on established values for wid
 \section{3D SORT Tracking}
 \label{sec:trackthreed}
 
-Another \enquote{questionable idea} (in hindsight) which we tested was to use \textit{SORT} in 3D.
-In conjunction with 2D screen-space tracking which is required to calculate the historical plausibility score for L-Shape-Fitting, we have also applied the \textit{SORT} algorithm to track detections in 3D birds-eye-view space.
+Another \enquote{questionable idea} (in hindsight) which we tested was to use \textit{SORT} in 3D bird's-eye-view (BEV).
+In conjunction with 2D screen-space tracking, which is required to calculate the historical plausibility score for L-Shape-Fitting, we have also applied the \textit{SORT} algorithm to track detections in 3D BEV space.
 This is supposed to stabilize 3D position estimates through the \textit{Kalman Filters} which are used by \textit{SORT}.
 Because \textit{SORT} does not support a heading value in the bounding box state, we feed BEV detections as squares of size $((l+w)/2)^2$ into the algorithm.
 This is immediately obvious as a drawback of using \textit{SORT} for 3D tracking, and we do not expect this application of \textit{SORT} to improve our results.

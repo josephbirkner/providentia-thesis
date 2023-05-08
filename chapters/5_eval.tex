@@ -6,20 +6,120 @@
 \section{Qualitative Results}
 \label{sec:qualres}
 
-Showcase good results and specific failures
+To acquire a first impression of the strengths and weaknesses of our fully implemented HD-map-assisted monocular 3D object detector, some sample detection frames are presented here which showcase particular situations.
 
-\newpage
+\begin{figure}[htb]
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1646667323.129810658.s110.camera.basler.south2.8mm}
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1646667339.058779966.s110.camera.basler.south1.8mm} \\
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm}
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1651673056.492970825.s110.camera.basler.south1.8mm}
+    \caption{Hand-picked frames to showcase the qualitative performance of our implemented monocular 3D object detector at daytime.}
+    \label{fig:qualitative-results-day}
+\end{figure}
+
+First off, Figure~\ref{fig:qualitative-results-day} shows representative frames with detection annotations, where the implemented system performs quite well.
+The frames in the left column are from the South-2 camera, which has a greater detection range and wider field-of-view, as it is angled more towards towards the horizon.
+The two frames for this camera show, that the implemented system can correctly detect the 3D shapes of many overlapping vehicles, which are oriented opposed or perpendicular to each other.
+The top-left frame showcases the good performance of the screen-space \textit{SORT} tracker in particular, which tracks \texttt{CAR 896} throughout its whole left turn.
+The bottom-left image shows the usefulness of the \textit{DBSCAN}-based bottom contour filter in the case of \texttt{BUS 375}.
+The detection of this bus is split into two parts by the pole of the overhead gantry bridge.
+This introduces a lot of noise into this detection's bottom contour, as highlighted in yellow.
+However, the detected 3D bounding box is unaffected by this noise.
+This frame also showcases the performance of our Vulnerable Road User (VRU) detection.
+Both present pedestrians and bicycles in the image are correctly localized.
+
+The frames in the right column are from the South-1 camera, which has a shorter detection range and narrower field-of-view, as it is angled more towards towards the ground.
+Both images in the right column again show generally good vehicle tracking and orientation estimation capabilities.
+
+\begin{figure}[htb]
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1646667395.641065639.s110.camera.basler.south1.8mm}
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1651673050.162472285.s110.camera.basler.south1.8mm}
+    \caption{Selected frames to showcase particular problems of our implemented monocular 3D object detector.}
+    \label{fig:qualitative-results-bad}
+\end{figure}
+
+Figure~\ref{fig:qualitative-results-bad} highlights particular weaknesses of the implemented monocular detector.
+The image on the left highlights three problems.
+First, the length estimation of \texttt{TRUCK 42} is bad, most likely due to over-eager bottom-countour filtering.
+Second, only one of the two pedestrians is detected \textemdash \texttt{PEDESTRIAN 4} is standing next to another one.
+Third, the system detects the rider of a bicycle as a separate entity, as in case of \texttt{BICYCLE 9} and \texttt{PEDESTRIAN 81}.
+This points to a need for more fine-tuned non-maximum suppression (NMS) of 3D detections.
+The image on the right shows a single problem: Our detector (more specifically the used \textit{Yolov7} instance segmentation model) frequently has problems with detecting the instance masks of large objects near the camera.
+In this case, both the big white truck in front of the camera, and the bus which is a bit further away, are not detected.
+
+\begin{figure}[htb]
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1653330059.588901912.s110.camera.basler.south2.8mm}
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1653330064.207615030.s110.camera.basler.south1.8mm}
+    \caption{A selection of frames to showcase the qualitative performance of our implemented monocular 3D object detector at night.}
+    \label{fig:qualitative-results-night}
+\end{figure}
+
+Finally, Figure~\ref{fig:qualitative-results-night} displays how the system performs at night.
+Naturally, the detection performance of a system which is based on an RGB camera which operates in the human visible light spectrum will be worse at night, due to the reduced visibility.
+However, the used \textit{Yolov7} instance segmentation model still works to some degree at night.
+The predicted instance masks are generally noisier, and there more false positives (such as \textt{PEDESTRIAN 13}) and false negatives (such as the truck on the top-left in the right image).
 
 % ----------------------------------------------------
 
 \section{Quantitative Evaluation Strategy}
 \label{sec:quant}
 
-Evaluation Settings \par
-Evaluation Pipeline \par
-Evaluation Metrics
+For an objective understanding of the performance of our \textit{Mono3D} solution, we performed a thorough ablative quantitative evaluation.
+For this purpose, we use the \textit{Providentia A9R1} dataset, as previously mentioned in the Introduction (see Chapter~\ref{sec:a9dataset}).
+As stated, the dataset provides 3D lidar label annotations for two camera perspectives onto the urban \textit{S110} road intersections.
+For each camera, four scenes of varying length (between 300 and 1200 frames) are available.
+The combination of two camera perspectives and four scenes yields eight frame sequences on which we evaluate our detector.
+For each frame sequence, the detector is run in different configurations to evaluate the effect of various design choices on the final performance.
+The detector is configured along four major components:
 
-\newpage
+\begin{enumerate}
+    \item \textbf{Instance Segmentation}: In the first detector stage,\ We can employ the \textit{Yolact}~\cite{liu2021yolactedge} instance segmentation model (running on 550x550 input frames), or the \textit{YoloV7}~\cite{wang2022yolov7} detector in 640x640, 1280x180, or 1920x1920 px resolution mode.\ We respectively designate these modes as $I^{550}_\text{YOL}$, $I^{640}_\text{Yv7}$, $I^{1280}_\text{Yv7}$, and $I^{1920}_\text{Yv7}$.
+    \item \textbf{Tracking}: This component concerns the usage of \textit{SORT tracking}~\cite{bewley2016simple} in our detector.\ We can apply tracking in $2D$ screen-space to assist the LSF algorithm, or in $3D$ space to stabilize vehicle position estimates, or both in $2D$ and $3D$, or not at all.\ We respectively designate these modes as $T_{2D}$, $T_{3D}$, $T^{2D}_{3D}$, and $T_0$.
+    \item \textbf{HD-Map Usage}: In this aspect, we consider whether to use heading information from the HD-map as an early input to the LSF algorithm, as a late single-position lookup correction, or not at all.\ These modes are designated as $M_\text{LSF}$, $M_1$ and $M_0$.
+    \item \textbf{Filtering}: Finally, we can switch two crucial filters on or off:\ The \textit{DBSCAN}~\cite{schubert2017dbscan} bottom contour point filter, and the output vehicle size filter.\ These modes will be symbolized as $F_\text{Cont}$, $F_\text{Size}$, $F_\text{Cont}^\text{Size}$, or $F_0$ (if no filter is used).
+\end{enumerate}
+
+In summary, each detector configuration is some combination of $I$, $T$, $M$ and $F$.\ For example, $\left[I^{640}_\text{Yv7}T^{2D}_{3D}M_\text{LSF}F_\text{Size}\right]$ would be the detector running with 640x640 px \textit{Yolov7} instance segmentation, both 2D and 3D tracking, L-Shape-Fitting Map Input, and vehicle size filtering (but no bottom-countour filtering).
+The combinatorial expansion yields 192 possible detector configurations, which are executed on each of the 8 LIDAR-labeled camera frame sequences.
+This results in 1536 prediction sequences.
+
+Furthermore, we evaluate the impact which emerges from the sensor delay between the camera and the LIDAR sensor frames.
+This delay is roughly 149ms on average.
+This synchronization error is important, because we evaluate the 3D camera detections on labeled LIDAR sensor measurements.
+These LIDAR labels will contain an inherent offset towards the camera detections due to the synchronization error.
+We check whether the error can be reduced by estimating the spatial velocity of the LIDAR detections using \textit{SORT}, and then correcting the label position based on the velocity and the known synchronization error time delta.
+
+We evaluate both the time-shifted and the original LIDAR labels with each prediction sequence.
+We call these two label modes $L_0$ (original) and $L_{\uparrow}$ (shifted).
+The label mode is appended to the detector configuration combination.
+For each of the 3072 sequence-detector-label combinations and each road suer class, we calculate the following metrics:
+
+\begin{enumerate}
+    \item The average orientation error \textbf{(AOE)}.
+    \item The average translation error \textbf{(ATE)}.
+    \item The average length error \textbf{(ALE)}.
+    \item The average width error \textbf{(AWE)}.
+    \item The average height error \textbf{(AHE)}.
+    \item The average precision at 10\% overlap \textbf{(AP@10)}.
+    \item The average 3D intersection-over-union ($\mathbf{IoU}_{3D}$)
+\end{enumerate}
+
+In the following, the values for metrics are presented in relation to particular detector and labeling configurations.
+
+% ----------------------------------------------------
+
+\section{Baseline}
+\label{sec:baseline}
+
+Baseline configuration performance.
 
 % ----------------------------------------------------
 

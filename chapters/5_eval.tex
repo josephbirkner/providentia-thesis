@@ -65,7 +65,7 @@ In this case, both the big white truck in front of the camera, and the bus which
 Finally, Figure~\ref{fig:qualitative-results-night} displays how the system performs at night.
 Naturally, the detection performance of a system which is based on an RGB camera which operates in the human visible light spectrum will be worse at night, due to the reduced visibility.
 However, the used \textit{Yolov7} instance segmentation model still works to some degree at night.
-The predicted instance masks are generally noisier, and there more false positives (such as \textt{PEDESTRIAN 13}) and false negatives (such as the truck on the top-left in the right image).
+The predicted instance masks are generally noisier, and there more false positives (such as \texttt{PEDESTRIAN 13}) and false negatives (such as the truck on the top-left in the right image).
 
 % ----------------------------------------------------
 
@@ -87,7 +87,7 @@ The detector is configured along four major components:
     \item \textbf{Filtering}: Finally, we can switch two crucial filters on or off:\ The \textit{DBSCAN}~\cite{schubert2017dbscan} bottom contour point filter, and the output vehicle size filter.\ These modes will be symbolized as $F_\text{Cont}$, $F_\text{Size}$, $F_\text{Cont}^\text{Size}$, or $F_0$ (if no filter is used).
 \end{enumerate}
 
-In summary, each detector configuration is some combination of $I$, $T$, $M$ and $F$.\ For example, $\left[I^{640}_\text{Yv7}T^{2D}_{3D}M_\text{LSF}F_\text{Size}\right]$ would be the detector running with 640x640 px \textit{Yolov7} instance segmentation, both 2D and 3D tracking, L-Shape-Fitting Map Input, and vehicle size filtering (but no bottom-countour filtering).
+In summary, each detector configuration is some combination of $I$, $T$, $M$ and $F$.\ For example, $\left[I^{640}_\text{Yv7}T^{2D}_{3D}M_\text{LSF}F_\text{Size}\right]$ would be the detector running with 640x640 px \textit{Yolov7} instance segmentation, both 2D and 3D tracking, L-Shape-Fitting Map Input, and vehicle size filtering (but no bottom-contour filtering).
 The combinatorial expansion yields 192 possible detector configurations, which are executed on each of the 8 LIDAR-labeled camera frame sequences.
 This results in 1536 prediction sequences.
 
@@ -103,23 +103,59 @@ The label mode is appended to the detector configuration combination.
 For each of the 3072 sequence-detector-label combinations and each road suer class, we calculate the following metrics:
 
 \begin{enumerate}
-    \item The average orientation error \textbf{(AOE)}.
-    \item The average translation error \textbf{(ATE)}.
-    \item The average length error \textbf{(ALE)}.
-    \item The average width error \textbf{(AWE)}.
-    \item The average height error \textbf{(AHE)}.
+    \item The average orientation error \textbf{(AOE)} ($=\text{TP}_0$).
+    \item The average translation error \textbf{(ATE)} ($=\text{TP}_1$.
+    \item The average length error \textbf{(ALE)} ($=\text{TP}_2$).
+    \item The average width error \textbf{(AWE)} ($=\text{TP}_3$).
+    \item The average height error \textbf{(AHE)} ($=\text{TP}_4$).
     \item The average precision at 10\% overlap \textbf{(AP@10)}.
     \item The average 3D intersection-over-union ($\mathbf{IoU}_{3D}$)
 \end{enumerate}
 
-In the following, the values for metrics are presented in relation to particular detector and labeling configurations.
+In the following, the values for these metrics are presented in relation to particular detector and labeling configurations.
+To judge the overall performance of a configuration, we aggregate these metrics into a single \enquote{Providentia Detection Score}, similar to the \textit{nuScenes Detection Score} (see Section~\ref{sec:evalmetrics}):
+
+\[
+    \text{Score} = \frac{1}{10} \left[5 * \text{mAP} + \sum^5_{k=1}(1-\text{min}(1, \text{mTP}_k))\right]
+\]
+
+The score is calculated for each configuration, by averaging the metrics of the configuration across all perspectives of all dataset scenes.
+A chart of all calculated Scores is shown in Figure~\ref{fig:all-scores}.
 
 % ----------------------------------------------------
 
-\section{Baseline}
+\section{Overall Quantitative Results}
 \label{sec:baseline}
 
-Baseline configuration performance.
+\begin{figure}[htb]
+    \input{charts/overall}
+    \caption{Overview for the Score values of all possible 384 detector configuration-label combinations, with arrows pointing out the best, baseline, and worst combination.}
+    \label{fig:all-scores}
+\end{figure}
+
+In order to establish the veracity of our score metric, we plotted the score values for all possible 384 detector configuration-label combinations into a single chart.
+This plot is shown in Figure~\ref{fig:all-scores}.
+In this plot, the Scores of the worst-performing- ($\left[I^{550}_\text{YOL}T^{2D}_{3D}M_1F_0L_{\uparrow}\right]$), baseline- ( $\left[I^{550}_\text{YOL}T_0M_0F_0L_0\right]$), and best-performing ($\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$) model-configurations are also highlighted.
+The baseline model works with pure L-Shape-Fitting that does not use any HD-map, tracking, or bottom-contour/size filtering augmentations.
+Table~\ref{tbl:baseline} shows the performance of this model in greater detail.
+Of particular interest is the fairly large AOE of $45.44\degree$.
+This means, that the predicted orientation of bounding boxes in this model is essentially completely disconnected from the ground truth.
+Picking a random orientation would yield the same result.
+
+\begin{table*}[htbp]
+    \input{charts/baseline}
+    \caption{Baseline model results.}
+    \label{tbl:baseline}
+\end{table*}
+
+This stands in contrast to the performance metrics for the best-performing model, which are shown in Table~\ref{tbl:best}.
+In the following sections, we will discuss in detail how specific model configurations improve (or worsen) specific metrics for different road user classes.
+
+\begin{table*}[htbp]
+    \input{charts/best}
+    \caption{Best model results, with improvements towards the baseline highlighted in green for each metric.}
+    \label{tbl:best}
+\end{table*}
 
 % ----------------------------------------------------
 
@@ -134,21 +170,12 @@ Showcase qualitative evidence to support conclusions
 
 % ----------------------------------------------------
 
-\section{Impact of YOLOv7}
+\section{Impact of YOLOv7 and Image Resolution}
 \label{sec:impactyolov7}
 
 Impact of YOLOv7
 
 Showcase qualitative evidence to support conclusions
-
-\newpage
-
-% ----------------------------------------------------
-
-\section{Impact of Input Image Resolution}
-\label{sec:impactresolution}
-
-Impact of Input Image Resolution
 
 \newpage
 
@@ -165,7 +192,7 @@ Showcase qualitative evidence to support conclusions
 
 % ----------------------------------------------------
 
-\section{Impact of Category-based Dimension Clamping}
+\section{Impact of Dimension Filtering}
 \label{sec:impactsizefiltering}
 
 Impact of Category-based Dimension Clamping
@@ -176,7 +203,7 @@ Showcase qualitative evidence to support conclusions
 
 % ----------------------------------------------------
 
-\section{Impact of Early HD Map Lookup}
+\section{Impact of HD-Map for L-Shape-Fitting}
 \label{sec:impactearlymap}
 
 Impact of Early HD Map Lookup
@@ -187,7 +214,7 @@ Showcase qualitative evidence to support conclusions
 
 % ----------------------------------------------------
 
-\section{Impact of Historical Plausibility}
+\section{Impact of Tracking for L-Shape-Fitting}
 \label{sec:impacthistplausibility}
 
 Impact of Historical Plausibility

@@ -139,7 +139,7 @@ In this plot, the Scores of the worst-performing- ($\left[I^{550}_\text{YOL}T^{2
 The baseline model works with pure L-Shape-Fitting that does not use any HD-map, tracking, or bottom-contour/size filtering augmentations.
 Table~\ref{tbl:baseline} shows the performance of this model in greater detail.
 Of particular interest is the fairly large AOE of $45.44\degree$.
-This means, that the predicted orientation of bounding boxes in this model is essentially completely disconnected from the ground truth.
+This means, that the predicted orientation of bounding boxes in this model is  completely disconnected from the ground truth.
 Picking a random orientation would yield the same result.
 
 \begin{table*}[htbp]
@@ -162,64 +162,137 @@ In the following sections, we will discuss in detail how specific model configur
 \section{Impact of Late HD Map Lookup}
 \label{sec:impactlatemap}
 
-Impact of Late HD Map Lookup
+In this section, we present the evaluation of the \enquote{Late HD Map Lookup} technique, a simpler alternative to the \enquote{early} HD map lookup.
+As mentioned in Section~\ref{sec:hdmaplate}, this approach has a number of drawbacks which are expected to negatively impact the system's performance.
+The purpose of this evaluation is to provide a clear understanding of the limitations and consequences of using the late lookup approach.
+This was the first approach we tried to improve upon the baseline detector.
+The metrics of a Yolact-based detector which simply adds late HD-map-lookup-based heading correction are presented in Table~\ref{tbl:late-lookup-results}.
 
-Showcase qualitative evidence to support conclusions
+\begin{table*}[htbp]
+    \input{charts/late-lookup}
+    \caption{Results for the simplest possible late map lookup detector, with differences towards the baseline highlighted in red and green.}
+    \label{tbl:late-lookup-results}
+\end{table*}
 
-\newpage
+One of the main issues with the late HD map lookup is that it takes place after the L-Shape-Fitting has already determined a heading value.
+This means that the heading information from the HD map cannot be used to guide or correct the LSF-based size , leading to inaccuracies in the width and length estimation.
+This is also showing in the results, as none of the size or translation metrics are significantly improved.
+
+Another significant drawback of the late HD map lookup is that it discards a lot of the positional information from the ground-truth sensor input.
+By querying the HD map only for heading options at the predicted vehicle position, the system loses the ability to take advantage of the more accurate and granular bottom contour data from the sensor inputs.
+This loss of information is reflected in the barely improved orientation error.
 
 % ----------------------------------------------------
 
 \section{Impact of YOLOv7 and Image Resolution}
 \label{sec:impactyolov7}
 
-Impact of YOLOv7
+The comparison of the average performance of detectors using different instance segmentation models highlights some interesting points, as shown in Table~\ref{tbl:resolution-results}.
+Comparing the performance of the \textit{Yolact-Edge} model with the Yolov7 models at different resolutions, we can see that the Yolov7 models generally outperform the \textit{Yolact-Edge} model.
+The \textit{Yolov7} ($640x640$) model shows an average score improvement of $1.35\%$ compared to the \textit{Yolact-Edge} model, with an increase in mean AP by $3.05\%$.
+Similarly, \textit{Yolov7} (1280x1280) has a score improvement of $1.84\%$ compared to \textit{Yolov7} (640x640), and a higher mean AP of $5.02\%$.
 
-Showcase qualitative evidence to support conclusions
+It is important to note that \textit{Yolov7} (1920x1920) does not outperform \textit{Yolov7} (1280x1280) on average, as it has a slightly lower overall score by $0.62\%$.
+However, the pedestrian detection performance is greatly improved by the \textit{Yolov7} (1920x1920) model, as its AP for pedestrian detection is at $20.38\%$, compared to $13.01\%$ in the \textit{Yolov7} (640x640) model and only $0.63\%$ in the \textit{Yolact-Edge} model.
 
-\newpage
+The results indicate that higher-resolution input may not always result in better overall performance, but can significantly improve the detection of specific object classes like pedestrians.
+This suggests that for certain applications or scenarios, focusing on higher resolutions could be beneficial.
+
+In summary, while \textit{Yolov7} (1920x1920) does not show an overall better performance than \textit{Yolov7} (1280x1280), its improvement in pedestrian detection is noteworthy.
+The \textit{Yolov7} models outperform the \textit{Yolact-Edge} model, with the \textit{Yolov7} (1280x1280) showing the best average metrics among the compared models.
+
+\begin{table*}[htbp]
+    \input{charts/resolution}
+    \caption{Average results for different instance segmentation models, with differences in the resulting metrics shown towards the previous model's average values.}
+    \label{tbl:resolution-results}
+\end{table*}
 
 % ----------------------------------------------------
 
-\section{Impact of Bottom Contour Filtering}
+\newpage
+
+\section{Impact of Filters}
 \label{sec:impactcontourfiltering}
 
-Impact of Bottom Contour Filtering
+Furthermore, we evaluate the impact of \textit{DBSCAN}-based bottom-contour filtering and size filtering on the detector performance.
+The results presented in Table~\ref{tbl:filter-results} show the impact of different filter types on the 3D object detection task.
+Three different filter types are considered for comparison: no filters, contour filters, and size filters.
+For each filter type, the best-performing model is selected and compared against the overall best model, which uses both filters.
+The following conclusions can be drawn for these configurations:
 
-Showcase qualitative evidence to support conclusions
+\textbf{No Filters:} The best model without any filters yields an overall score of $31.27\%$, which is the lowest among the three variations.
+All the metrics exhibit worse performance compared to the best model.
+This indicates that filters can be essential for improving the model's performance.
+
+\textbf{Contour Filters:} When contour filters are applied, the overall score increases to $36.57\%$.
+Although there is an improvement in the mean values for AOE and ALE, the other metrics such as ATE, AWE, and IoU show a slight decrease compared to the best model.
+Nonetheless, the contour filters help to enhance the overall performance of the model.
+
+\textbf{Size Filters:} Applying size filters results in the highest overall score of $39.97\%$, which is only $0.20\%$ lower than the best model.
+The size filter leads to improvements in AOE, AWE, Precision, and AP, while causing a slight decrease in ATE, ALE, AHE, and IoU.
+Despite these mixed results, the size filters demonstrate the most promising impact on the model's performance.
+
+In summary, using filters in the 3D object detection task can substantially improve the model's performance.
+Among the different filter types, size filters show the most significant positive impact on the overall score, while bottom contour filters also provide a noticeable improvement.
+
+\begin{figure}[htb]
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm.nofilter}
+    \includegraphics[width=0.499\linewidth]{
+        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm}
+    \caption{Comparison of the same frame from our best model ($\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}\right]$) (right), vs. the same model except with disabled filtering (left). }
+    \label{fig:compare-without-filter}
+\end{figure}
+
+Figure~\ref{fig:compare-without-filter} further illustrates the effects of the filters on the quality of the detection result.
+
+\begin{table*}[htbp]
+    \input{charts/filters}
+    \caption{Average results for models which use \textit{DBSCAN}-based bottom contour filtering and/or size filtering, compared with those models which do not use any filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other.}
+    \label{tbl:filter-results}
+\end{table*}
 
 \newpage
 
 % ----------------------------------------------------
 
-\section{Impact of Dimension Filtering}
-\label{sec:impactsizefiltering}
+\section{Impact of L-Shape-Fitting Augmentations}
+\label{sec:lsf-aug-impact}
 
-Impact of Category-based Dimension Clamping
+In this section, we will discuss the impact of different LSF augmentations on the detector's performance.
+Two augmentations are tested: HD-Map Input and Screen-Space Tracking.
+We will analyze the results of these augmentations and compare them with the best performance achieved without LSF Augments.
+As an initial overview, Figure~\ref{fig:lsf-augmentations-overview} provides a rough indication for the performance distribution of different augmentation configurations.
 
-Showcase qualitative evidence to support conclusions
+\begin{figure}[htb]
+    \input{charts/lsf-augmentations}
+    \caption{Overview for model performances when model uses augmentations.}
+    \label{fig:lsf-augmentations-overview}
+\end{figure}
 
-\newpage
+\subsection{Impact of HD-Map Augmentation}
+\label{subsec:impactmap}
 
-% ----------------------------------------------------
+The best-performing model which uses only the HD-Map LSF augmentation ($\left[I^{1920}\text{Yv7}T_0M\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$), reaches a Score of $40.11\%$, which is only $0.06\%$ lower than the best model, which uses both LSF Augments.
+The mean Average Orientation Error (AOE) was significantly reduced to $13.35\degree$, which beats the overall best model by $0.45\degree$.
+However, the Intersection over Union (IoU) metric is worse by $0.31\%$, and the Recall is worse by $0.19\%$.
+Overall, the HD-Map Input LSF augmentation demonstrates a very positive impact on the detector's performance.
 
-\section{Impact of HD-Map for L-Shape-Fitting}
-\label{sec:impactearlymap}
+\subsection{Impact of Screen-Space Tracking Augmentation}
+\label{subsec:impactlsf}
 
-Impact of Early HD Map Lookup
+The best-performing model which uses only the Screen-Space Tracking LSF augmentation ($\left[I^{1920}\text{Yv7}T{2D}M_1F_\text{Cont}^\text{Size}L_{\uparrow}\right]$) reaches a Score of $34.95\%$, which is $5.22\%$ lower than the best model.
+Compared to the best un-augmented model, the mean AOE remains almost unchanged at $42.94\degree$.
+Interestingly, the model beats the best model barely on Precision, Recall, and AP.
+Overall, the sole Screen-Space Tracking LSF augmentation shows mixed results, with some improvements in Precision and Recall but a lower overall Score.
+We can conclude, that Tracking alone is insufficient as a bias for vehicle orientation estimation.
+However, the final best model still uses this augmentation in conjunction with the HD-map, and thereby manages to reach the highest score.
 
-Showcase qualitative evidence to support conclusions
-
-\newpage
-
-% ----------------------------------------------------
-
-\section{Impact of Tracking for L-Shape-Fitting}
-\label{sec:impacthistplausibility}
-
-Impact of Historical Plausibility
-
-Showcase qualitative evidence to support conclusions
+\begin{table*}[htbp]
+    \input{charts/lsf}
+    \caption{Best result for model which uses raw L-Shape-Fitting (LSF), compared with best results for models which use just one of the Screen-Space Tracking or HD-Map Lookup Augmentations.}
+    \label{tbl:lsf-results}
+\end{table*}
 
 \newpage
 
@@ -228,29 +301,33 @@ Showcase qualitative evidence to support conclusions
 \section{Impact of 3D Tracking}
 \label{sec:impacttracking}
 
-Impact of 3D Tracking
-
-\newpage
-
-% ----------------------------------------------------
+\begin{table*}[htbp]
+    \input{charts/track-3d}
+    \caption{Best result for model which uses 3D Tracking, compared with the best model.}
+    \label{tbl:track-3d-results}
+\end{table*}
 
 \section{Impact of LIDAR Label Shifting}
-\label{sec:impactlabelshifting}
+\label{sec:impactlidar}
 
-Impact of LIDAR Label Shifting
-
-Showcase qualitative evidence to support conclusions
+\begin{table*}[htbp]
+    \input{charts/label-shift}
+    \caption{Average results for evaluations with time-shifted labels compared to the original unsynchronized LIDAR labels.}
+    \label{tbl:label-shift-results}
+\end{table*}
 
 \newpage
 
 % ----------------------------------------------------
 
-\section{Impact of Weather/Daytime Conditions}
+\section{Impact of Night-time Conditions}
 \label{sec:weather}
 
-Impact of Weather conditions
-
-Showcase qualitative evidence to support conclusions
+\begin{table*}[htbp]
+    \input{charts/night}
+    \caption{Average results for evaluations on the night-time scene of the A9 dataset with \textit{Yolact-Edge} and \textit{Yolov7} models.}
+    \label{tbl:nighttime-results}
+\end{table*}
 
 \newpage
 
@@ -259,7 +336,7 @@ Showcase qualitative evidence to support conclusions
 \section{Performance}
 \label{sec:performance}
 
-Performance
+Small table of average FPS with different models.
 
 % ----------------------------------------------------
 
@@ -267,5 +344,7 @@ Performance
 \label{sec:summary}
 
 Summarize evaluation results
+
+Do some meta-evaluation (dataset problems, VRU detection, height-position estimation).
 
 % ----------------------------------------------------

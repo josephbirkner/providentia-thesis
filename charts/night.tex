@@ -1,0 +1,46 @@
+
+        \centering
+        \scalebox{0.91}{
+        \begin{tabular}{|l|rrrrrr|rrr|}
+\hline & \multicolumn{6}{l|}{\textbf{Average Night-Time Results Using Yolact-Edge}} & \multicolumn{3}{l|}{\textbf{Score}: $21.05\%$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $38.36\degree$ & $1.14m$ & $0.53m$ & $1.86m$ & $0.85m$ & $30.23\%$ & $26.95\%$ & $10.31\%$ & $25.56\%$ \\ 
+Car & $40.07\degree$ & $0.94m$ & $0.32m$ & $1.29m$ & $0.54m$ & $31.57\%$ & $39.74\%$ & $26.44\%$ & $38.55\%$ \\ 
+Truck & $22.71\degree$ & $2.33m$ & $0.38m$ & $3.93m$ & $1.31m$ & $18.70\%$ & $0.65\%$ & $0.19\%$ & $0.44\%$ \\ 
+Motorcycle & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+Bus & $30.01\degree$ & $1.22m$ & $0.83m$ & $2.16m$ & $1.48m$ & $29.71\%$ & $31.99\%$ & $18.15\%$ & $30.76\%$ \\ 
+Pedestrian & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+Bicycle & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{32.79\degree}$ & $\mathbf{1.41m}$ & $\mathbf{0.51m}$ & $\mathbf{2.31m}$ & $\mathbf{1.04m}$ & $\mathbf{27.55\%}$ & $\mathbf{24.83\%}$ & $\mathbf{13.77\%}$ & $\mathbf{23.83\%}$ \\ 
+
+            \hline
+            \hline & \multicolumn{6}{l|}{\textbf{Average Night-Time Results Using Yolov7}} & \multicolumn{3}{l|}{\textbf{Score}: $24.37\%$ $({\scriptstyle\color{TUMGreen}+3.32})$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $33.78\degree$ & $1.17m$ & $0.57m$ & $1.95m$ & $0.73m$ & $28.24\%$ & $24.15\%$ & $11.27\%$ & $22.72\%$ \\ 
+Car & $34.38\degree$ & $0.96m$ & $0.38m$ & $1.20m$ & $0.48m$ & $29.62\%$ & $45.17\%$ & $37.03\%$ & $44.20\%$ \\ 
+Truck & $24.64\degree$ & $1.46m$ & $0.41m$ & $2.69m$ & $0.58m$ & $11.80\%$ & $3.82\%$ & $2.25\%$ & $3.34\%$ \\ 
+Motorcycle & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+Bus & $26.71\degree$ & $1.28m$ & $0.92m$ & $2.54m$ & $1.07m$ & $28.34\%$ & $30.36\%$ & $15.65\%$ & $29.16\%$ \\ 
+Pedestrian & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+Bicycle & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash & \textemdash \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{29.88\degree}$ & $\mathbf{1.22m}$ & $\mathbf{0.57m}$ & $\mathbf{2.09m}$ & $\mathbf{0.71m}$ & $\mathbf{24.50\%}$ & $\mathbf{25.88\%}$ & $\mathbf{16.55\%}$ & $\mathbf{24.85\%}$ \\ 
+$\Delta$ {Previous} & ${\scriptstyle\color{TUMGreen}-2.91\degree}$ & ${\scriptstyle\color{TUMGreen}-0.19m}$ & ${\scriptstyle\color{red}+0.06m}$ & ${\scriptstyle\color{TUMGreen}-0.21m}$ & ${\scriptstyle\color{TUMGreen}-0.33m}$ & ${\scriptstyle\color{red}-3.05\%}$ & ${\scriptstyle\color{TUMGreen}+1.04\%}$ & ${\scriptstyle\color{TUMGreen}+2.78\%}$ & ${\scriptstyle\color{TUMGreen}+1.03\%}$ \\ 
+
+            \hline
+            
+        \end{tabular}
+        }

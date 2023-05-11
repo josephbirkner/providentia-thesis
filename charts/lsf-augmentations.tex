@@ -1,0 +1,26 @@
+
+        \begin{tikzpicture}
+        \begin{axis}[
+            clip=false,
+            ybar,
+            width=\textwidth,
+            height=0.4\textwidth,
+            bar width=0.1pt,
+            ylabel={Score},
+            ymin=10, ymax=50,
+            xtick=\empty,
+            xticklabels={},
+            enlarge x limits={abs=1pt},
+        ]        
+        
+            \addplot [draw=green, fill=none] table [x=xpos, y=yvalue, col sep=comma]{charts/lsf-augmentations.tex.green.dat};
+            
+            \addplot [draw=blue, fill=none] table [x=xpos, y=yvalue, col sep=comma]{charts/lsf-augmentations.tex.blue.dat};
+            
+            \addplot [draw=red, fill=none] table [x=xpos, y=yvalue, col sep=comma]{charts/lsf-augmentations.tex.red.dat};
+            
+            \addplot [draw=violet, fill=none] table [x=xpos, y=yvalue, col sep=comma]{charts/lsf-augmentations.tex.violet.dat};
+            
+        \end{axis}
+        \end{tikzpicture}
+        

@@ -1,0 +1,79 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Overview of the Providentia A9 Test Stretch (Graphic produced using Google Maps).\relax }}{4}{figure.caption.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Overview of the OpenDRIVE map of the Providentia test area, with zoomed in cut-out of the S110 intersection with its S1 and S2 cameras.\relax }}{5}{figure.caption.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \textbf {On the left:} General dataflow in the Monocular 3D Object Detection task. For each instance of a recognized object in the RGB input frame, the detector must estimate a 3D pose parameter-set. The more variables the detector must estimate, the harder the task becomes. For example, elevation (i.e. the position z component) may be omitted. \textbf {On the right:} Figure 4.4 from~\cite {leonthesis}. Frame of a highway scene. In such a scenario, the detector may also omit the calculation of the heading (yaw) orientation angle and assume a fixed value.\relax }}{6}{figure.caption.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Two-stage detection from camera image (left) via instance segmentation (middle) and $2D \rightarrow 3D$ lifting via the instance mask bottom contour (right). Graphic from~\cite {leonthesis}.\relax }}{7}{figure.caption.8}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Visualisation of heading vectors as RGB values, smoothly interpolated from the lane boundary geometry. \textbf {Left:} Colored heading overlays for the S110-S2 camera perspective. In the bottom-right corner, there are four overlapping lanes. \textbf {Middle:} RGB heading visualization for the whole S110 intersection. \textbf {Right:} RGB heading visualization for a roundabout.\relax }}{8}{figure.caption.9}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Visualisation of a \textit {Mono3D} detection scenario where tracking resolves a heading ambiguity.\relax }}{9}{figure.caption.10}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Figure 4.1 from~\cite {leonthesis}, illustrating the stages of the monocular 3D detection process for highway scenes.\relax }}{13}{figure.caption.11}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Figure 1 from~\cite {guo2021detection}, illustrating their approach to keypoint estimation based on two lines which are regressed to the vehicle bottom contour: \textit {(a)} RGB image; \textit {(b)} vehicle segmentation mask; \textit {(c)} the contour point of the bottom edge of the vehicle and the contact points between vehicle and ground are represented by white dots and red circles.\relax }}{14}{figure.caption.12}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Figure 2 from~\cite {zhang2017efficient}. In (a) and (c), the grey dots represent the laser range scan points and the rectangles in green, red, and blue are the fitted rectangles by using criteria area minimization, closeness maximization, and variance minimization. The normalized scores for the three criteria over the searched directions are plotted in (b) and (d), respectively. In example (a), the fitting results from the three criteria are very similar, and the maxima of the three curves in (b) are very close (marked by arrows and achieved at 88◦, 89◦, and 0◦, respectively). In example (b), the fitting result from the area criteria is different from the other two, and its maximum in (d) is away from the other two (achieved at 69◦, 1◦, and 86◦, respectively).\relax }}{15}{figure.caption.13}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Figures 12 and 13(c) from~\cite {rezaei2021traffic}, illustrating their approach to heading estimation based on the geometry of proximate road curbs which have been extracted from sattelite imagery. This is analogous to our use of the HD map in this work (to some extent).\relax }}{16}{figure.caption.14}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Figure 2 from~\cite {carrillo2021urbannet}, describing how the Urban HD map assists the 3D object descriptor estimation model. Center-lines are \textit {painted} as a per-pixel feature into the 3D object descriptor network's single input image.\relax }}{16}{figure.caption.15}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Figures 2 and 3 from~\cite {masi2021augmented}, describing how the HD map is used for calibration (left) and how the vehicle size is calculated from its 2D bounding box (right).\relax }}{17}{figure.caption.16}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Figure~2 from \textit {YOLACT}. The figure shows how generated protorype masks are combined with instance-specific coefficients to produce the final instance masks.\relax }}{20}{figure.caption.17}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Figure~3 from \textit {BlendMask}, showcasing how it replaces \textit {YOLACT's} Prototype Masks with Bottom-Level Bases which are combined using per-instance Top-Level Attention maps rather than coefficients.\relax }}{21}{figure.caption.18}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Figures~2 and~3 from~\cite {althoff2018automatic}. The left-hand-side image shows a typical \textit {OpenDRIVE}-based model with multiple lane-sections based on a common continuous reference line. The left-hand-side image shows the simpler modeling approach of \textit {Lanelet2}, where lanes are based on self-contained pre-triangulated shapes.\relax }}{22}{figure.caption.19}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Algorithms~2-5 from \textit {L-Shape-Fitting}~\cite {zhang2017efficient}. Algorithm~2 shows the main theta search loop, while Algorithms~3-5 are possible implementations of the \texttt {CalculateCriterionX} function.\relax }}{25}{figure.caption.20}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.1}{\ignorespaces High-level sketch of the implemented \textit {Mono3d} solution. The Camera Driver Node publishes camera frames to Shared Memory. They are picked up from there by the $2D$ Instance Segmentation node, which requires a machine with strong GPU resources. The detected instances, including their instance masks, are published for each frame via \textit {ROS}, and received by the $3D$ detector node, which does not require a GPU.\relax }}{29}{figure.caption.21}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Low-level illustration of our \textit {Mono3d} pipeline. To determine a $3D$ pose for a non-VRU $2D$ object instance, its associated pixel mask and category are passed through six processing steps: \textbf {(1)} \textit {Bottom Contour Projection}, \textbf {(2)} \textit {Outlier Filtering}, \textbf {(3)} \textit {Map Grid Yaw Option Lookup}, \textbf {(4)} \textit {L-Shape-Fitting}, \textbf {(5)} \textit {Height and Position Regression}, \textbf {(6)} \textit {Historical Plausibility Scoring}. \textbf {Legend:} Blue boxes mark normal I/O data, red boxes mark I/O variables which are primary components of a final pose hypothesis. Yellow boxes mark processes. Green boxes with dashed arrows mark auxiliary data flow which is not restricted to the scope of the current frame.\relax }}{32}{figure.caption.22}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Illustration of our proposed solution for VRU detection. Camera $C$ observes pedestrian $A$ and cylist $B$. Their 2D bottom contour outline is highlighted in red, the projection of the outline to the ground is highlighted in dashed blue lines. Only the highlighted points on the respective bottom contour projections which remain close to the camera may be considered to estimate the position of $A$/$B$.\relax }}{34}{figure.caption.23}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Illustration of our lane tesselation algorithm for a single lane section. The OpenDRIVE lane boundary lines are sampled at constant intervals to convert them to polylines. Orientations are calculated for each derived poly-line vertex. For each lane, the enclosing polylines are then \enquote {zipped} together with a triangle-strip.\relax }}{35}{figure.caption.24}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Illustration of lane heading rasterization using barycentric coordinates. Lane $L$ is rasterized into grid $G$, and the barycentric coordinates $w_1$, $w_2$ and $w_3$ are shown for one specific gric-cell center point $C$.\relax }}{36}{figure.caption.25}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Derived heading values rendered on top of the S110-S2 camera perspective (left) and the S110-S1 camera perspective (right).\relax }}{37}{figure.caption.26}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Illustration of a map heading histogram lookup for the bottom contour of vehicle $V$. The map lookup grid-set provides grids for three roads $G_1$, $G_2$ and $G_3$. The histogram values $h(G,V)$ per road, as well as the respective normalized scores which are calculated from the histogram, are shown on the right.\relax }}{38}{figure.caption.27}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Illustration of a joint 3D height and location for vehicle V. Initially, camera $C$ observes only the screen-space bounding box $\mathtt {AABB}(\texttt {InstanceMask}_V)$.\ We now search for the vehicle height $h$ based on a value along the ray $R$, which is cast from $C$ through the 2D AABB center.\ Only for the correct $h_\text {gt}$ will the 2D AABB of the predicted 3D box $\mathtt {AABB}(C,\mathtt {Box}(R,w,l,\theta ,h_\text {gt}))$ be equal to $\mathtt {AABB}(\texttt {InstanceMask}_V)$.\relax }}{39}{figure.caption.28}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Hand-picked frames to showcase the qualitative performance of our implemented monocular 3D object detector at daytime.\relax }}{43}{figure.caption.29}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Selected frames to showcase particular problems of our implemented monocular 3D object detector.\relax }}{44}{figure.caption.30}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.3}{\ignorespaces A selection of frames to showcase the qualitative performance of our implemented monocular 3D object detector at night.\relax }}{44}{figure.caption.31}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Overview for the Score values of all possible 384 detector configuration-label combinations, with arrows pointing out the best, baseline, and worst combination.\relax }}{47}{figure.caption.33}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Comparison of the same frame from our best model ($\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$) (right), vs. the same model except with disabled LSF augmentations (top-left), disabled tracking augmentation (top-right), or disabled map augmentation (bottom-left).\relax }}{51}{figure.caption.40}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Overview for model performances across different LSF augmentation configurations. The bars for a model is color-coded by their usage of Raw LSF without Augmentation (green), LSF with screen-space tracking (blue), LSF with HD-map augmentation (red), or LSF with both augmentations (violet). \relax }}{52}{figure.caption.41}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\contentsfinish 

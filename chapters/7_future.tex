@@ -3,27 +3,48 @@
 \chapter{Future Work}
 \label{ch:future}
 
+In this chapter, we outline potential avenues for future work to further enhance the performance, capabilities, and robustness of our traffic object detection and segmentation system.
+
+\section{Improved Non-Maximum Suppression (NMS)}
+\label{sec:nms}
+
+A common issue encountered in our system is the overlapping of bounding boxes, particularly for pedestrians inside bicycles or vans inside trucks.
+To address this problem, we can explore more advanced non-maximum suppression (NMS) techniques that better handle these cases and suppress overlapping boxes, thus improving the system's overall accuracy and robustness.
+
 \section{Substituting HD Maps}
 \label{sec:nomap}
 
-Derive map info from optical flow
+Instead of relying solely on HD maps for obtaining heading information, we can explore deriving this information directly from the optical flow.
+This approach could offer a more adaptive and flexible solution to changing environments and potentially improve the system's performance in situations where the HD maps are unavailable or inaccurate.
 
 \section{Extended use of Kalman Filters}
 \label{sec:extkalman}
 
-The current implementation is almost non-viable.
-
-\section{Neural Keypoint Estimation}
-\label{sec:neuralkeypoints}
-
-Improve Long Tail Robustness
+The current implementation of Kalman filters in our system does not include heading information in the state.
+This omission renders the current approach non-viable for accurate tracking and prediction de-noising.
+Extending the Kalman filter to include heading information would significantly improve its effectiveness in estimating the state of the tracked objects.
 
 \section{Improving Pedestrian/Cyclist Detection}
 \label{sec:improvepedcyclist}
 
-The current implementation is almost non-viable.
+The current solution for pedestrian and cyclist (VRU) detection is highly unoptimized, as the focus of this work was mostly directed towards road vehicle pose estimation.
+Future work should focus on optimizing and refining the detection algorithm, increasing its accuracy and robustness, and also attempting to predict VRU orientations.
+
+\section{Neural Keypoint Estimation}
+\label{sec:neuralkeypoints}
+
+The long tail robustness of our system can be improved by incorporating neural keypoint estimation techniques.
+This approach would help better handle obstructions, occlusions, and unusual vehicle orientations, ultimately enhancing the system's performance in complex and dynamic traffic scenarios.
+It could also unify the VRU/Vehicle detection pipelines, and further improve the system's runtime performance.
+This presents itself as a very promising research direction.
 
 \section{Amodal Instance Segmentation}
 \label{sec:amodal}
 
-Probably worse than keypoints, but certainly viable.
+Amodal instance segmentation is a way if predicting instance masks while also completing masks where the detection is cut off or obstructed.
+This may be a viable alternative to keypoints for object detection and segmentation, as it woul be a less intrusive architectural change.
+While it may not be as robust as keypoints in some cases, it might still present a valid approach to improve our system's overall performance.
+By investigating amodal instance segmentation techniques, we can potentially enhance the system's ability to detect and segment objects in challenging traffic scenarios.
+
+\par\vspace*{\fill}
+\epigraph{``Optimism is a strategy for making a better future. Because unless you believe that the future can be better, you are unlikely to step up and take responsibility for making it so."}{--- \textup{Noam Chomsky}}

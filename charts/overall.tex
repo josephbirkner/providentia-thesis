@@ -4,19 +4,19 @@
             clip=false,
             ybar,
             width=\textwidth,
-            height=0.4\textwidth,
+            height=0.35\textwidth,
             bar width=0.1pt,
             ylabel={Score},
-            ymin=10, ymax=50,
+            ymin=10, ymax=40,
             xtick=\empty,
             xticklabels={},
             enlarge x limits={abs=1pt},
         ]        
         
             \addplot [draw=blue, fill=none] table [x=xpos, y=yvalue, col sep=comma]{charts/overall.tex.blue.dat};
-            \draw[black, thin, -latex]([xshift=0.1pt]axis cs:1,10) -- ++(axis direction cs:0,-8)node[below, font=\tiny, anchor=north west, outer sep=0] {\textbf{Model}: $\left[I^{550}_\text{YOL}T^{2D}_{3D}M_1F_0L_{\uparrow}\right]$: $13.58$};
-\draw[black, thin, -latex]([xshift=0.1pt]axis cs:12,10) -- ++(axis direction cs:0,-3)node[below, font=\tiny, anchor=north west, outer sep=0] {\textbf{Model}: $\left[I^{550}_\text{YOL}T_0M_0F_0L_0\right]$: $17.78$};
-\draw[black, thin, -latex]([xshift=0.1pt]axis cs:384,10) -- ++(axis direction cs:0,-3)node[below, font=\tiny, anchor=north east, outer sep=0] {\textbf{Model}: $\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$: $40.17$};
+            \draw[black, thin, -latex]([xshift=0.1pt]axis cs:1,10) -- ++(axis direction cs:0,-8)node[below, font=\tiny, anchor=north west, outer sep=0] {\textbf{Model}: $\left[I^{550}_\text{YOL}T^{2D}_{3D}M_1F_0L_{\uparrow}\right]$: $11.50$};
+\draw[black, thin, -latex]([xshift=0.1pt]axis cs:10,10) -- ++(axis direction cs:0,-3)node[below, font=\tiny, anchor=north west, outer sep=0] {\textbf{Model}: $\left[I^{550}_\text{YOL}T_0M_0F_0L_0\right]$: $15.31$};
+\draw[black, thin, -latex]([xshift=0.1pt]axis cs:384,10) -- ++(axis direction cs:0,-3)node[below, font=\tiny, anchor=north east, outer sep=0] {\textbf{Model}: $\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$: $40.29$};
 
         \end{axis}
         \end{tikzpicture}

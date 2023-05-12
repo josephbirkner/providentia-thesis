@@ -54,7 +54,8 @@ Within this project, we aim to explore how the HD map of the test area can serve
 We hypothesize, that the highly detailed map might provide the monocular detector with information about viable road user orientations.
 
 For the demonstration purpose of this work, we focus our efforts on two cameras which are installed at the S110 sensor station: \texttt{S110-S1} and \texttt{S110-S2}.
-Both cameras have a native resolution of 1920x1200 pixels, run at 60 Hz, and have a 90 degree field of view.  % TODO: Determine Correct FOV!
+Both cameras have a native resolution of 1920x1200 pixels and run at 60 Hz.
+However, the \texttt{S110-S2} camera has a much longer detection range, as it is angled towards to horizon, whereas the \texttt{S110-S1} camera is focused downwards onto the intersection.
 
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{figures/map}
@@ -82,24 +83,24 @@ The four scenes in the dataset which do provide this required annotation mode ar
         \toprule
         Scene & Perspective & \#Frames & \#Detections & Weather & Time of Day \\
         \midrule
-        Scene 4 & S110 Camera S1 & 300 & XXXXX & Sunny & Daytime \\
-        Scene 4 & S110 Camera S2 & 300 & XXXXX & Sunny & Daytime \\
+        Scene 4 & S110 Camera S1 & 300 & 2918 & Sunny & Daytime \\
+        Scene 4 & S110 Camera S2 & 300 & 2810 & Sunny & Daytime \\
         \midrule
-        Scene 5 & S110 Camera S1 & 300 & XXXXX & Sunny & Daytime \\
-        Scene 5 & S110 Camera S2 & 300 & XXXXX & Sunny & Daytime \\
+        Scene 5 & S110 Camera S1 & 300 & 2958 & Sunny & Daytime \\
+        Scene 5 & S110 Camera S2 & 300 & 2302 & Sunny & Daytime \\
         \midrule
-        Scene 8 & S110 Camera S1 & 1200 & XXXXX & Sunny & Daytime \\
-        Scene 8 & S110 Camera S2 & 1200 & XXXXX & Sunny & Daytime \\
+        Scene 8 & S110 Camera S1 & 1200 & 8661 & Sunny & Daytime \\
+        Scene 8 & S110 Camera S2 & 1200 & 11064 & Sunny & Daytime \\
         \midrule
-        Scene 9 & S110 Camera S1 & 619 & XXXXX & Rain & Night \\
-        Scene 9 & S110 Camera S2 & 619 & XXXXX & Rain & Night \\
+        Scene 9 & S110 Camera S1 & 619 & 2327 & Rain & Night \\
+        Scene 9 & S110 Camera S2 & 619 & 4668 & Rain & Night \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 The dataset frame-rate is 10 Hz. The combination of 3D LIDAR Labels and RGB camera frames introduces an additional challenge in the form of synchronization delay \textemdash there may be up to 200 ms of difference between the 2D RGB frame and the 3D LIDAR annotation timestamps.
 We will discuss this problem in more detail in Chapter~\ref{ch:evaluation}.
-Each road user is also annotated with a category; one of \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{VAN}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}, \texttt{EMERGENCY\_VEHICLE}, or \texttt{OTHER}.
+Each road user is also annotated with a category; one of \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{TRAILER}, \texttt{VAN}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}, \texttt{EMERGENCY\_VEHICLE}, or \texttt{OTHER}.
 
 % ----------------------------------------------------
 
@@ -280,7 +281,7 @@ These limitations must be tackled by future work (see Chapter~\ref{ch:future}).
 \section{Research Objective}
 \label{sec:objective}
 
-In summary, the research objective for this work is to address the truthfulness of the following hypothesis: \textit{A two-stage \textit{Mono3D} detector with an instance-mask bottom-contour based estimator in the second stage can only function well within an urban intersection setting, if and only if the estimator is assisted by additional information from an HD map}.
+In summary, the research objective for this work is to address the truthfulness of the following hypothesis: \textit{A two-stage \textit{Mono3D} detector with an instance-mask bottom-contour based estimator in the second stage can function well within an urban intersection setting, if the estimator is assisted by additional information from an HD map}.
 
 \section{Contributions}
 \label{sec:contributions}

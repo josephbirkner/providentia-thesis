@@ -7,7 +7,7 @@ import math
 
 
 CLASSES = [
-    "VEHICLE",
+    # "VEHICLE",
     "CAR",
     "TRUCK",
     # "TRAILER",
@@ -19,6 +19,17 @@ CLASSES = [
     # "EMERGENCY_VEHICLE",
     # "OTHER",
 ]
+
+CLASSES_SHORT = [
+    "VEHICLE",
+    "PEDESTRIAN",
+    "BICYCLE"
+]
+
+VEHICLE_CLASS = [
+    "VEHICLE",
+]
+
 
 input_dir = Path(__file__).parent/"metrics"
 output_dir = Path(__file__).parent/"charts"
@@ -79,9 +90,10 @@ class Result:
         return Result(**d)
 
     @staticmethod
-    def aggregate(results: Iterable['Result']):
-        result = Result("agg", .0, 0, 0, .0, .0, .0, .0, .0, .0, .0, .0)
+    def aggregate(results: Iterable['Result'], category="acc"):
+        result = Result(category, .0, 0, 0, .0, .0, .0, .0, .0, .0, .0, .0)
         num_agg = 0
+        num_agg_rot = 0
         for part_result in results:
             if part_result.gt_occ == 0 or part_result.is_dummy:
                 continue
@@ -89,7 +101,6 @@ class Result:
             result.ap += part_result.ap
             result.gt_occ += part_result.gt_occ
             result.pred_occ += part_result.pred_occ
-            result.rot_err += part_result.rot_err
             result.pos_err += part_result.pos_err
             result.width_err += part_result.width_err
             result.length_err += part_result.length_err
@@ -97,11 +108,13 @@ class Result:
             result.precision += part_result.precision
             result.recall += part_result.recall
             result.iou += part_result.iou
+            if part_result.category not in ("PEDESTRIAN", "BICYCLE"):
+                result.rot_err += part_result.rot_err
+                num_agg_rot += 1
         if num_agg == 0:
-            return Result(is_dummy=True)
+            return Result(category=category, is_dummy=True)
         result.ap /= num_agg
         result.pred_occ /= num_agg
-        result.rot_err /= num_agg
         result.pos_err /= num_agg
         result.width_err /= num_agg
         result.length_err /= num_agg
@@ -109,6 +122,8 @@ class Result:
         result.precision /= num_agg
         result.recall /= num_agg
         result.iou /= num_agg
+        if num_agg_rot > 0:
+            result.rot_err /= num_agg_rot
         return result
 
     def score(self):
@@ -247,7 +262,7 @@ class Dataset:
         result: Dict[Any, Dict[str, Result]] = defaultdict(dict)
         for key, results_by_cat in results_by_cat_by_model.items():
             for cat, results in results_by_cat.items():
-                result[key][cat] = Result.aggregate(results)
+                result[key][cat] = Result.aggregate(results, cat)
             result[key]["agg"] = Result.aggregate(result[key].values())
         return list(result.items())
 
@@ -285,10 +300,10 @@ def make_column_chart(
             clip=false,
             ybar,
             width=\\textwidth,
-            height=0.4\\textwidth,
+            height=0.35\\textwidth,
             bar width=0.1pt,
             ylabel={{Score}},
-            ymin=10, ymax=50,
+            ymin=10, ymax=40,
             xtick=\\empty,
             xticklabels={{}},
             enlarge x limits={{abs=1pt}},
@@ -341,28 +356,28 @@ class ColSpec:
     def render_cell(self, result: Result, make_bold):
         if result.is_dummy:
             return r"\textemdash"
+        if "AOE" in self.label and result.category in ("PEDESTRIAN", "BICYCLE"):
+            return r"\textemdash"
         s = self.fmt_fn(self.val_fn(result))
         if make_bold:
             return f"$\\mathbf{{{s}}}$"
         return f"${s}$"
 
 
-def baseline_diff(baseline, v, col: Optional[ColSpec] = None) -> str:
+def baseline_diff(baseline: Result, actual: Result, col: Optional[ColSpec] = None, parens=False) -> str:
     """Used to present a difference between two metrics."""
-    parens = False
-    if col:
-        other_v = col.val_fn(baseline["agg"])
-    else:
-        parens = True
-        other_v = baseline["agg"].score()
+    v = col.val_fn(actual)
+    other_v = col.val_fn(baseline)
     diff = v - other_v
     diff_s = col.fmt_fn(diff) if col else f"{diff:.2f}"
     if diff >= 0:
         diff_s = "+"+diff_s
-    if diff_s.startswith("-0.00"):
-        diff = 0
+    if diff_s.startswith("-0.00") or diff_s.startswith("+0.00"):
         diff_s = diff_s[1:]
-    color = ("red", "TUMGreen")[diff >= 0 if not col or not col.lower_better else diff <= 0]
+    if diff_s.startswith("0.00"):
+        color = "black"
+    else:
+        color = ("red", "TUMGreen")[diff > 0 if not col or not col.lower_better else diff < 0]
     if parens:
         return f"$({{\\scriptstyle\\color{{{color}}}{diff_s}}})$"
     else:
@@ -409,7 +424,12 @@ def make_table(
             out_file.write(f" & \\multicolumn{{{len(cols)-3}}}{{l|}}{{{str(agg_key)}}}")
             out_file.write(f" & \\multicolumn{{3}}{{l|}}{{\\textbf{{Score}}: ${score:.2f}\\%$")
             if baseline_results:
-                out_file.write(f" {baseline_diff(baseline_results, score)}")
+                out_file.write(" "+baseline_diff(
+                    baseline_results[classes[-1]],
+                    agg_metrics[classes[-1]],
+                    ColSpec("Score", lambda r: r.score(), lambda v: f"{v:.2f}\\%", False),
+                    True
+                ))
             out_file.write(r"} \rule{0pt}{1.4em} \\[0.2em] ""\n")
             out_file.write(r"""
             \hline
@@ -431,7 +451,10 @@ def make_table(
                 )+" \\\\ \n")
             if baseline_results:
                 out_file.write(f"$\\Delta$ {{{delta_name}}} & "+" & ".join(
-                    baseline_diff(baseline_results, col.val_fn(agg_metrics["agg"]), col)
+                    baseline_diff(
+                        baseline_results[classes[-1]],
+                        agg_metrics[classes[-1]],
+                        col)
                     for col in cols
                 )+" \\\\ \n")
             if prev_as_baseline:
@@ -473,12 +496,37 @@ class ModelSelector(ModelGroupSelector):
 def make_all():
     """The chart factory."""
     dataset = Dataset(input_dir)
-    model_metrics = dataset.aggregate()  # Default aggregation by model config
+    model_metrics = dataset.aggregate(classes=CLASSES)
+    model_metrics_short = dataset.aggregate(
+        lambda e: e.model,
+        classes=CLASSES_SHORT)
+    model_metrics_vehicles = dataset.aggregate(
+        lambda e: e.model,
+        classes=VEHICLE_CLASS)
+    model_metrics_vehicles_s1 = dataset.aggregate(
+        lambda e: e.model if e.perspective == "s110s1" else None,
+        classes=VEHICLE_CLASS)
+    model_metrics_vehicles_s2 = dataset.aggregate(
+        lambda e: e.model if e.perspective == "s110s2" else None,
+        classes=VEHICLE_CLASS)
     model_metrics.sort(key=lambda mm: mm[1]["agg"].score(), reverse=True)
-    baseline_metric = select_first(model_metrics, lambda m: m == ModelConfig.baseline())[1]
+    model_metrics_short.sort(key=lambda mm: mm[1]["agg"].score(), reverse=True)
+    model_metrics_vehicles.sort(key=lambda mm: mm[1]["agg"].score(), reverse=True)
+    model_metrics_vehicles_s1.sort(key=lambda mm: mm[1]["agg"].score(), reverse=True)
+    model_metrics_vehicles_s2.sort(key=lambda mm: mm[1]["agg"].score(), reverse=True)
+    baseline_model = select_first(
+        model_metrics, lambda m: m == ModelConfig.baseline())[1]
+    baseline_model_vehicles = select_first(
+        model_metrics_vehicles, lambda m: m == ModelConfig.baseline())[1]
+    best_model = model_metrics[0]
+    best_model_vehicles = select_first(
+        model_metrics_vehicles, lambda m: m == best_model[0])[1]
+    best_model_short = select_first(
+        model_metrics_short, lambda m: m == best_model[0])[1]
 
     make_column_chart(
-        aggregate_results_by_color=[("blue", list(enumerate(reversed(model_metrics))))],
+        aggregate_results_by_color=[
+            ("blue", list(enumerate(reversed(model_metrics))))],
         filename="overall.tex",
         highlights=[
             (0, "north west", 8),
@@ -491,16 +539,23 @@ def make_all():
         filename="baseline.tex")
 
     make_table(
-        aggregate_results=[model_metrics[0]],
-        baseline_results=baseline_metric,
+        aggregate_results=[best_model],
+        baseline_results=baseline_model,
         filename="best.tex")
+
+    make_table(
+        aggregate_results=[
+            select_first(model_metrics_vehicles, lambda m: m == best_model[0])],
+        baseline_results=baseline_model_vehicles,
+        filename="best-vehicles.tex",
+        classes=VEHICLE_CLASS)
 
     make_table(
         aggregate_results=[
             select_first(
                 model_metrics,
                 lambda m: m.config == "m" and m.iseg == "yolact")],
-        baseline_results=baseline_metric,
+        baseline_results=baseline_model,
         filename="late-lookup.tex")
 
     make_table(
@@ -508,41 +563,43 @@ def make_all():
             dataset.aggregate(ModelGroupSelector(
                 fun=lambda e: e.model.iseg == "yolact",
                 desc=r"\textbf{Average Results Using Yolact-Edge}"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelGroupSelector(
                 fun=lambda e: e.model.iseg == "yolov7-640",
                 desc=r"\textbf{Average Results Using Yolov7 (640x640)}"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelGroupSelector(
                 fun=lambda e: e.model.iseg == "yolov7-1280",
                 desc=r"\textbf{Average Results Using Yolov7 (1280x1280)}"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelGroupSelector(
                 fun=lambda e: e.model.iseg == "yolov7-1920",
                 desc=r"\textbf{Average Results Using Yolov7 (1920x1920)}"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
         ],
         filename="resolution.tex",
-        prev_as_baseline=True)
+        prev_as_baseline=True,
+        classes=CLASSES_SHORT+["agg"])
 
     make_table(
         aggregate_results=[
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("f") == 0)[0],
+                model=select_first(model_metrics_short, lambda m: m.count_x("f") == 0)[0],
                 desc=r"\textbf{{Best w/o Filters}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("f") == 1)[0],
+                model=select_first(model_metrics_short, lambda m: m.count_x("f") == 1)[0],
                 desc=r"\textbf{{Best w/ Contour Filter}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("f") == 2)[0],
+                model=select_first(model_metrics_short, lambda m: m.count_x("f") == 2)[0],
                 desc=r"\textbf{{Best w/ Size Filter}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
         ],
         filename="filters.tex",
-        baseline_results=model_metrics[0][1],
-        delta_name="Best")
+        baseline_results=best_model_short,
+        delta_name="Best",
+        classes=CLASSES_SHORT+["agg"])
 
     make_column_chart(
         aggregate_results_by_color=[
@@ -564,21 +621,28 @@ def make_all():
     make_table(
         aggregate_results=[
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("t") in (0, 2) and m.count_x("m") in (0, 1))[0],
+                model=select_first(
+                    model_metrics_short,
+                    lambda m: m.config == "fff" and m.iseg == "yolov7-1920" and m.label_mode == "ll")[0],
                 desc=r"\textbf{{Best w/o LSF Augments}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("t") == 1 and m.count_x("m") in (0, 1))[0],
+                model=select_first(
+                    model_metrics_short,
+                    lambda m: m.config == "tfff" and m.iseg == "yolov7-1920" and m.label_mode == "ll")[0],
                 desc=r"\textbf{{Best w/ LSF Tracking-Aug.}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
             dataset.aggregate(ModelSelector(
-                model=select_first(model_metrics, lambda m: m.count_x("t") in (0, 2) and m.count_x("m") == 2)[0],
+                model=select_first(
+                    model_metrics_short,
+                    lambda m: m.config == "mmfff" and m.iseg == "yolov7-1920" and m.label_mode == "ll")[0],
                 desc=r"\textbf{{Best w/ LSF Map-Aug.}} ({model})"
-            ))[0],
+            ), classes=CLASSES_SHORT)[0],
         ],
         filename="lsf.tex",
-        baseline_results=model_metrics[0][1],
-        delta_name="Best")
+        baseline_results=best_model_short,
+        delta_name="Best",
+        classes=CLASSES_SHORT+["agg"])
 
     make_table(
         aggregate_results=[
@@ -588,7 +652,7 @@ def make_all():
             ))[0],
         ],
         filename="track-3d.tex",
-        baseline_results=model_metrics[0][1],
+        baseline_results=best_model[1],
         delta_name="Best")
 
     make_table(
@@ -618,6 +682,22 @@ def make_all():
         ],
         filename="night.tex",
         prev_as_baseline=True)
+
+    make_table(
+        aggregate_results=[
+            (
+                f"\\textbf{{Best for S110-S1 Perspective:}} {model_metrics_vehicles_s1[0][0].name()}",
+                model_metrics_vehicles_s1[0][1]
+            ),
+            (
+                f"\\textbf{{Best for S110-S2 Perspective:}} {model_metrics_vehicles_s2[0][0].name()}",
+                model_metrics_vehicles_s2[0][1]
+            ),
+        ],
+        baseline_results=best_model_vehicles,
+        filename="perspective.tex",
+        delta_name="Best",
+        classes=VEHICLE_CLASS)
 
 
 make_all()

@@ -10,13 +10,13 @@ To acquire a first impression of the strengths and weaknesses of our fully imple
 
 \begin{figure}[htb]
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1646667323.129810658.s110.camera.basler.south2.8mm}
+        figures/selection/1646667323-129810658-s110-camera-basler-south2-8mm}
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1646667339.058779966.s110.camera.basler.south1.8mm} \\
+        figures/selection/1646667339-058779966-s110-camera-basler-south1-8mm} \\
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm}
+        figures/selection/1651673054-274505919-s110-camera-basler-south2-8mm}
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1651673056.492970825.s110.camera.basler.south1.8mm}
+        figures/selection/1651673056-492970825-s110-camera-basler-south1-8mm}
     \caption{Hand-picked frames to showcase the qualitative performance of our implemented monocular 3D object detector at daytime.}
     \label{fig:qualitative-results-day}
 \end{figure}
@@ -37,9 +37,9 @@ Both images in the right column again show generally good vehicle tracking and o
 
 \begin{figure}[htb]
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1646667395.641065639.s110.camera.basler.south1.8mm}
+        figures/selection/1646667395-641065639-s110-camera-basler-south1-8mm}
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1651673050.162472285.s110.camera.basler.south1.8mm}
+        figures/selection/1651673050-162472285-s110-camera-basler-south1-8mm}
     \caption{Selected frames to showcase particular problems of our implemented monocular 3D object detector.}
     \label{fig:qualitative-results-bad}
 \end{figure}
@@ -55,9 +55,9 @@ In this case, both the big white truck in front of the camera, and the bus which
 
 \begin{figure}[htb]
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1653330059.588901912.s110.camera.basler.south2.8mm}
+        figures/selection/1653330059-588901912-s110-camera-basler-south2-8mm}
     \includegraphics[width=0.499\linewidth]{
-        figures/selection/1653330064.207615030.s110.camera.basler.south1.8mm}
+        figures/selection/1653330064-207615030-s110-camera-basler-south1-8mm}
     \caption{A selection of frames to showcase the qualitative performance of our implemented monocular 3D object detector at night.}
     \label{fig:qualitative-results-night}
 \end{figure}
@@ -66,6 +66,35 @@ Finally, Figure~\ref{fig:qualitative-results-night} displays how the system perf
 Naturally, the detection performance of a system which is based on an RGB camera which operates in the human visible light spectrum will be worse at night, due to the reduced visibility.
 However, the used \textit{Yolov7} instance segmentation model still works to some degree at night.
 The predicted instance masks are generally noisier, and there more false positives (such as \texttt{PEDESTRIAN 13}) and false negatives (such as the truck on the top-left in the right image).
+
+% ----------------------------------------------------
+
+\section{Performance}
+\label{sec:performance}
+
+The overall performance of the monocular detection architecture is limited by the computational capabilities of the GPU. In our evaluation, we used an \textit{RTX-3090} GPU to assess the frame rates achieved by various models.
+Table~\ref{tbl:gpu-performance} presents the frame rates of the different models:
+
+\begin{table*}[ht]
+\centering
+\caption{Model performance on \textit{RTX-3090} GPU}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Model} & \textbf{Frame Rate (FPS)} \\
+\hline
+\textit{Yolact Edge} & 60 \\
+\textit{Yolov7-640} & 52 \\
+\textit{Yolov7-1280} & 22 \\
+\textit{Yolov7-1920} & 12 \\
+\hline
+\end{tabular}
+\label{tbl:gpu-performance}
+\end{table*}
+
+As shown in Table~\ref{tbl:gpu-performance}, both Yolact Edge and Yolov7-640 models achieve frame rates between 55 and 60 FPS on the \textit{RTX-3090} GPU, indicating that they are suitable for real-time applications.
+However, as the input resolution increases, the performance of the models decreases.
+For instance, \textit{Yolov7-1280} achieves 22 FPS, and \textit{Yolov7-1920} reaches only 12 FPS.
+This analysis highlights the importance of considering the GPU constraints when designing and implementing instance segmentation models, particularly for real-time applications.
 
 % ----------------------------------------------------
 
@@ -119,8 +148,14 @@ To judge the overall performance of a configuration, we aggregate these metrics 
     \text{Score} = \frac{1}{10} \left[5 * \text{mAP} + \sum^5_{k=1}(1-\text{min}(1, \text{mTP}_k))\right]
 \]
 
-The score is calculated for each configuration, by averaging the metrics of the configuration across all perspectives of all dataset scenes.
+The score is calculated for each configuration, by averaging the per-class metrics of the configuration across all perspectives of all dataset scenes.
 A chart of all calculated Scores is shown in Figure~\ref{fig:all-scores}.
+We consider the following object classes: \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}.
+Additionally, the A9 dataset contains annotations for \texttt{VAN}, \texttt{EMERGENCY\_VEHICLE}, \texttt{TRAILER} and \texttt{OTHER}.
+However, these categories are not supported by our instance segmentation models, which will usually label these special vehicles as trucks or cars.
+To gain a better understanding of our model's raw shape-estimation performance, we also evaluate using the \texttt{VEHICLE} super-class.
+With the super-class, a \texttt{VAN} labeled as a \texttt{TRUCK} will still be considered as a True Positive detection.
+Note, that we skip the AOE metric for the pedestrians and bicycles, as we do not attempt to estimate their heading.
 
 % ----------------------------------------------------
 
@@ -149,12 +184,19 @@ Picking a random orientation would yield the same result.
 \end{table*}
 
 This stands in contrast to the performance metrics for the best-performing model, which are shown in Table~\ref{tbl:best}.
+Additionally, Table~\ref{tbl:best-vehicles} shows the results for the best vehicle-only model in daytime conditions.
 In the following sections, we will discuss in detail how specific model configurations improve (or worsen) specific metrics for different road user classes.
 
 \begin{table*}[htbp]
     \input{charts/best}
     \caption{Best model results, with improvements towards the baseline highlighted in green for each metric.}
     \label{tbl:best}
+\end{table*}
+
+\begin{table*}[htbp]
+    \input{charts/best-vehicles}
+    \caption{Best model results focusing on vehicles in daytime conditions, with improvements towards the vehicle-only baseline highlighted in green for each metric.}
+    \label{tbl:best-vehicles}
 \end{table*}
 
 % ----------------------------------------------------
@@ -187,72 +229,57 @@ This loss of information is reflected in the barely improved orientation error.
 \section{Impact of YOLOv7 and Image Resolution}
 \label{sec:impactyolov7}
 
-The comparison of the average performance of detectors using different instance segmentation models highlights some interesting points, as shown in Table~\ref{tbl:resolution-results}.
-Comparing the performance of the \textit{Yolact-Edge} model with the Yolov7 models at different resolutions, we can see that the Yolov7 models generally outperform the \textit{Yolact-Edge} model.
-The \textit{Yolov7} ($640x640$) model shows an average score improvement of $1.35\%$ compared to the \textit{Yolact-Edge} model, with an increase in mean AP by $3.05\%$.
-Similarly, \textit{Yolov7} (1280x1280) has a score improvement of $1.84\%$ compared to \textit{Yolov7} (640x640), and a higher mean AP of $5.02\%$.
-
-It is important to note that \textit{Yolov7} (1920x1920) does not outperform \textit{Yolov7} (1280x1280) on average, as it has a slightly lower overall score by $0.62\%$.
-However, the pedestrian detection performance is greatly improved by the \textit{Yolov7} (1920x1920) model, as its AP for pedestrian detection is at $20.38\%$, compared to $13.01\%$ in the \textit{Yolov7} (640x640) model and only $0.63\%$ in the \textit{Yolact-Edge} model.
-
-The results indicate that higher-resolution input may not always result in better overall performance, but can significantly improve the detection of specific object classes like pedestrians.
-This suggests that for certain applications or scenarios, focusing on higher resolutions could be beneficial.
-
-In summary, while \textit{Yolov7} (1920x1920) does not show an overall better performance than \textit{Yolov7} (1280x1280), its improvement in pedestrian detection is noteworthy.
-The \textit{Yolov7} models outperform the \textit{Yolact-Edge} model, with the \textit{Yolov7} (1280x1280) showing the best average metrics among the compared models.
-
 \begin{table*}[htbp]
     \input{charts/resolution}
     \caption{Average results for different instance segmentation models, with differences in the resulting metrics shown towards the previous model's average values.}
     \label{tbl:resolution-results}
 \end{table*}
 
-% ----------------------------------------------------
+The comparison of the average performance of detectors using different instance segmentation models highlights some interesting points, as shown in Table~\ref{tbl:resolution-results}.
+Comparing the performance of the \textit{Yolact-Edge} model with the Yolov7 models at different resolutions, we can see that the Yolov7 models generally outperform the \textit{Yolact-Edge} model.
+The \textit{Yolov7} ($640x640$) model shows an mAP improvement of $5.98\%$ compared to the \textit{Yolact-Edge} model, albeit there is a small decrease in the score $0.86\%$ due to slightly worse TP metric performance.
+Similarly, \textit{Yolov7} (1280x1280) has a score improvement of $3.73\%$ compared to \textit{Yolov7} (640x640), and a higher mean AP by $7.34\%$.
 
-\newpage
+The \textit{Yolov7} (1920x1920) again outperforms the \textit{Yolov7} (1280x1280) model on average, as it has a slightly higher overall score by $1.33\%$.
+Most notably, the pedestrian detection performance is greatly improved by the \textit{Yolov7} (1920x1920) model, as its AP for pedestrian detection is at $20.38\%$, compared to $13.01\%$ in the \textit{Yolov7} (640x640) model and only $0.63\%$ in the \textit{Yolact-Edge} model.
+
+The results indicate that higher-resolution input may not always result in better overall performance, but can significantly improve the detection of specific object classes like pedestrians.
+This suggests that for certain applications or scenarios, focusing on higher resolutions could be beneficial, but not true for every use-case.
+
+In summary, \textit{Yolov7} (1920x1920) shows the overall best performance, but its improvement over \textit{Yolov7} (1280x1280) mainly comes from improved pedestrian detection.
+The \textit{Yolov7} models also generally outperform the \textit{Yolact-Edge} model.
+
+% ----------------------------------------------------
 
 \section{Impact of Filters}
 \label{sec:impactcontourfiltering}
 
-Furthermore, we evaluate the impact of \textit{DBSCAN}-based bottom-contour filtering and size filtering on the detector performance.
-The results presented in Table~\ref{tbl:filter-results} show the impact of different filter types on the 3D object detection task.
-Three different filter types are considered for comparison: no filters, contour filters, and size filters.
-For each filter type, the best-performing model is selected and compared against the overall best model, which uses both filters.
-The following conclusions can be drawn for these configurations:
-
-\textbf{No Filters:} The best model without any filters yields an overall score of $31.27\%$, which is the lowest among the three variations.
-All the metrics exhibit worse performance compared to the best model.
-This indicates that filters can be essential for improving the model's performance.
-
-\textbf{Contour Filters:} When contour filters are applied, the overall score increases to $36.57\%$.
-Although there is an improvement in the mean values for AOE and ALE, the other metrics such as ATE, AWE, and IoU show a slight decrease compared to the best model.
-Nonetheless, the contour filters help to enhance the overall performance of the model.
-
-\textbf{Size Filters:} Applying size filters results in the highest overall score of $39.97\%$, which is only $0.20\%$ lower than the best model.
-The size filter leads to improvements in AOE, AWE, Precision, and AP, while causing a slight decrease in ATE, ALE, AHE, and IoU.
-Despite these mixed results, the size filters demonstrate the most promising impact on the model's performance.
-
-In summary, using filters in the 3D object detection task can substantially improve the model's performance.
-Among the different filter types, size filters show the most significant positive impact on the overall score, while bottom contour filters also provide a noticeable improvement.
-
-\begin{figure}[htb]
-    \includegraphics[width=0.499\linewidth]{
-        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm.nofilter}
-    \includegraphics[width=0.499\linewidth]{
-        figures/selection/1651673054.274505919.s110.camera.basler.south2.8mm}
-    \caption{Comparison of the same frame from our best model ($\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}\right]$) (right), vs. the same model except with disabled filtering (left). }
-    \label{fig:compare-without-filter}
-\end{figure}
-
-Figure~\ref{fig:compare-without-filter} further illustrates the effects of the filters on the quality of the detection result.
-
 \begin{table*}[htbp]
     \input{charts/filters}
-    \caption{Average results for models which use \textit{DBSCAN}-based bottom contour filtering and/or size filtering, compared with those models which do not use any filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other.}
+    \caption{Ablated results for models which use at most one of the \textit{DBSCAN}-based bottom contour filter or size filter, compared with the best model which uses both filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other, as none of the ablated model beats the model which uses all filters.}
     \label{tbl:filter-results}
 \end{table*}
 
-\newpage
+Furthermore, we evaluate the impact of \textit{DBSCAN}-based bottom-contour filtering and size filtering on the detector performance.
+The results presented in Table~\ref{tbl:filter-results} show the impact of different filter types on the 3D object detection task.
+Three different filter types are considered for comparison: no filters, contour filters, and size filters.
+For each filter type, the performance of the best-performing model is compared with a model that is equivalent but lacking one or both filters.
+The following conclusions can be drawn for these configurations:
+
+The best model without any filters yields an overall score of $40.95\%$, which is the lowest among the three variations.
+All the metrics exhibit worse performance compared to the best model.
+This indicates that filters are essential for improving the model's performance.
+
+When only contour filters are applied, the overall score increases to $44.26\%$.
+This is, because vehicle sizes are harder to estimate from a filtered bottom contour.
+Nonetheless, the contour filters help to enhance the overall performance of the model.
+
+Applying size filters results in an even higher overall score of $45.61\%$, which is only $0.40\%$ lower than the score of the best model.
+The size filter leads to improvements in AWE, IoU, Precision, Recall and AP, while causing slight regressions in AOE, ATE, ALE, and AHE.
+The size filter demonstrates the most significant impact on the model's performance.
+
+In summary, using filters in the 3D object detection task can substantially improve the model's performance.
+Among the different filter types, size filters show the greatest positive impact on the overall score, while bottom contour filters also provide a noticeable improvement.
 
 % ----------------------------------------------------
 
@@ -263,88 +290,133 @@ In this section, we will discuss the impact of different LSF augmentations on th
 Two augmentations are tested: HD-Map Input and Screen-Space Tracking.
 We will analyze the results of these augmentations and compare them with the best performance achieved without LSF Augments.
 As an initial overview, Figure~\ref{fig:lsf-augmentations-overview} provides a rough indication for the performance distribution of different augmentation configurations.
+Furthermore, Figure~\ref{fig:qualitative-results-lsf-augments} provides a qualitative impression of these different configurations
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.45\linewidth]{
+        figures/selection/1651673054-274505919-s110-camera-basler-south2-8mm-nomaptrack}
+    \includegraphics[width=0.45\linewidth]{
+        figures/selection/1651673054-274505919-s110-camera-basler-south2-8mm-nomap} \\
+    \includegraphics[width=0.45\linewidth]{
+        figures/selection/1651673054-274505919-s110-camera-basler-south2-8mm-notrack}
+    \includegraphics[width=0.45\linewidth]{
+        figures/selection/1651673054-274505919-s110-camera-basler-south2-8mm}
+    \caption{Comparison of the same frame from our best model ($\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}\right]$) (right), vs. the same model except with disabled LSF augmentations (top-left), disabled tracking augmentation (top-right), or disabled map augmentation (bottom-left).}
+    \label{fig:qualitative-results-lsf-augments}
+\end{figure}
 
 \begin{figure}[htb]
     \input{charts/lsf-augmentations}
-    \caption{Overview for model performances when model uses augmentations.}
+    \caption{Overview for model performances across different LSF augmentation configurations. The bars for a model is color-coded by their usage of Raw LSF without Augmentation (green), LSF with screen-space tracking (blue), LSF with HD-map augmentation (red), or LSF with both augmentations (violet). }
     \label{fig:lsf-augmentations-overview}
 \end{figure}
 
 \subsection{Impact of HD-Map Augmentation}
 \label{subsec:impactmap}
 
-The best-performing model which uses only the HD-Map LSF augmentation ($\left[I^{1920}\text{Yv7}T_0M\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$), reaches a Score of $40.11\%$, which is only $0.06\%$ lower than the best model, which uses both LSF Augments.
-The mean Average Orientation Error (AOE) was significantly reduced to $13.35\degree$, which beats the overall best model by $0.45\degree$.
-However, the Intersection over Union (IoU) metric is worse by $0.31\%$, and the Recall is worse by $0.19\%$.
-Overall, the HD-Map Input LSF augmentation demonstrates a very positive impact on the detector's performance.
+Table~\ref{tbl:lsf-results} provides ablated performance metrics for the best-performing model ($\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}\right]$). First off, when no augmentations are used, the same model's performance drops by $9.67\%$.
+When only the HD-map augmentation is used, the model reaches a Score of $40.11\%$, which is only $0.06\%$ lower than that of the best model, which uses both LSF Augments.
+The mean Average Orientation Error (AOE) is significantly reduced to $3.63\degree$, which is still below the best's performance by $0.16\degree$.
+Overall, the HD-Map Input LSF augmentation demonstrates a very positive impact on the detector's performance, but it alone does not beat the top model.
 
 \subsection{Impact of Screen-Space Tracking Augmentation}
 \label{subsec:impactlsf}
 
-The best-performing model which uses only the Screen-Space Tracking LSF augmentation ($\left[I^{1920}\text{Yv7}T{2D}M_1F_\text{Cont}^\text{Size}L_{\uparrow}\right]$) reaches a Score of $34.95\%$, which is $5.22\%$ lower than the best model.
-Compared to the best un-augmented model, the mean AOE remains almost unchanged at $42.94\degree$.
-Interestingly, the model beats the best model barely on Precision, Recall, and AP.
-Overall, the sole Screen-Space Tracking LSF augmentation shows mixed results, with some improvements in Precision and Recall but a lower overall Score.
+When the best-performing uses only the Screen-Space Tracking LSF augmentation it reaches a Score of $38.02\%$, which is $7.99\%$ lower than the best model.
+Compared to the best un-augmented model, the mean AOE is slightly improved to $48.41\degree$.
+Overall, the sole Screen-Space Tracking LSF augmentation shows some improvements towards the un-augmented model, but does not reach the best's performance.
 We can conclude, that Tracking alone is insufficient as a bias for vehicle orientation estimation.
 However, the final best model still uses this augmentation in conjunction with the HD-map, and thereby manages to reach the highest score.
-
-\begin{table*}[htbp]
-    \input{charts/lsf}
-    \caption{Best result for model which uses raw L-Shape-Fitting (LSF), compared with best results for models which use just one of the Screen-Space Tracking or HD-Map Lookup Augmentations.}
-    \label{tbl:lsf-results}
-\end{table*}
-
-\newpage
 
 % ----------------------------------------------------
 
 \section{Impact of 3D Tracking}
 \label{sec:impacttracking}
 
-\begin{table*}[htbp]
+In this section, we discuss the evaluation results for the 3D SORT tracking technique, as described in Section~\ref{sec:trackthreed} and presented in Table~\ref{tbl:track-3d-results}.
+
+The results demonstrate that the 3D SORT tracking approach led to a decrease in overall performance compared to the best configuration without 3D tracking.
+Although there were some minor improvements in certain aspects, such as a decrease in Absolute Translation Error (ATE) by $0.04m$, the overall score dropped by $1.07\%$, with reductions in Precision, Recall, and mAP.
+In conclusion, the 3D SORT tracking technique, as implemented in this study, did not improve the overall performance.
+As mentioned in Section~\ref{sec:trackthreed}, a more capable Kalman Filter that takes vehicle heading into account is needed for better performance in 3D tracking.
+
+\begin{table*}[h!]
     \input{charts/track-3d}
     \caption{Best result for model which uses 3D Tracking, compared with the best model.}
     \label{tbl:track-3d-results}
 \end{table*}
 
+\begin{table*}[h!]
+    \input{charts/lsf}
+    \caption{Ablation study for the best model $\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}\right]$, when none or just one of the Screen-Space Tracking or HD-Map Lookup Augmentations for the L-Shape-Fitting (LSF) algorithm is used.}
+    \label{tbl:lsf-results}
+\end{table*}
+
 \section{Impact of LIDAR Label Shifting}
 \label{sec:impactlidar}
 
-\begin{table*}[htbp]
+In this section, we discuss the evaluation results of the LIDAR label shifting technique, as described in Section~\ref{sec:quant} and presented in Table~\ref{tbl:label-shift-results}.
+
+The results indicate that using time-shifted LIDAR labels ($L_{\uparrow}$) led to a minor improvement in the overall performance compared to using original LIDAR labels ($L_0$).
+The overall score increased by $0.02\%$, with small improvements in Precision, Recall, and mAP.
+
+Overall, the LIDAR label shifting technique using SORT for estimating spatial velocity and correcting label positions based on the known synchronization error time delta led to a slight improvement in overall performance.
+Although the improvements are minor, they demonstrate that accounting for sensor delay between camera and LIDAR sensor frames can help reduce the inherent offset in the LIDAR labels and improve evaluation accuracy.
+
+\begin{table*}[htb]
     \input{charts/label-shift}
     \caption{Average results for evaluations with time-shifted labels compared to the original unsynchronized LIDAR labels.}
     \label{tbl:label-shift-results}
 \end{table*}
-
-\newpage
 
 % ----------------------------------------------------
 
 \section{Impact of Night-time Conditions}
 \label{sec:weather}
 
-\begin{table*}[htbp]
+As discussed in the qualitative analysis, the detection performance of a system that relies on an RGB camera operating within the human visible light spectrum is expected to be worse at night due to the reduced visibility.
+The results in Table~\ref{tbl:nighttime-results} quantitatively confirm this expectation, showing that both \textit{Yolact-Edge} and \textit{Yolov7} models exhibit degraded performance under night-time conditions.
+
+When comparing the night-time results, it is evident that the \textit{Yolov7} model outperforms the Yolact-Edge model in most of the considered evaluation metrics.
+The overall score for the Yolov7 model is $24.99\%$, which is an improvement of $3.86\%$ compared to the Yolact-Edge model.
+This improvement can be primarily attributed to the higher precision and recall rates, as well as a reduced average translation error (ATE) and average length error (ALE).
+
+Despite the degraded performance at night, the \textit{Yolov7} instance segmentation model still demonstrates a reasonable level of detection accuracy for certain object classes, such as cars and buses.
+However, for some classes like trucks, the average precision drops significantly, indicating a higher rate of false positives and false negatives.
+
+It is also important to note that the performance for certain object classes like motorcycles, pedestrians, and bicycles is not reported in the night-time evaluation.
+This is due to a lack of evaluation samples for these classes in the night-time dataset scene.
+
+In summary, the quantitative evaluation confirms the expected reduction in detection performance under night-time conditions.
+While the \textit{Yolov7} model demonstrates better performance compared to the \textit{Yolact-Edge} model, further research and development are necessary to improve the overall performance of instance segmentation models in low-light and night-time environments.
+
+\begin{table*}[htb]
     \input{charts/night}
     \caption{Average results for evaluations on the night-time scene of the A9 dataset with \textit{Yolact-Edge} and \textit{Yolov7} models.}
     \label{tbl:nighttime-results}
 \end{table*}
 
-\newpage
+\section{Impact of Camera Perspective}
+\label{sec:perspective}
 
-% ----------------------------------------------------
+The detection performance can be significantly influenced by the camera perspective.
+In this work, we analyze the impact of two different camera perspectives from the A9 Testfield: \texttt{S110-S1} and \texttt{S110-S2}. The \texttt{S110-S1} camera is focused downwards onto the intersection, whereas the \texttt{S110-S2} camera has a longer detection range and is angled towards the horizon.
+In this section, we provide a quantitative comparison of the best-performing models for each perspective, focusing on the vehicle super-category, which emphasizes the shape detection performance rather than the object classification aspect.
 
-\section{Performance}
-\label{sec:performance}
+Table~\ref{tbl:perspective-results} shows the quantitative results for the best-performing models for both camera perspectives. For the \texttt{S110-S1} perspective, the best model achieves a score of $55.60\%$, which is an improvement of $5.53\%$ over the best model for both perspectives.
+Most interestingly, this best model is using \textit{Yolact-Edge}.
 
-Small table of average FPS with different models.
+For the \texttt{S110-S2} perspective, the best model obtains a score of $50.90\%$, with a performance improvement of $0.83\%$ over the generally best model.
+Although the improvements in the performance metrics are not as significant as for the \texttt{S110-S1} perspective, the model still outperforms the best general model for this camera perspective.
 
-% ----------------------------------------------------
+In conclusion, the choice of camera perspective plays a crucial role in the detection performance of a model.
+In our case, the best-performing models for each perspective individually beat the best-performing general model.
+Therefore, it is essential to consider the camera perspective when designing and evaluating object detection models, as it can significantly impact the overall performance.
 
-\section{Summary}
-\label{sec:summary}
+\begin{table*}[htb]
+    \input{charts/perspective}
+    \caption{Average results for evaluations on the night-time scene of the A9 dataset with \textit{Yolact-Edge} and \textit{Yolov7} models.}
+    \label{tbl:perspective-results}
+\end{table*}
 
-Summarize evaluation results
-
-Do some meta-evaluation (dataset problems, VRU detection, height-position estimation).
-
-% ----------------------------------------------------

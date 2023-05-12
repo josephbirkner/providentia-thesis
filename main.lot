@@ -1,0 +1,47 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {english}{}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {2.1}{\ignorespaces A9R1 dataset scenes which provide camera frames annotated with 3D detection bounding boxes from LIDAR labels.\relax }}{5}{table.caption.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {2.2}{\ignorespaces Parameterization options for the output of a Monocular 3D Object Detector per object.\relax }}{7}{table.caption.7}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.1}{\ignorespaces Model performance on \textit {RTX-3090} GPU\relax }}{45}{table.caption.32}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.2}{\ignorespaces Baseline model results.\relax }}{47}{table.caption.34}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.3}{\ignorespaces Best model results, with improvements towards the baseline highlighted in green for each metric.\relax }}{48}{table.caption.35}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.4}{\ignorespaces Best model results focusing on vehicles in daytime conditions, with improvements towards the vehicle-only baseline highlighted in green for each metric.\relax }}{48}{table.caption.36}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.5}{\ignorespaces Results for the simplest possible late map lookup detector, with differences towards the baseline highlighted in red and green.\relax }}{48}{table.caption.37}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.6}{\ignorespaces Average results for different instance segmentation models, with differences in the resulting metrics shown towards the previous model's average values.\relax }}{49}{table.caption.38}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.7}{\ignorespaces Ablated results for models which use at most one of the \textit {DBSCAN}-based bottom contour filter or size filter, compared with the best model which uses both filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other, as none of the ablated model beats the model which uses all filters.\relax }}{50}{table.caption.39}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.8}{\ignorespaces Best result for model which uses 3D Tracking, compared with the best model.\relax }}{53}{table.caption.42}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.9}{\ignorespaces Ablation study for the best model $\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$, when none or just one of the Screen-Space Tracking or HD-Map Lookup Augmentations for the L-Shape-Fitting (LSF) algorithm is used.\relax }}{53}{table.caption.43}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.10}{\ignorespaces Average results for evaluations with time-shifted labels compared to the original unsynchronized LIDAR labels.\relax }}{54}{table.caption.44}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.11}{\ignorespaces Average results for evaluations on the night-time scene of the A9 dataset with \textit {Yolact-Edge} and \textit {Yolov7} models.\relax }}{55}{table.caption.45}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {6.12}{\ignorespaces Average results for evaluations on the night-time scene of the A9 dataset with \textit {Yolact-Edge} and \textit {Yolov7} models.\relax }}{56}{table.caption.46}%
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\contentsfinish 

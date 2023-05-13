@@ -3,7 +3,7 @@
 \chapter{Future Work}
 \label{ch:future}
 
-In this chapter, we outline potential avenues for future work to further enhance the performance, capabilities, and robustness of our traffic object detection and segmentation system.
+In this chapter, we outline potential avenues for future work to further enhance the performance, capabilities, and robustness of our monocular 3d object detection system.
 
 \section{Improved Non-Maximum Suppression (NMS)}
 \label{sec:nms}
@@ -28,7 +28,7 @@ Extending the Kalman filter to include heading information would significantly i
 \label{sec:improvepedcyclist}
 
 The current solution for pedestrian and cyclist (VRU) detection is highly unoptimized, as the focus of this work was mostly directed towards road vehicle pose estimation.
-Future work should focus on optimizing and refining the detection algorithm, increasing its accuracy and robustness, and also attempting to predict VRU orientations.
+Future work should focus on optimizing and refining the detection algorithm, increasing its accuracy and robustness, and attempting to predict VRU orientations.
 
 \section{Neural Keypoint Estimation}
 \label{sec:neuralkeypoints}
@@ -42,8 +42,8 @@ This presents itself as a very promising research direction.
 \label{sec:amodal}
 
 Amodal instance segmentation is a way if predicting instance masks while also completing masks where the detection is cut off or obstructed.
-This may be a viable alternative to keypoints for object detection and segmentation, as it woul be a less intrusive architectural change.
-While it may not be as robust as keypoints in some cases, it might still present a valid approach to improve our system's overall performance.
+This may be a viable alternative to key-points for object detection and segmentation, as it would be a less intrusive architectural change.
+While it may not be as robust as key-points in some cases, it might still present a valid approach to improve our system's overall performance.
 By investigating amodal instance segmentation techniques, we can potentially enhance the system's ability to detect and segment objects in challenging traffic scenarios.
 
 \par\vspace*{\fill}

@@ -4,16 +4,16 @@
 \label{ch:conclusion}
 
 In the previous chapter, we evaluated various aspects of our proposed two-stage monocular infrastructure traffic object detection architecture, \textit{InfraDet3d}.
-We analyzed the performance of different models on the A9 Testfield dataset, using both detailed object categories and the vehicle super-category.
+We analyzed the performance of different models on the \textit{Providentia Intersection Scenario} dataset, using both detailed object categories and the vehicle super-category.
 Focusing on vehicles, the best model for the \texttt{S110-S1} perspective achieves a score of $55.60\%$ ($65.54\%$ mAP), while for the \texttt{S110-S2} perspective, the best model scores $50.90\%$ ($60.69\%$ mAP).
 The best model across all object categories and scenes exhibits a score of $40.29\%$ ($38.94\%$ mAP).
 
 Moreover, we provided a thorough ablation study of the architecture across all possible configuration regimes.
 This covered the impact of different L-Shape-Fitting augmentations, bottom-contour/size filters, different instance segmentation models, and various filter types.
-We also accounted for the synchronization lag between the camera frames and the LIDAR-sensor-base labels.
+We also accounted for the synchronization lag between the camera frames and the LiDAR-sensor-based labels.
 
 Despite the comprehensive evaluation, there are some shortcomings that can be addressed.
-Firstly, the early version of the \textit{A9R1} dataset used in the evaluation has some issues, as some LIDAR labels are inaccurate, potentially affecting the model performance assessment.
+Firstly, the early version of the \textit{A9R1} dataset used in the evaluation has some issues, as some LiDAR labels are inaccurate, potentially affecting the model performance assessment.
 This might also explain the ceiling of $~40\%$ IoU, which we seemingly cannot overcome.
 Secondly, ablation studies for the VRU detection algorithm and the position-height regression algorithm are missing, which could provide more valuable insights into the system's performance and help identify areas for improvement.
 

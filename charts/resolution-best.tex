@@ -1,0 +1,71 @@
+
+        \centering
+        \scalebox{0.91}{
+        \begin{tabular}{|l|rrrrrr|rrr|}
+\hline & \multicolumn{6}{l|}{\textbf{Best w/ Yolact-Edge}: $\left[I^{550}_\text{YOL}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$} & \multicolumn{3}{l|}{\textbf{Score}: $41.97\%$ $({\scriptstyle\color{red}-4.04\%})$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $3.46\degree$ & $0.87m$ & $0.33m$ & $1.31m$ & $0.46m$ & $37.73\%$ & $58.32\%$ & $47.92\%$ & $57.56\%$ \\ 
+Pedestrian & \textemdash & $0.38m$ & $0.25m$ & $0.14m$ & $0.06m$ & $20.16\%$ & $0.81\%$ & $0.09\%$ & $0.61\%$ \\ 
+Bicycle & \textemdash & $0.17m$ & $0.65m$ & $0.46m$ & $0.10m$ & $24.25\%$ & $0.92\%$ & $0.17\%$ & $0.67\%$ \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{3.46\degree}$ & $\mathbf{0.48m}$ & $\mathbf{0.41m}$ & $\mathbf{0.63m}$ & $\mathbf{0.20m}$ & $\mathbf{27.38\%}$ & $\mathbf{20.02\%}$ & $\mathbf{16.06\%}$ & $\mathbf{19.61\%}$ \\ 
+$\Delta$ {Best} & ${\scriptstyle\color{TUMGreen}-0.01\degree}$ & ${\scriptstyle\color{TUMGreen}-0.16m}$ & ${\scriptstyle\color{TUMGreen}-0.20m}$ & ${\scriptstyle\color{TUMGreen}-0.10m}$ & ${\scriptstyle\color{red}+0.01m}$ & ${\scriptstyle\color{red}-2.97\%}$ & ${\scriptstyle\color{red}-17.09\%}$ & ${\scriptstyle\color{red}-16.29\%}$ & ${\scriptstyle\color{red}-17.00\%}$ \\ 
+
+            \hline
+            \hline & \multicolumn{6}{l|}{\textbf{Best w/ Yolov7 ($640^2$)}: $\left[I^{640}_\text{Yv7}T_0M_\text{LSF}F_\text{Size}L_0\right]$} & \multicolumn{3}{l|}{\textbf{Score}: $41.17\%$ $({\scriptstyle\color{red}-4.83\%})$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $3.80\degree$ & $1.09m$ & $0.32m$ & $1.42m$ & $0.58m$ & $36.32\%$ & $59.87\%$ & $49.65\%$ & $59.11\%$ \\ 
+Pedestrian & \textemdash & $0.34m$ & $0.22m$ & $0.19m$ & $0.07m$ & $23.67\%$ & $7.04\%$ & $1.27\%$ & $6.26\%$ \\ 
+Bicycle & \textemdash & $0.51m$ & $1.07m$ & $0.57m$ & $0.10m$ & $28.97\%$ & $15.88\%$ & $7.07\%$ & $15.17\%$ \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{3.80\degree}$ & $\mathbf{0.65m}$ & $\mathbf{0.54m}$ & $\mathbf{0.73m}$ & $\mathbf{0.25m}$ & $\mathbf{29.65\%}$ & $\mathbf{27.60\%}$ & $\mathbf{19.33\%}$ & $\mathbf{26.85\%}$ \\ 
+$\Delta$ {Best} & ${\scriptstyle\color{red}+0.33\degree}$ & ${\scriptstyle\color{red}+0.02m}$ & ${\scriptstyle\color{TUMGreen}-0.07m}$ & ${\scriptstyle\color{TUMGreen}-0.01m}$ & ${\scriptstyle\color{red}+0.05m}$ & ${\scriptstyle\color{red}-0.70\%}$ & ${\scriptstyle\color{red}-9.50\%}$ & ${\scriptstyle\color{red}-13.02\%}$ & ${\scriptstyle\color{red}-9.76\%}$ \\ 
+
+            \hline
+            \hline & \multicolumn{6}{l|}{\textbf{Best w/ Yolov7 ($1280^2$)}: $\left[I^{1280}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Size}L_0\right]$} & \multicolumn{3}{l|}{\textbf{Score}: $44.29\%$ $({\scriptstyle\color{red}-1.72\%})$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $3.51\degree$ & $1.15m$ & $0.26m$ & $1.46m$ & $0.55m$ & $36.84\%$ & $58.89\%$ & $50.57\%$ & $58.09\%$ \\ 
+Pedestrian & \textemdash & $0.26m$ & $0.22m$ & $0.18m$ & $0.06m$ & $28.96\%$ & $13.95\%$ & $7.45\%$ & $13.42\%$ \\ 
+Bicycle & \textemdash & $0.67m$ & $1.18m$ & $0.59m$ & $0.08m$ & $22.68\%$ & $31.57\%$ & $36.26\%$ & $31.27\%$ \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{3.51\degree}$ & $\mathbf{0.70m}$ & $\mathbf{0.55m}$ & $\mathbf{0.74m}$ & $\mathbf{0.23m}$ & $\mathbf{29.49\%}$ & $\mathbf{34.80\%}$ & $\mathbf{31.43\%}$ & $\mathbf{34.26\%}$ \\ 
+$\Delta$ {Best} & ${\scriptstyle\color{red}+0.04\degree}$ & ${\scriptstyle\color{red}+0.06m}$ & ${\scriptstyle\color{TUMGreen}-0.06m}$ & ${\scriptstyle\color{red}+0.01m}$ & ${\scriptstyle\color{red}+0.04m}$ & ${\scriptstyle\color{red}-0.86\%}$ & ${\scriptstyle\color{red}-2.30\%}$ & ${\scriptstyle\color{red}-0.92\%}$ & ${\scriptstyle\color{red}-2.35\%}$ \\ 
+
+            \hline
+            \hline & \multicolumn{6}{l|}{\textbf{Best w/ Yolov7 ($1920^2$)}: $\left[I^{1920}_\text{Yv7}T_{2D}M_\text{LSF}F_\text{Cont}^\text{Size}L_{\uparrow}\right]$} & \multicolumn{3}{l|}{\textbf{Score}: $46.01\%$ $({\scriptstyle\color{black}0.00\%})$} \rule{0pt}{1.4em} \\[0.2em] 
+
+            \hline
+            \hline
+            \textbf{Class} & \textbf{AOE} & \textbf{ATE} & \textbf{AWE} & \textbf{ALE} & \textbf{AHE} & $\mathbf{IoU}_{3D}$ & \textbf{Precision} & \textbf{Recall} & \textbf{AP}{@}10 \\ 
+
+            \hline
+            Vehicle & $3.47\degree$ & $0.96m$ & $0.33m$ & $1.30m$ & $0.44m$ & $36.79\%$ & $56.72\%$ & $48.18\%$ & $55.90\%$ \\ 
+Pedestrian & \textemdash & $0.38m$ & $0.28m$ & $0.20m$ & $0.07m$ & $32.26\%$ & $20.84\%$ & $13.55\%$ & $20.45\%$ \\ 
+Bicycle & \textemdash & $0.56m$ & $1.22m$ & $0.69m$ & $0.08m$ & $21.99\%$ & $33.75\%$ & $35.33\%$ & $33.49\%$ \\ 
+
+\hline
+\textbf{Mean} & $\mathbf{3.47\degree}$ & $\mathbf{0.63m}$ & $\mathbf{0.61m}$ & $\mathbf{0.73m}$ & $\mathbf{0.19m}$ & $\mathbf{30.35\%}$ & $\mathbf{37.10\%}$ & $\mathbf{32.35\%}$ & $\mathbf{36.61\%}$ \\ 
+$\Delta$ {Best} & ${\scriptstyle\color{black}0.00\degree}$ & ${\scriptstyle\color{black}0.00m}$ & ${\scriptstyle\color{black}0.00m}$ & ${\scriptstyle\color{black}0.00m}$ & ${\scriptstyle\color{black}0.00m}$ & ${\scriptstyle\color{black}0.00\%}$ & ${\scriptstyle\color{black}0.00\%}$ & ${\scriptstyle\color{black}0.00\%}$ & ${\scriptstyle\color{black}0.00\%}$ \\ 
+
+            \hline
+            
+        \end{tabular}
+        }

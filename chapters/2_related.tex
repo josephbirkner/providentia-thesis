@@ -3,7 +3,7 @@
 \chapter{Related Work}
 \label{ch:related}
 
-\section{Earlier Work Within The Providentia Project}
+\section{Earlier Work Within the Providentia Project}
 \label{sec:related-leon}
 
 This work is deeply rooted in the earlier groundwork which was laid out for the \textit{Mono3D} task in highway scenarios~\cite{leonthesis} in the scope of the Providentia project.
@@ -18,7 +18,7 @@ The detection flow of our early \textit{Mono3D} highway detector is illustrated 
 \end{figure}
 
 Note, that while this work adopts the first two elements of the detection flow \textemdash \textit{Instance Segmentation} and \textit{Bottom Contour Extraction} \textemdash we have completely reengineered all subsequent processes.
-This earlier detector works well on highways, because it assumes a fixed orientation for all vehicles.
+This earlier detector works well on highways because it assumes a fixed orientation for all vehicles.
 This also allows for a very straight-forward linear equation to solve for vehicle heights given their distance from the camera, as well as their instance mask heights.
 In this work, the vehicle orientation is dynamically derived from the HD map and the vehicle's positional history.
 The height estimation algorithm is revised accordingly.
@@ -46,15 +46,15 @@ While their approach has provided the basis for our research on \textit{Mono3d} 
     \item They do not consider non-vehicle \textit{Vulnerable Road Users (VRUs)} in their detector, such as bicyclists or pedestrians.\ This work is also detecting VRUs.
 \end{enumerate}
 
-Last but not least, no code was published alongside their approach.
+Finally, no code was published alongside their approach.
 This inherently necessitates research to reproduce their results.
 
 \section{The L-Shape Fitting Method for Vehicle Pose Detection}
 \label{sec:related-lshape-fitting}
 
 Branching off \textit{CVIS}, this work (like~\cite{leonthesis}) makes use of \textit{L-Shape-Fitting (LSF)} to estimate vehicle size and orientation from the instance mask bottom contour.
-This approach can also be interpreted as a \textit{pseudo-lidar}~\cite{survey2022} approach, because the projection of the instance mask bottom contour yields a (very flat) point-cloud.
-Underlining the \enquote{LIDAR-esque} origins of the LSF algorithm is the fact that it was introduced in the scope of an object detection method from LIDAR measurements, in the work \textit{The L-Shape Fitting Method for Vehicle Pose Detection from LIDAR}~\cite{zhang2017efficient}.
+This approach can also be interpreted as a \textit{pseudo-lidar}~\cite{survey2022} approach because the back-projection of the instance mask bottom contour yields a (very flat) point-cloud.
+Underlining the \enquote{LiDAR-esque} origins of the LSF algorithm is the fact that it was introduced in the scope of an object detection method from LiDAR measurements, in the work \textit{The L-Shape Fitting Method for Vehicle Pose Detection from LiDAR}~\cite{zhang2017efficient}.
 Their method is illustrated in Figure~\ref{fig:related-lsf}.
 
 \begin{figure}[htb]
@@ -65,7 +65,7 @@ Their method is illustrated in Figure~\ref{fig:related-lsf}.
     \label{fig:related-lsf}
 \end{figure}
 
-By regressing a rectangular shape to the bottom contour, the LSF algorithm is able to estimate orientation, BEV position and BEV size simultaneously.
+By regressing a rectangular shape to the bottom contour, the LSF algorithm can estimate orientation, BEV position and BEV size simultaneously.
 The regression is performed by maximizing one of three error criteria: \texttt{Area}, \texttt{Closeness} or \texttt{Variance}.
 The algorithm and the criteria are explained in section~\ref{sec:lshapefitting}.
 In this work, we further adapt and develop this approach to stabilize size and heading estimates in complex traffic observation scenarios using tracking and the HD map.
@@ -86,12 +86,12 @@ This is illustrated in Figure~\ref{fig:related-tranet}.
 \end{figure}
 
 As can be seen from the right side of Figure~\ref{fig:related-tranet}, they make use of road curb geometry which is extracted from a satellite image to make estimates of vehicle headings, substituting the role of the HD map in this work.
-Note, that heading estimation via the most proximate curb would not be applicable in this work, as curbs within a complex intersection with many overlapping lanes are not a good indicator of orientation.
+Note that heading estimation via the most proximate curb would not be applicable in this work, as curbs within a complex intersection with many overlapping lanes are not a good indicator of orientation.
 However, their approach alleviates the need for rather hard-to-source high-definition maps, which is a point of weakness in this work.
-Another strong point of \textit{TrafficNet} is their extensive use of Kalman Filters~\cite{welch1995kalman} to de-noise the vehicle pose and category estimations.
+Another strong point of \textit{TrafficNet} is their extensive use of Kalman Filters~\cite{welch1995kalman} to de-noise the vehicle poses and category estimations.
 They also fine-tuned a custom instance mask segmentation model in the first detector stage based on YOLOv5~\cite{glenn_jocher_2020_4154370}.
 This is done both to detect additional object categories, and to speed up inference by removing convolutions which are only needed to detect large objects.
-One weak point of their work is the extensive use of \enquote{magic values} in the second detector stage: They make use of pre-defined sizes based on vehicle categories, and calculate 3D object height based on a pre-calculated factor of \textit{$0.6$} from the instance mask height.
+One weak point of their work is the extensive use of \enquote{magic values} in the second detector stage: They make use of pre-defined sizes based on vehicle categories and calculate 3D object height based on a pre-calculated factor of \textit{$0.6$} from the instance mask height.
 Also, unfortunately, no code is publicly available for \textit{TrafficNet}.
 
 \section{UrbanNet: Urban Maps for Long Range 3D Object Detection}
@@ -111,7 +111,7 @@ The architecture is illustrated in Figure~\ref{fig:related-urbnet}.
 This approach provides an interesting way to remediate some of the shortcomings of L-Shape-Fitting in the second detector stage.
 The neural network can learn to recognize obstructed road user poses, or even highly uncommon poses, such as a car laying on its side in a crash scenario.
 This is not possible with a bottom-contour based detector.
-Furthermore, the runtime performance of this approach might actually be overall better than ours, as there is no requirement for the first detector stage to output and compute expensive per-instance image masks.
+Furthermore, the runtime performance of this approach might be overall better than ours, as there is no requirement for the first detector stage to output and compute expensive per-instance image masks.
 Notably, they also incorporate slope estimation into their prediction, which is especially useful for long-range vision in mountainous terrain.
 The bottleneck in this case is the availability of training data, something which is solved in UrbanNet by training and testing exclusively on artificial computer-generated road scenes.
 
@@ -136,7 +136,7 @@ They do not make any attempts at calculating vehicle heights or detecting VRUs.
 \label{sec:related-surveys}
 
 In the conclusion of this related work study, several survey papers were consulted, some of which shall be highlighted here for reference.
-First of all, the survey \textit{3D Object Detection from Images for Autonomous Driving}~\cite{survey2022} was a great resource to learn a taxonomy for the multitude of architectural approaches towards the \textit{Mono3d} task.
-Furthermore, the survey on \textit{Object Detection in Traffic Videos} provides an in-depth overview on the spectrum of techniques which are used in 2D object detection neural networks, such as YOLO~\cite{wang2022yolov7}.
+First, the survey \textit{3D Object Detection from Images for Autonomous Driving}~\cite{survey2022} was a great resource to learn a taxonomy for the multitude of architectural approaches towards the \textit{Mono3d} task.
+Furthermore, the survey on \textit{Object Detection in Traffic Videos} provides an in-depth overview of the spectrum of techniques which are used in 2D object detection neural networks, such as YOLO~\cite{wang2022yolov7}.
 Research on \textit{Infrastructure-Based Object Detection and Tracking for Cooperative Driving Automation}~\cite{bai2022infrastructure} is very connected to this work, and the cited survey includes many of the previously mentioned related works.
 Finally, the \textit{Review on Cooperative Perception and Control Supported Infrastructure-Vehicle Systems}~\cite{yu2022review} is the only survey which mentions HD maps as an auxiliary data source and shared spatial reference frame for cooperating autonomous vehicles.

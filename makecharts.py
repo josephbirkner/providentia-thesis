@@ -584,6 +584,30 @@ def make_all():
     make_table(
         aggregate_results=[
             dataset.aggregate(ModelSelector(
+                model=select_first(model_metrics_short, lambda m: m.iseg == "yolact")[0],
+                desc=r"\textbf{{Best w/ Yolact-Edge}}: {model}"
+            ), classes=CLASSES_SHORT)[0],
+            dataset.aggregate(ModelSelector(
+                model=select_first(model_metrics_short, lambda m: m.iseg == "yolov7-640")[0],
+                desc=r"\textbf{{Best w/ Yolov7 ($640^2$)}}: {model}"
+            ), classes=CLASSES_SHORT)[0],
+            dataset.aggregate(ModelSelector(
+                model=select_first(model_metrics_short, lambda m: m.iseg == "yolov7-1280")[0],
+                desc=r"\textbf{{Best w/ Yolov7 ($1280^2$)}}: {model}"
+            ), classes=CLASSES_SHORT)[0],
+            dataset.aggregate(ModelSelector(
+                model=best_model[0],
+                desc=r"\textbf{{Best w/ Yolov7 ($1920^2$)}}: {model}"
+            ), classes=CLASSES_SHORT)[0],
+        ],
+        filename="resolution-best.tex",
+        baseline_results=best_model_short,
+        classes=CLASSES_SHORT+["agg"],
+        delta_name="Best")
+
+    make_table(
+        aggregate_results=[
+            dataset.aggregate(ModelSelector(
                 model=select_first(model_metrics_short, lambda m: m.count_x("f") == 0)[0],
                 desc=r"\textbf{{Best w/o Filters}} ({model})"
             ), classes=CLASSES_SHORT)[0],

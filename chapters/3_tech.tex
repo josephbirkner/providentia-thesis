@@ -8,7 +8,7 @@ This chapter provides additional technical details for specific algorithms and t
 \section{The YOLACT Instance Segmentation Model}
 \label{sec:yolact}
 
-\textit{YOLACT (You Only Look At Coefficients)}~\cite{bolya2019yolact} is a real-time instance segmentation method that focuses on processing static images.
+\textit{YOLACT (You Only Look at Coefficients)}~\cite{bolya2019yolact} is a real-time instance segmentation method that focuses on processing static images.
 It simplifies the instance segmentation problem by separating it into two parallel tasks, enabling faster processing while maintaining competitive accuracy.
 The functionality of \textit{YOLACT} can be described in three main steps (as illustrated in Figure~\ref{fig:yolact}):
 
@@ -24,7 +24,7 @@ However, it is designed for large GPUs, such as the \textit{TitanX} or \textit{R
 
 \begin{figure}[htb]
     \includegraphics[width=\linewidth]{figures/yolact_fig_2-cropped}
-    \caption{Figure~2 from \textit{YOLACT}. The figure shows how generated protorype masks are combined with instance-specific coefficients to produce the final instance masks.}
+    \caption{Figure~2 from \textit{YOLACT}. The figure shows how generated prototype masks are combined with instance-specific coefficients to produce the final instance masks.}
     \label{fig:yolact}
 \end{figure}
 
@@ -59,14 +59,14 @@ This attention map, which functions as a high-dimensional feature, is attached t
 The blending of masks using the attention map results in a more precise and refined instance segmentation.
 To leverage \textit{YOLOv7} for instance segmentation, the \textit{YOLOv7} object detection model is fine-tuned on the \textit{MS COCO}~\cite{lin2014microsoft} instance segmentation dataset.
 The resulting \textit{YOLOv7}-mask model achieves a Mask AP (average precision) of $43.1\%$, while \textit{YOLACT} achieves a Mask AP of $35.4\%$ when using a \textit{ResNet-101} backbone.
-The architecture of \textit{YOLOv7}-mask, as well as some of the qualitative corresponding results, are illustrated in Figure XXX.
+The architecture of \textit{YOLOv7}-mask, as well as some of the qualitative corresponding results, are illustrated in Figure~\ref{fig:blendmask}.
 
 % ----------------------------------------------------
 
 \section{Map Data Formats}
 \label{sec:opendrive}
 
-This work depends on HD maps to inform viable heading heading choices for road user detections.
+This work depends on HD maps to inform viable heading choices for road user detections.
 As map data formats for this task, both the \textit{OpenDRIVE}~\cite{dupuis2010opendrive, althoff2018automatic} and \textit{Lanelet2}~\cite{poggenhans2018lanelet2} map data formats are considered.
 In both \textit{OpenDRIVE} and \textit{Lanelet2} formats, lane geometry representation is crucial for accurate road modeling and navigation.
 \textit{OpenDRIVE} is an XML-based data format that describes road networks hierarchically.
@@ -101,7 +101,8 @@ This approach can be less accurate in some cases, but it simplifies map data han
 \end{figure}
 
 In summary, \textit{OpenDRIVE} represents lane geometry using parametric curves and a reference line, while \textit{Lanelet2} uses polygonal shapes defined by sequences of nodes.
-\textit{OpenDRIVE} offers more accurate road geometry, but \textit{Lanelet2's} simpler representation can be easier to work with and integrate with other mapping data sources like OpenStreetMap. This modeling difference is also highlighted in Figure~\ref{fig:opendrive-lanlet}.
+\textit{OpenDRIVE} offers more accurate road geometry, but \textit{Lanelet2's} simpler representation can be easier to work with and integrate with other mapping data sources like OpenStreetMap.
+This modeling difference is also highlighted in Figure~\ref{fig:opendrive-lanlet}.
 In this work, we are compelled to use \textit{OpenDRIVE} as the input format for the HD map, as this format was used by Providentia's map data supplier.
 However, the \textit{Lanelet2} format would be more suitable, as their approach to lane modeling is directly compatible with our heading interpolation algorithm, as described in Section~\ref{sec:hdmapgrids}.
 
@@ -119,7 +120,7 @@ They exchange information by sending messages over named channels called \textit
 Another central component in \textit{ROS} is the Master, which manages the entire system by allowing nodes to find each other, register topics and services, and maintain a list of active nodes.
 
 The framework provides several advantages for robotics applications, including hardware abstraction, low-level device control, efficient message passing, package management, and a rich ecosystem of tools and libraries.
-These features make it easier for developers to build distributed robotics applications, and promote modularity and code reusability.
+These features make it easier for developers to build distributed robotics applications and promote modularity and code reusability.
 In our case, we divide separate detector stages into different nodes, as described in Section~\ref{sec:arch}.
 
 \section{SORT Object Tracking}
@@ -219,7 +220,7 @@ Nevertheless, the impact of such imperfect cases on vehicle tracking can be mini
 
 Like in 2D object detection, the \textit{Average Precision (AP)} is also used as the main evaluation metric in 3D object detection.
 The predictions are first assigned to their corresponding ground truths according to a specific similarity measure to compute AP\@.
-The most commonly used similarity measure is the \textit{Intersection over Union (IoU)}, which is the geometric overlap between the ground truth 3D bounding box A and the estimated 3D bounding box B\@.
+The most used similarity measure is the \textit{Intersection over Union (IoU)}, which is the geometric overlap between the ground truth 3D bounding box A and the estimated 3D bounding box B\@.
 IoU is defined like this:
 
 \[
@@ -233,8 +234,8 @@ Then, the recall $r$ and precision $p$ can be computed from the ranked detection
     r = \frac{\text{TP}}{\text{TP}+\text{FN}}, p = \frac{\text{TP}}{\text{TP}+\text{FP}}
 \]
 
-The precision can be regarded as a function of recall, i.e. $p(r)$: As recall approaches zero, the precision will rise, as there are fewer and fewer False Positives in the denominator.
-Conversely, a rising recall is usually associated with a drop in precision, as the reduced amount of False Negatives leads to new False Positives.
+The precision can be regarded as a function of recall, i.e., $p(r)$: As recall approaches zero, the precision will rise, as there are fewer and fewer False Positives in the denominator.
+Conversely, a rising recall is usually associated with a drop in precision, as the reduced number of False Negatives leads to new False Positives.
 The interpolated precision values across a range of recall values is defined as AP:
 
 \[
@@ -259,7 +260,7 @@ To obtain a single scalar score, \textit{nuScenes}~\cite{caesar2020nuscenes} com
     \text{mTP}_k = \frac{1}{\mathbb{C}} \sum_{c \in \mathbb{C}} \text{TP}_{k,c}
 \]
 
-where $\text{TP}_{k,c}$ denotes the k-th TP metric (e.g. $k=1$ means the ATE) for category $c$.
+where $\text{TP}_{k,c}$ denotes the k-th TP metric (e.g., $k=1$ means the ATE) for category $c$.
 To integrate all the mentioned metrics into a scalar score, \textit{nuScenes} proposes the \textit{nuScenes} Detection Score (NDS) equation that combines the mAP and mTPk scores.
 The NDS is calculated using the following equation:
 

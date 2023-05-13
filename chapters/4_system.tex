@@ -17,18 +17,19 @@ We will start by laying out the high-level architecture, as displayed in Figure~
 \end{figure}
 
 We have divided our \textit{Mono3d} architecture into three independent process nodes.
-A camera driver node, a $2D$ instance segmentation node, and a $3D$ detection node.\ The camera driver node publishes full-resolution $1920p$ RGB image frames at $60Hz$, requiring a throughput of (roughly) $360 \text{MiB}$ per second.
+A camera driver node, a $2D$ instance segmentation node, and a $3D$ detection node.
+The camera driver node publishes full-resolution $1920p$ RGB image frames at $60Hz$, requiring a throughput of (roughly) $360 \text{MiB}$ per second.
 This makes shared memory a good transport medium.
 For our solution, we make use of the \textit{Eclipse eCAL} shared memory library \footnote{\hyperlink{https://eclipse-ecal.github.io/ecal/index.html}{https://eclipse-ecal.github.io/ecal/index.html}} to facilitate the communication of camera frames.
 The frames are continuously received by the the $2D$ Instance Segmentation node, which is bottlenecked by the performance of the used GPU.
 From there, the instance masks of detected objects are published to downstream processes via \textit{ROS}.
 In this setup, the second stage our two-stage monocular $3D$ detector is just another consumer of the detected $2D$ instances \textemdash many other consumers may exist for different purposes.
 In the second detector stage (the $2D \rightarrow 3D$ lifting stage), $2D$ instance detections are received via ROS and annotated with hypotheses regarding their $3D$ pose.
-Again via \textit{ROS}, these $3D$ detections are then broadcast to downstream applications, such as sensor fusion, visualization, or an autonomous vehicle.
+Again, via \textit{ROS}, these $3D$ detections are then broadcast to downstream applications, such as sensor fusion, visualization, or an autonomous vehicle.
 This separation of the detection pipeline into multiple concurrent, networked processes offers numerous advantages:
 
 \begin{enumerate}
-    \item \textbf{Increased robustness}: A distributed multiprocess solution enhances system robustness by enabling fault tolerance and redundancy.\ When a process fails or encounters an error, other processes in the system can continue to function, minimizing the impact of the failure.\ This capability to recover and adapt to faults makes the overall system more reliable, preventing single points of failure from causing widespread disruptions.
+    \item \textbf{Increased robustness}: A distributed multi-process solution enhances system robustness by enabling fault tolerance and redundancy.\ When a process fails or encounters an error, other processes in the system can continue to function, minimizing the impact of the failure.\ This capability to recover and adapt to faults makes the overall system more reliable, preventing single points of failure from causing widespread disruptions.
     \item \textbf{Separation of functional concerns}: In a distributed system, each process can focus on a specific functionality, promoting modularity and maintainability.\ This separation of concerns simplifies the design and development of the system, making it easier to understand, debug, and extend.\ It also facilitates reusability, as individual components can be easily replaced or integrated into other systems without affecting the overall system's functionality.
     \item \textbf{Improved assignment of hardware}: The networked solution allows for better resource allocation and hardware utilization.\ By spreading tasks across multiple processes and physical machines, the system can allocate specific resources, such as GPUs, to each process based on its requirements.\ This flexibility enables more efficient use of available hardware, reducing resource contention and potential bottlenecks, while also providing the opportunity to optimize cost and energy consumption.
     \item \textbf{Increased performance}: The asynchronous process collaboration enables parallelism, allowing multiple tasks to be executed concurrently.\ This parallel execution can significantly improve the overall performance and throughput of the system.\ By leveraging the processing capabilities of multiple machines, distributed systems can handle larger workloads and scale more effectively than a single-process system.\ Additionally, this architecture allows for load balancing, which can help distribute work evenly and prevent overloading individual components.
@@ -49,7 +50,7 @@ The performance impact of this downscaling is further explored in Section~\ref{s
 As the instance masks of detected objects must be efficiently passed via \textit{ROS} messages, bit packing~\cite{5219512} is used to efficiently serialize the pixel mask arrays for each instance.
 Earlier work within Providentia~\cite{leonthesis} went so far as to conclude that the throughput demands of the instance masks is far too high for a distributed solution to be viable, but this turned out to be overly pessimistic.
 Each detected instance consists of a pixel mask, a $2D$ screen-space bounding box, and an assigned object category.
-As we are currently using the \textit{YOLOv7} detector which was trained on the \textit{MS COCO} dataset, our $2D$ object detector is able to distinguish between six different object classes: \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}.
+As we are currently using the \textit{YOLOv7} detector, which was trained on the \textit{MS COCO} dataset, our $2D$ object detector is able to distinguish between six different object classes: \texttt{CAR}, \texttt{BUS}, \texttt{TRUCK}, \texttt{MOTORCYCLE}, \texttt{BICYCLE}, \texttt{PEDESTRIAN}.
 The \texttt{VAN}, \texttt{EMERGENCY\_VEHICLE}, and \texttt{OTHER} classes from the \textit{A9 Dataset} cannot yet be recognized.
 
 \section{The 3D Object Detector}
@@ -76,7 +77,7 @@ The full process of estimating these pose parameters from a $2D$ detection tripl
 The high-level process which turns the instance mask and category inputs into a 3D pose hypothesis for each $2D$ detection is summarized in the following:
 First, the instance mask is filtered to extract its bottom contour (see Section~\ref{sec:botcont}).
 This yields a line of $2D$ pixel coordinates $\{\overrightarrow{uv}_i\}_{i=0}^{i < N}$.
-These are projected into $3D$ map space using a simple raycast, whereas the $z$ (altitude) coordinate is set to 0.
+These are projected back into $3D$ map space using a simple ray-cast, whereas the $z$ (altitude) coordinate is assumed to be 0.
 The resulting $3D$ point cloud $\{\overrightarrow{\text{xyz}}_i\}_{i=0}^{i < N}$ is optionally filtered using the \textit{DBSCAN} algorithm to remove outlier points.
 If the category of the detected object is that of a \textit{Vulnerable Road User} such as a pedestrian or bicycle, the bottom contour will be converted to a $3D$ pose estimation with a special algorithm as explained in Section~\ref{sec:pedcyc}.
 Otherwise, the \textit{HD Map Lookup Grids} (see Section~\ref{sec:hdmapgrids}) are queried at the positions of the $3D$ points.
@@ -130,7 +131,7 @@ This is, because several assumptions which are made for optimized road vehicle d
 
 \begin{enumerate}
     \item \textbf{Legal Heading Assumption}: For road vehicles, the monocular detector makes use of the HD map to derive yaw options from legal traffic flow directions.\ This is not possible for bicyclists or pedestrians, as these often move along unmapped territory beyond the road, and perpendicular to normal traffic directions on mapped vehicle lanes.
-    \item \textbf{Box Shape Assumption}: Cars, trucks and other motorized road users usually exhibit an instance mask bottom contour shape which indicates the occupied ground area of the object, and therefore allows for L-Shape-Fitting as an effective algorithm to derive the object's length and width.\ This is usually not the case for pedestrians and bicycles, which might have major errors in the projected bottom contours (see Figure~\ref{fig:mono3d-vru}).
+    \item \textbf{Box Shape Assumption}: Cars, trucks and other motorized road users usually exhibit an instance mask bottom contour shape which indicates the occupied ground area of the object, and therefore allows for L-Shape-Fitting as an effective algorithm to derive the object's length and width.\ This is usually not the case for pedestrians and bicycles, which might have major errors in their back-projected bottom contours (see Figure~\ref{fig:mono3d-vru}).
 \end{enumerate}
 
 For these reasons, we have implemented a simplified detection flow for VRUs: We do not attempt to detect their orientation, instead they are always assigned $\theta=0$.
@@ -167,7 +168,7 @@ Unlike in the original \textit{LSF} algorithm, we constrain the choice of $\thet
 
 In this work, we propose to select the $\theta$ heading value for each $3D$ vehicle detection from a traffic flow direction that is derived from the HD map.
 However, so far it has been left up to the reader to imagine how the HD map is exactly queried to produce heading options.
-The following two sections serve to explain this step in more detail.
+The following two sections explain this step in more detail.
 First and foremost, we propose a spatial grid lookup structure for heading options at fixed planar increments, covering the \textit{field-of-view (FOV)} of each sensor.
 This approach allows us to pre-compute the heading options for a discrete subset of representative map locations, and the subsequent real-time lookup becomes computationally trivial.
 
@@ -207,7 +208,7 @@ Both representations have distinct advantages.
 A vector representation is usually the most efficient for storage.
 But it is comparatively slow to determine whether it contains a specific point, and how that point is situated in relation to the vertices of the geometry.
 This is where a pixel or grid-based representation has a lot of potential.
-The grid can store which locations are covered by the geometry, and can also serve as a cache for vertex attributes of the geometry at each grid cell location.
+The grid can store which locations are covered by the geometry and can also serve as a cache for vertex attributes of the geometry at each grid cell location.
 In case of the lane surfaces, each grid cell stores the heading value of the lane at the grid cell location.
 To account for overlapping lanes, we instantiate one grid per \textit{OpenDRIVE} road.
 Only lane sections which belong to the same road are rendered into the same grid.
@@ -220,8 +221,9 @@ Only lane sections which belong to the same road are rendered into the same grid
 \end{figure}
 
 The spatial coverage of each heading lookup grid for a camera is determined by iterating through the available lane sections, and selecting those which are both in view of the camera and not further than 200 meters away.
-Each cell in each grid then covers a $10*10cm$ square.
+Each cell in each grid then covers a $10*10$~cm square.
 This yields a grid resolution of $898*1140$ cells for the \textit{South-1} camera, and $1436*1224$ cells for the \textit{South-2} camera.
+For the highway, we extend the grid range to 1000 meters and increase the grid cell size to $50*50$~cm.
 
 In detail, the process of rasterization means to loop over every \enquote{pixel} (grid cell) and determine if it lies inside one of the triangles of the tessellated lane sections for the road of the tested grid.
 If it does, we use the barycentric coordinates of the grid cell with respect to the triangle to interpolate the corresponding heading value for the point inside the triangle.
@@ -265,7 +267,7 @@ A triangle covers $99.85$ cells on average.
 This makes the process of rendering the heading lookup grids quite fast, with an average wall-time of $1.48s$ to render $6812$ triangles on a Ryzen 5600 processor.
 This process can be comfortably executed during the startup of the $3D$ detector process.
 At an average of 25 \textit{OpenDRIVE} roads per camera view on the S110 intersection, and five bytes stored per cell, the final grid-set for one camera occupies $165.78 MiB$ of RAM on average.
-The resulting heading fields are visualised in Figure~\ref{fig:headings-rendered}.
+The resulting heading fields are visualized in Figure~\ref{fig:headings-rendered}.
 
 \begin{figure}[htb]
     \centering
@@ -280,7 +282,7 @@ The resulting heading fields are visualised in Figure~\ref{fig:headings-rendered
 \section{HD-Map-Augmented L-Shape Fitting}
 \label{sec:hdmaplsf}
 
-The previously outlined heading lookup grids, which are rendered from the HD map, can serve to improve the basic LSF algorithm in two ways:
+The previously outlined heading lookup grids, which are rendered from the HD map, can improve the basic LSF algorithm in two ways:
 
 \begin{enumerate}
     \item The grid may be used to calculate possible heading values which are to be evaluated by LSF, rather than using the basic approach of iterating over $[0, \pi]$ at fixed increments.
@@ -304,8 +306,8 @@ To this end, we normalize $h(G_r,B^n_{3D})$ as $\text{Score}_\text{map}(\theta_r
 
 This process is illustrated in Figure~\ref{fig:mapscore}.
 There are three grids $G_1$, $G_2$ $G_3$ for three overlapping roads.
-The bottom contour of of vehicle $V$ as observed by camera $C$ is shown with 11 points.
-Now, the lookup histogram values for each grid are shown in the bar chart the right side of the figure.
+The bottom contour of vehicle $V$ as observed by camera $C$ is shown with 11 points.
+Now, the lookup histogram values for each grid are shown in the bar-chart on the right side of the figure.
 For grid $G_1$, all 11 points match to a nonempty cell.
 For grid $G_2$, six points match.
 For grid $G_3$, only five points match.
@@ -347,8 +349,8 @@ In practice, we have implemented a threshold of six historical positions that ar
 \label{sec:sizeandpos}
 
 As an estimate for a detected vehicle's width and length is made using our augmented L-Shape-Fitting algorithm, two critical values remain to be established for a fully defined 3D bounding box: The vehicle position and the vehicle height.
-Also, our tests showed, that the LSF-based BEV dimension hypothesis must often be corrected due to errors in the bottom contour (see Sections~\ref{sec:impactcontourfiltering} and~\ref{sec:impactsizefiltering}).
-Because of this, we need to clamp the BEV with/length dimensions to category-based minimum and maximum values.
+Also, our tests showed that the LSF-based BEV dimension hypothesis must often be corrected due to errors in the bottom contour (see Sections~\ref{sec:impactcontourfiltering} and~\ref{sec:impactcontourfiltering}).
+Because of this, we need to clamp the BEV width/length dimensions to category-based minimum and maximum values.
 In this case, the vehicle's bounding box needs to grow or shrink in some direction, and the position hypothesis of the LSF algorithm becomes uncertain.
 
 \begin{figure}[htb]
@@ -418,18 +420,18 @@ Therefore, we can simultaneously optimize both the height of the 3D box and its 
 
 In practice, we have implemented this joint height and position regression using binary search over the 3D height value, as described in Algorithm~\ref{alg:posheightregression}.
 As the optimization goal, it is sufficient to match the image space box height.
-We limit the number of optimization steps to 10.
-In practice, we observe that the algorithm converges on average after five steps.
-We add a sanity check to abort iteration, if the optimization cannot progress because the estimated height is growing below or beyond sanity limits.
-This can occur, when the pixel mask for the detected instance is highly erroneous or obscured.
-The approach is also illustrated in Figure~\ref{fig:calcheightpos}. Initially, camera $C$ observes only the screen-space bounding box $\mathtt{AABB}(\texttt{InstanceMask}_V)$.\ We now search for the vehicle height $h$ based on a value along the ray $R$, which is cast from $C$ through the 2D AABB center.\ Only for the correct $h_\text{gt}$ will the 2D AABB of the predicted 3D box $\mathtt{AABB}(C,\mathtt{Box}(R,w,l,\theta,h_\text{gt}))$ be equal to $\mathtt{AABB}(\texttt{InstanceMask}_V)$.
+We limit the number of optimization steps to 10, but observe that the algorithm converges on average after five steps.
+We also add a sanity check to abort iteration, if the optimization cannot progress because the estimated height is growing below or beyond sanity limits.
+This can occur when the pixel mask for the detected instance is highly erroneous or obscured.
+The approach is also illustrated in Figure~\ref{fig:calcheightpos}.
+Initially, camera $C$ observes only the screen-space bounding box $\mathtt{AABB}(\texttt{InstanceMask}_V)$.\ We now search for the vehicle height $h$ based on a value along the ray $R$, which is cast from $C$ through the 2D AABB center.\ Only for the correct $h_\text{gt}$ will the 2D AABB of the predicted 3D box $\mathtt{AABB}(C,\mathtt{Box}(R,w,l,\theta,h_\text{gt}))$ be equal to $\mathtt{AABB}(\texttt{InstanceMask}_V)$.
 
 % ----------------------------------------------------
 
 \section{Late HD Map Lookup}
 \label{sec:hdmaplate}
 
-In the rest of this chapter, two optional design elements are explained which do not necessarily improve our system, but serve to answer some questions in our evaluation study.
+In the rest of this chapter, two optional design elements are explained which do not necessarily improve our system, but answer some questions in our evaluation study.
 Feel free to skip ahead to the next chapter if you are only interested in the best version of the system.
 
 First, as an alternative to the rather complex \enquote{early} HD map lookup for all bottom contour points (with a derived confidence histogram which feeds into L-Shape-Fitting), we initially also implemented much a simpler \enquote{late lookup} approach.
@@ -439,8 +441,8 @@ Then we pick the heading option which is most in line with the vehicle's histori
 
 The drawbacks of this approach are manifold: L-Shape-Fitting has already settled on a heading value prior to the map lookup, so the width and length will not be corrected.
 Furthermore, the vehicle position at this point is already very disconnected from the ground-truth sensor input.
-So a lot of positional information is discarded before the HD map lookup is made.
-Finally, the position and height regression relies on established values for width, length and $\theta$, so correcting $\theta$ afterwards is logically not optimal.
+So, a lot of positional information is discarded before the HD map lookup is made.
+Finally, the joint position-height regression algorithm relies on established values for width, length and $\theta$, so correcting $\theta$ afterwards is logically not optimal.
 
 \section{3D SORT Tracking}
 \label{sec:trackthreed}

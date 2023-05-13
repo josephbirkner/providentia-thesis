@@ -375,6 +375,7 @@ def baseline_diff(baseline: Result, actual: Result, col: Optional[ColSpec] = Non
     if diff_s.startswith("-0.00") or diff_s.startswith("+0.00"):
         diff_s = diff_s[1:]
     if diff_s.startswith("0.00"):
+        diff_s = r"\pm" + diff_s
         color = "black"
     else:
         color = ("red", "TUMGreen")[diff > 0 if not col or not col.lower_better else diff < 0]

@@ -8,7 +8,7 @@ In this chapter, we outline potential avenues for future work to further enhance
 \section{Improved Non-Maximum Suppression (NMS)}
 \label{sec:nms}
 
-A common issue encountered in our system is the overlapping of bounding boxes, particularly for pedestrians inside bicycles or vans inside trucks.
+A common issue encountered in our system is the overlapping of bounding boxes, particularly for pedestrians inside bicycles,  pedestrians inside vehicles, or vans inside trucks.
 To address this problem, we can explore more advanced non-maximum suppression (NMS) techniques that better handle these cases and suppress overlapping boxes, thus improving the system's overall accuracy and robustness.
 
 \section{Substituting HD Maps}
@@ -34,7 +34,7 @@ Future work should focus on optimizing and refining the detection algorithm, inc
 \label{sec:neuralkeypoints}
 
 The long tail robustness of our system can be improved by incorporating neural keypoint estimation techniques.
-This approach would help better handle obstructions, occlusions, and unusual vehicle orientations, ultimately enhancing the system's performance in complex and dynamic traffic scenarios.
+This approach would help to better handle obstructions, occlusions, and unusual vehicle orientations, ultimately enhancing the system's performance in complex and dynamic traffic scenarios.
 It could also unify the VRU/Vehicle detection pipelines, and further improve the system's runtime performance.
 This presents itself as a very promising research direction.
 

@@ -127,7 +127,6 @@ class Result:
         return result
 
     def score(self):
-        # return self.ap + self.iou + self.recall + self.precision + (90. - self.rot_err)
         return (
             self.ap*.05 +
             sum(
@@ -279,6 +278,7 @@ def make_column_chart(
         aggregate_results_by_color: List[Tuple[str, List[Tuple[int, Tuple[Any, Dict[str, Result]]]]]],
         filename="baseline.tex",
         highlights: List[Tuple[Any, str, float]] = tuple(),
+        bar_width="0.1pt"
 ):
     """Render a huge chart with many columns."""
     global output_dir
@@ -301,7 +301,7 @@ def make_column_chart(
             ybar,
             width=\\textwidth,
             height=0.35\\textwidth,
-            bar width=0.1pt,
+            bar width={bar_width},
             ylabel={{Score}},
             ymin=10, ymax=40,
             xtick=\\empty,
@@ -400,19 +400,20 @@ def make_table(
     global output_dir
     if classes is None:
         classes = CLASSES+["agg"]
+    space = r"\nobreak\hspace{{.16667em plus .08333em}}"
     cols = [
         ColSpec("\\textbf{AOE}", lambda r: r.rot_err, lambda x: f"{(x/math.pi*180):.2f}\\degree", True),
-        ColSpec("\\textbf{ATE}", lambda r: r.pos_err, lambda x: f"{x:.2f}m", True),
-        ColSpec("\\textbf{AWE}", lambda r: r.width_err, lambda x: f"{x:.2f}m", True),
-        ColSpec("\\textbf{ALE}", lambda r: r.length_err, lambda x: f"{x:.2f}m", True),
-        ColSpec("\\textbf{AHE}", lambda r: r.height_err, lambda x: f"{x:.2f}m", True),
+        ColSpec("\\textbf{ATE}", lambda r: r.pos_err, lambda x: f"{x:.2f}{space}m", True),
+        ColSpec("\\textbf{AWE}", lambda r: r.width_err, lambda x: f"{x:.2f}{space}m", True),
+        ColSpec("\\textbf{ALE}", lambda r: r.length_err, lambda x: f"{x:.2f}{space}m", True),
+        ColSpec("\\textbf{AHE}", lambda r: r.height_err, lambda x: f"{x:.2f}{space}m", True),
         ColSpec("$\\mathbf{IoU}_{3D}$", lambda r: r.iou, lambda x: f"{x*100:.2f}\\%", False),
         ColSpec("\\textbf{Precision}", lambda r: r.precision, lambda x: f"{x:.2f}\\%", False),
         ColSpec("\\textbf{Recall}", lambda r: r.recall, lambda x: f"{x:.2f}\\%", False),
         ColSpec("\\textbf{AP}{@}10", lambda r: r.ap, lambda x: f"{x:.2f}\\%", False),
     ]
     header = ["\\textbf{Class}"]+[col.label for col in cols]
-    align = "l|" + "r"*(len(cols)-3) + "|" + "rrr"
+    align = "l|" + r"r"*(len(cols)-3) + "|" + r"rrr"
     with open(output_dir/filename, "w") as out_file:
         out_file.write(r"""
         \centering
@@ -423,12 +424,12 @@ def make_table(
             out_file.write(r"\hline")
             score = agg_metrics["agg"].score()
             out_file.write(f" & \\multicolumn{{{len(cols)-3}}}{{l|}}{{{str(agg_key)}}}")
-            out_file.write(f" & \\multicolumn{{3}}{{l|}}{{\\textbf{{Score}}: ${score:.2f}\\%$")
+            out_file.write(f" & \\multicolumn{{3}}{{l|}}{{\\textbf{{PDS}}: ${score:.2f}\\%$")
             if baseline_results:
                 out_file.write(" "+baseline_diff(
                     baseline_results[classes[-1]],
                     agg_metrics[classes[-1]],
-                    ColSpec("Score", lambda r: r.score(), lambda v: f"{v:.2f}\\%", False),
+                    ColSpec("PDS", lambda r: r.score(), lambda v: f"{v:.2f}\\%", False),
                     True
                 ))
             out_file.write(r"} \rule{0pt}{1.4em} \\[0.2em] ""\n")
@@ -596,10 +597,6 @@ def make_all():
                 model=select_first(model_metrics_short, lambda m: m.iseg == "yolov7-1280")[0],
                 desc=r"\textbf{{Best w/ Yolov7 ($1280^2$)}}: {model}"
             ), classes=CLASSES_SHORT)[0],
-            dataset.aggregate(ModelSelector(
-                model=best_model[0],
-                desc=r"\textbf{{Best w/ Yolov7 ($1920^2$)}}: {model}"
-            ), classes=CLASSES_SHORT)[0],
         ],
         filename="resolution-best.tex",
         baseline_results=best_model_short,
@@ -641,7 +638,8 @@ def make_all():
                 (i, (m, mr)) for (i, (m, mr)) in enumerate(reversed(model_metrics))
                 if m.count_x("m") == 2 and m.count_x("t") in (1, 3)]),
         ],
-        filename="lsf-augmentations.tex")
+        filename="lsf-augmentations.tex",
+        bar_width="0.5pt")
 
     make_table(
         aggregate_results=[
@@ -721,6 +719,30 @@ def make_all():
         ],
         baseline_results=best_model_vehicles,
         filename="perspective.tex",
+        delta_name="Best",
+        classes=VEHICLE_CLASS)
+
+    make_table(
+        aggregate_results=[
+            (
+                f"\\textbf{{Performance of {model_metrics_vehicles_s1[0][0].name()} on S110-S2}}",
+                select_first(model_metrics_vehicles_s2, lambda m: m == model_metrics_vehicles_s1[0][0])[1]
+            ),
+            (
+                f"\\textbf{{Performance of {model_metrics_vehicles_s2[0][0].name()} on S110-S1}}",
+                select_first(model_metrics_vehicles_s1, lambda m: m == model_metrics_vehicles_s2[0][0])[1]
+            ),
+            (
+                f"\\textbf{{Performance of {best_model[0].name()} on S110-S1}}",
+                select_first(model_metrics_vehicles_s1, lambda m: m == best_model[0])[1]
+            ),
+            (
+                f"\\textbf{{Performance of {best_model[0].name()} on S110-S2}}",
+                select_first(model_metrics_vehicles_s2, lambda m: m == best_model[0])[1]
+            ),
+        ],
+        baseline_results=best_model_vehicles,
+        filename="perspective-best-switched.tex",
         delta_name="Best",
         classes=VEHICLE_CLASS)
 

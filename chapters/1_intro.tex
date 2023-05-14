@@ -205,7 +205,7 @@ For these reasons, this work explores exclusively non-neural \enquote{Software 1
 \label{sec:hdmap}
 
 High-definition (HD) maps model the road network down to the detail of individual driving lane geometries.
-In this work, we hypothesize that the HD-map can serve as a useful additional sensor to the \textit{Mono3D} detector.
+In this work, we hypothesize that the HD map can serve as a useful additional sensor to the \textit{Mono3D} detector.
 In particular, we explore whether the HD map can serve as a viable source of vehicle orientation (heading) values.
 In the first step, we developed a method to derive the likely heading value at a particular position on the road surface from the geometry of the enclosing lane boundaries.
 This method is described with more detail in Chapter~\ref{sec:hdmapgrids}.
@@ -275,7 +275,7 @@ These limitations must be tackled by future work (see Chapter~\ref{ch:future}).
 
 \begin{enumerate}
     \item \textbf{Bad detection quality for road users with highly cropped or obstructed instance masks}: Both the bottom-contour based L-Shape-Fitting algorithm, and the estimation of the vehicle position from the instance mask require an unobstructed full view of the road user to function optimally.\ Any obstruction of the view will degrade the estimation quality.\ Such an obstruction may be a stationary object in front of the road user, another road user, a weather condition like snow/rain/fog, or simply the field-of-view \textit{(FOV)} limit of the sensor.
-    \item \textbf{Bad detection quality for road users in legal or physical peril:} Our \textit{Mono3D} detection approach assumes that road users do not fly, do not lie on their side, do not move sideways, and are always aligned with a legal traffic flow direction as parsed from the HD-map.\ Therefore, the 3D pose estimation for any road user which violates one of these assumptions will be as bad as the the day this road user is probably experiencing.
+    \item \textbf{Bad detection quality for road users in legal or physical peril:} Our \textit{Mono3D} detection approach assumes that road users do not fly, do not lie on their side, do not move sideways, and are always aligned with a legal traffic flow direction as parsed from the HD map.\ Therefore, the 3D pose estimation for any road user which violates one of these assumptions will be as bad as the the day this road user is probably experiencing.
 \end{enumerate}
 
 \section{Research Objective}
@@ -289,9 +289,9 @@ In summary, the research objective for this work is to address the truthfulness 
 This work presents the following research contributions:
 
 \begin{enumerate}
-    \item An augmented \textit{L-Shape-Fitting} algorithm which supports tracking and HD-Map confidence inputs.
+    \item An augmented \textit{L-Shape-Fitting} algorithm which supports tracking and HD Map confidence inputs.
     \item A lookup strategy for vehicle bottom contours within the HD Map to derive yaw options histograms with associated confidence values.
-    \item An HD-map rasterization algorithm to support fast bulk lookup of heading options for a vehicle bottom contour.
+    \item An HD map rasterization algorithm to support fast bulk lookup of heading options for a vehicle bottom contour.
     \item A formula to derive the plausibility of a yaw hypothesis for a detected vehicle from a series of historical positions for the same vehicle.
     \item An algorithm to calculate the physical position and height of a vehicle, given the instance mask height, physical width/length, and predicted orientation angle.
     \item An algorithm to calculate 3D bounding boxes for Vulnerable Road Users (Pedestrians and Bicycles) from their Instance Mask Bottom Contour.

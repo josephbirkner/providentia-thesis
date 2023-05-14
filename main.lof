@@ -65,11 +65,11 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {5.3}{\ignorespaces A selection of frames to showcase the qualitative performance of our implemented monocular 3D object detector at night.\relax }}{44}{figure.caption.32}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Overview for the Score values of all possible 384 detector configuration-label combinations, with arrows pointing out the best, baseline, and worst combination.\relax }}{47}{figure.caption.34}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Overview for the \textit {Providentia Detection Score (PDS)} values of all possible 384 detector configuration-label combinations, with arrows pointing out the best, baseline, and worst combination.\relax }}{47}{figure.caption.34}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Comparison of the same frame from our best model ($\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$) (right), vs. the same model except with disabled LSF augmentations (top-left), disabled tracking augmentation (top-right), or disabled map augmentation (bottom-left).\relax }}{51}{figure.caption.41}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Overview for model performances across different LSF augmentation configurations. The bars for a model is color-coded by their usage of Raw LSF without Augmentation (green), LSF with screen-space tracking (blue), LSF with HD map augmentation (red), or LSF with both augmentations (violet). \relax }}{52}{figure.caption.42}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Overview for model performances across different LSF augmentation configurations. The bars for a model is color-coded by their usage of Raw LSF without Augmentation (green), LSF with screen-space tracking (blue), LSF with HD-map augmentation (red), or LSF with both augmentations (violet). \relax }}{52}{figure.caption.42}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Comparison of the same frame from our best model ($\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$) (bottom-right), vs. the same model except with disabled LSF augmentations (top-left), disabled map augmentation (top-right), or disabled tracking augmentation (bottom-left).\relax }}{52}{figure.caption.43}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 

@@ -27,19 +27,21 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {table}{\numberline {5.6}{\ignorespaces Average results for different instance segmentation models, with differences in the resulting metrics shown towards the previous model's average values.\relax }}{49}{table.caption.39}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.7}{\ignorespaces Ablated results for models which use at most one of the \textit {DBSCAN}-based bottom contour filter or size filter, compared with the best model which uses both filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other, as none of the ablated model beats the model which uses all filters.\relax }}{50}{table.caption.40}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces Best results for different instance segmentation models, with differences in the resulting metrics shown towards the overall best model's values, which are those of $I^{1920}_\text {Yv7}$.\relax }}{50}{table.caption.40}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.8}{\ignorespaces Ablation study for the best model $\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$, when none or just one of the Screen-Space Tracking or HD-Map Lookup Augmentations for the L-Shape-Fitting (LSF) algorithm is used.\relax }}{53}{table.caption.43}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces Ablated results for models which use at most one of the \textit {DBSCAN}-based bottom contour filter or size filter, compared with the best model which uses both filters. It is apparent, that the filtering mostly has a positive effect across all metrics, and the filters also synergize with each other, as none of the ablated model beats the model which uses all filters.\relax }}{51}{table.caption.41}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.9}{\ignorespaces Best result for model which uses 3D Tracking, compared with the best model.\relax }}{53}{table.caption.44}%
+\contentsline {table}{\numberline {5.9}{\ignorespaces Ablation study for the best model $\left [I^{1920}_\text {Yv7}T_{2D}M_\text {LSF}F_\text {Cont}^\text {Size}\right ]$, when none or just one of the Screen-Space-Tracking or HD-Map-Lookup Augmentations for the L-Shape-Fitting (LSF) algorithm is used.\relax }}{53}{table.caption.44}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.10}{\ignorespaces Average results for evaluations with time-shifted labels compared to the original unsynchronized LiDAR labels.\relax }}{54}{table.caption.45}%
+\contentsline {table}{\numberline {5.10}{\ignorespaces Best result for model which uses 3D Tracking, compared with the best model.\relax }}{54}{table.caption.45}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.11}{\ignorespaces Average results for evaluations on the night-time scene of the A9 dataset with \textit {Yolact-Edge} and \textit {Yolov7} models.\relax }}{55}{table.caption.46}%
+\contentsline {table}{\numberline {5.11}{\ignorespaces Average results for evaluations with time-shifted labels compared to the original unsynchronized LiDAR labels.\relax }}{54}{table.caption.46}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.12}{\ignorespaces Quantitative results for the best-performing vehicle-only models for each camera perspective.\relax }}{56}{table.caption.47}%
+\contentsline {table}{\numberline {5.12}{\ignorespaces Average results for evaluations on the night-time scene of the A9 dataset with \textit {Yolact-Edge} and \textit {Yolov7} models.\relax }}{55}{table.caption.47}%
 \defcounter {refsection}{0}\relax 
-\contentsline {table}{\numberline {5.13}{\ignorespaces Best results for different instance segmentation models, with differences in the resulting metrics shown towards the overall best model's values.\relax }}{56}{table.caption.48}%
+\contentsline {table}{\numberline {5.13}{\ignorespaces Quantitative results for the best-performing vehicle-only models for each camera perspective.\relax }}{56}{table.caption.48}%
+\defcounter {refsection}{0}\relax 
+\contentsline {table}{\numberline {5.14}{\ignorespaces Results for perspective-specific best models on the respective other perspective.\relax }}{57}{table.caption.49}%
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
